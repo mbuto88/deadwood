@@ -1,9 +1,7 @@
-import java.util.*;
-import java.io.*;
-
+//Room Class
 public class Room{
 		private String name;
-		private String[] players;
+		private Player[] players;
 
 		//Constructors
 		Room(){
@@ -16,6 +14,7 @@ public class Room{
 
 		//Getters
 		public String getName(){
+			return 'nothing';
 
 		}
 
@@ -36,3 +35,4 @@ public class Room{
 		public void setPrediction(){
 
 		}
+}
