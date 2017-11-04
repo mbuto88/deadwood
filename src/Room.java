@@ -14,7 +14,7 @@ public class Room{
 
 		//Getters
 		public String getName(){
-			return 'nothing';
+			return name;
 		}
 
 		//Setters
