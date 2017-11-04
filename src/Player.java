@@ -2,6 +2,7 @@
 public class Player{
 
 		private Room location;
+      private String name;
     private int fame;
     private int money;
     private int rehearsalMarkers;
@@ -18,11 +19,11 @@ public class Player{
 
 		//Getters
 		public String getName(){
-      return 'nothing';
+      return "nothing";
 		}
 
     public String getFame(){
-      return 'nothing';
+      return "nothing";
     }
 
     public int getMoney(){
@@ -30,15 +31,15 @@ public class Player{
 		}
 
     public String getLocation(){
-      return 'nothing';
+      return "nothing";
 		}
 
     public String getScene(){
-      return 'nothing';
+      return "nothing";
 		}
 
     public String getPart(){
-      return 'nothing';
+      return "nothing";
 		}
 
 		//Other Methods
