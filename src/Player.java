@@ -6,7 +6,7 @@ public class Player{
     private int money;
     private int rehearsalMarkers;
     private Card currentScene;
-    Private Part currentPart;
+    private Part currentPart;
 
 		//Constructors
 		Player(){
