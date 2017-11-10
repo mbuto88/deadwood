@@ -24,12 +24,28 @@ public class Trailers extends Room {
       }
    }
    
-   public void endDay(){
+   public void endDay(List<Player> players){
+      for (Player p : players){
+         p.calcScore();
+      }
    }
    
-   public void updateRules(){
+   public void updateRules(int numPlayers){
+      if (numPlayers <= 3){
+         //Set to 3 days
+      }
+      else if (numPlayers == 5){
+         //Set player fame to 2
+      }
+      else if (numPlayers == 6){
+         //Set player fame to 4
+      }
+      else if (numPlayers == 7 || numPlayers == 8){
+         //Set player rank to 2
+      }
    }
    
    public void interact(Player player){
+      System.out.println("Nothing can be done here");
    }
 }

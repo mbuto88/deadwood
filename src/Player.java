@@ -50,6 +50,9 @@ public class Player{
     //Other Methods
     public void takeTurn(){
     }
+    
+    public void calcScore(){
+    }
 
     private void act(){
     }
