@@ -8,7 +8,4 @@ public class Main{
    Board board;
    Card[] cards;
    public static void main(String[] args){
-      
-   }
-   
 }

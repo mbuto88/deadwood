@@ -1,5 +1,7 @@
 //Trailers Class
+
 import java.util.*;
+
 public class Trailers extends Room {
    int currentDay;
 
@@ -10,6 +12,7 @@ public class Trailers extends Room {
    public Trailers(int day){
       currentDay = day;
    }
+
    
    //Getters
    public int getCurrentDay(){
@@ -18,6 +21,7 @@ public class Trailers extends Room {
    //Setters
    
    //Other Methods
+
    public void startDay(List<Player> players){
       for (Player p : players){
          p.setRoom(this);
@@ -47,5 +51,6 @@ public class Trailers extends Room {
    
    public void interact(Player player){
       System.out.println("Nothing can be done here");
+
    }
 }

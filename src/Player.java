@@ -17,6 +17,7 @@ public class Player{
         this.name = name;
     }
 
+
     //Getters
     public String getName(){
         return name;
@@ -24,11 +25,13 @@ public class Player{
 
     public int getFame(){
       return fame;
+
     }
 
     public int getMoney(){
       return money;
     }
+
 
     public Room getLocation(){
       return location;
@@ -46,6 +49,7 @@ public class Player{
     public void setRoom(Room room){
         location = room;
     }
+
 
     //Other Methods
     public void takeTurn(){
