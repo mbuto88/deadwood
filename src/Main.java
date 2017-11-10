@@ -7,8 +7,5 @@ public class Main{
    Player[] players;
    Board board;
    Card[] cards;
-   public Main(String[] args){
-      
-   }
-   
+   public static void main(String[] args){
 }
