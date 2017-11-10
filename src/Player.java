@@ -1,64 +1,69 @@
 //Player Class
 public class Player{
 
-		private Room location;
-      private String name;
+    private Room location;
+    private String name;
     private int fame;
     private int money;
     private int rehearsalMarkers;
-    private Card currentScene;
+    private Scene currentScene;
     private Part currentPart;
 
-		//Constructors
-		Player(){
-		}
+    //Constructors
+    Player(){
+    }
 
-		Player(String name){
-			this.name = name;
-		}
+    Player(String name){
+        this.name = name;
+    }
 
-		//Getters
-		public String getName(){
-      return "nothing";
-		}
+    //Getters
+    public String getName(){
+        return name;
+    }
 
-    public String getFame(){
-      return "nothing";
+    public int getFame(){
+      return fame;
     }
 
     public int getMoney(){
-      return 0;
-		}
+      return money;
+    }
 
-    public String getLocation(){
-      return "nothing";
-		}
+    public Room getLocation(){
+      return location;
+    }
 
-    public String getScene(){
-      return "nothing";
-		}
+    public Scene getScene(){
+      return currentScene;
+    }
 
-    public String getPart(){
-      return "nothing";
-		}
+    public Part getPart(){
+      return currentPart;
+    }
 
-		//Other Methods
-		public void takeTurn(){
-		}
+    //Setters
+    public void setRoom(Room room){
+        location = room;
+    }
 
-		private void act(){
-		}
+    //Other Methods
+    public void takeTurn(){
+    }
 
-		private void rehearse(){
-		}
+    private void act(){
+    }
+
+    private void rehearse(){
+    }
 
     private void move(){
-		}
+    }
 
     private void takeRole(){
-		}
+    }
 
     private void draw(){
-		}
+    }
 
 }
