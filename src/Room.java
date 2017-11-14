@@ -3,9 +3,12 @@
 import java.util.*;
 public abstract class Room{
 		private String name;
-      private List<Room> nearby;
+        private List<Room> nearby;
 		private List<Player> players;
+		private List<String> nearbyNames;
 
+		
+		
 		//Constructors
 		public Room(){
       
@@ -13,6 +16,7 @@ public abstract class Room{
       public Room(String name, List<Room> nearby){
          this.name = name;
          this.nearby = nearby;
+   
       }
 
 		Room(String name){
@@ -20,11 +24,18 @@ public abstract class Room{
 		}
 
 		//Getters
+		public List<String> getNearbyNames() {
+			return nearbyNames;
+		}
+		
 		public String getName(){
 			return name;
 		}
 
 		//Setters
+		public void setNearbyNames(List<String> nearbyNames) {
+			this.nearbyNames = nearbyNames;
+		}
 		public void addPlayer(Player player){
          players.add(player);
 		}

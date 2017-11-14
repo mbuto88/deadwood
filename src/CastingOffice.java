@@ -19,4 +19,10 @@ public class CastingOffice extends Room {
    public boolean verifyPoints(){
       return false;
    }
+
+@Override
+public void interact(Player player) {
+	// TODO Auto-generated method stub
+	
+}
 }
