@@ -14,27 +14,29 @@ import org.w3c.dom.Element;
 public class Main{
    Player[] players;
    Board board;
-   private static ArrayList<Room> scenes = new ArrayList<Room>();
+   static ArrayList<Room> scenes = new ArrayList<Room>();
+   static ArrayList<Card> cards = new ArrayList<Card>();
    
    public static void main(String[] args) {
 	   Board board = new Board();
 	   board.setRooms(scenes);
+	   //Parsing the board.xml file to get our scene information
 	   try {
 		   
 		   DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 		   DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-		   Document boardDoc = dBuilder.parse("board.xml");
-		   boardDoc.getDocumentElement().normalize();
-		   NodeList setNList = boardDoc.getChildNodes();
+		   Document scenesDoc = dBuilder.parse("board.xml");
+		   scenesDoc.getDocumentElement().normalize();
+		   NodeList setNList = scenesDoc.getElementsByTagName("set");
 		   
-		   //Loop to traverse the list of set nodes and create Scene objects, Part objects, and Card objects
+		   //Loop to traverse the list of set nodes and create Part objects, and then scene objects
 		   for (int i = 0; i < setNList.getLength(); i++) {
 			   Node setNode = setNList.item(i);
 			   
 			   if(setNode.getNodeType() == Node.ELEMENT_NODE) {
 				   Element setElement = (Element) setNode;
 				   Element areaElement = (Element) setElement.getElementsByTagName("area").item(0);
-				   String tempSceneName = (String)setElement.getAttribute("name");
+				   String tempSetName = (String)setElement.getAttribute("name");
 				   int[] tempSceneArea = new int[]{Integer.parseInt(areaElement.getAttribute("x")),
 						   						Integer.parseInt(areaElement.getAttribute("y")),
 						   						Integer.parseInt(areaElement.getAttribute("h")),
@@ -46,35 +48,90 @@ public class Main{
 				   
 				   //Loop to traverse the list of neighbors and obtain names
 				   for (int k = 0; k < neighborsNList.getLength(); k++) {
-					   Element neighborsChildElement = (Element) neighborsNList.item(k);
-					   nearbyNames.add(neighborsChildElement.getAttribute("name"));
+					   if(neighborsNList.item(k).getNodeType() == Node.ELEMENT_NODE){
+						   Element neighborsChildElement = (Element) neighborsNList.item(k);
+						   nearbyNames.add(neighborsChildElement.getAttribute("name"));
+					   } 
 				   }
 				   
 				   ArrayList<Part> tempExtraParts = new ArrayList<Part>();
 				   Element extraPartsElement = (Element) setElement.getElementsByTagName("parts").item(0);
-				   NodeList extraPartsNList = extraPartsElement.getChildNodes();
+				   NodeList extraPartsNList = extraPartsElement.getElementsByTagName("part");
 				   
 				   //Loop to traverse the list of extra parts and create part objects
 				   for (int m = 0; m < extraPartsNList.getLength(); m++) {
-					   Element extraPartChildElement = (Element) neighborsNList.item(m);
-					   String tempPartName = extraPartChildElement.getAttribute("name");
-					   int tempLevel = Integer.parseInt(extraPartChildElement.getAttribute("level"));
-					   Element extraPartAreaElement = (Element) extraPartChildElement.getElementsByTagName("area").item(0);
-					   int[] tempExtraPartArea = new int[]{Integer.parseInt(extraPartAreaElement.getAttribute("x")),
-		   						Integer.parseInt(extraPartAreaElement.getAttribute("y")),
-		   						Integer.parseInt(extraPartAreaElement.getAttribute("h")),
-		   						Integer.parseInt(extraPartAreaElement.getAttribute("w"))};
-					   String tempLine = extraPartChildElement.getElementsByTagName("line").item(0).toString();
-					   Part tempPart = new Part(tempPartName, tempLevel, tempExtraPartArea[0], tempExtraPartArea[1], tempExtraPartArea[2], tempExtraPartArea[3], tempLine);
-					   tempExtraParts.add(tempPart);
+					   if(extraPartsNList.item(m).getNodeType() == Node.ELEMENT_NODE){
+						   Element extraPartChildElement = (Element) extraPartsNList.item(m);
+						   String tempPartName = extraPartChildElement.getAttribute("name");
+						   int tempLevel = Integer.parseInt(extraPartChildElement.getAttribute("level"));
+						   Element extraPartAreaElement = (Element) extraPartChildElement.getElementsByTagName("area").item(0);
+						   int[] tempExtraPartArea = new int[]{Integer.parseInt(extraPartAreaElement.getAttribute("x")),
+								   Integer.parseInt(extraPartAreaElement.getAttribute("y")),
+								   Integer.parseInt(extraPartAreaElement.getAttribute("h")),
+								   Integer.parseInt(extraPartAreaElement.getAttribute("w"))};
+						   String tempLine = extraPartChildElement.getElementsByTagName("line").item(0).toString();
+						   Part tempPart = new Part(tempPartName, tempLevel, tempExtraPartArea[0], tempExtraPartArea[1], tempExtraPartArea[2], tempExtraPartArea[3], tempLine);
+						   tempExtraParts.add(tempPart);
+					   }
 				   }
 				   
-				   Scene tempScene = new Scene(tempSceneName, tempExtraParts, tempSceneArea[0], tempSceneArea[1], tempSceneArea[2], tempSceneArea[3]);
+				   Scene tempScene = new Scene(tempSetName, tempExtraParts, tempSceneArea[0], tempSceneArea[1], tempSceneArea[2], tempSceneArea[3]);
 				   tempScene.setNearbyNames(nearbyNames);
 				   scenes.add(tempScene);
 			   }
 		   }
 		   
+	   } catch (Exception e){
+		   e.printStackTrace();
+	   }
+	   
+	   //Parsing the cards.xml file to get the information for our scene cards
+	   try {
+		   
+		   DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+		   DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+		   Document cardsDoc = dBuilder.parse("cards.xml");
+		   cardsDoc.getDocumentElement().normalize();
+		   NodeList cardNList = cardsDoc.getElementsByTagName("card");
+	   
+		 //Loop to traverse the list of set nodes and create Part objects, and then card objects
+		   for (int i = 0; i < cardNList.getLength(); i++) {
+			   Node cardNode = cardNList.item(i);
+			   int tempCardNumber = 0;
+			   if(cardNode.getNodeType() == Node.ELEMENT_NODE) {
+				   Element cardElement = (Element) cardNode;
+				   String tempCardName = (String)cardElement.getAttribute("name");
+				   String tempCardIMG = (String)cardElement.getAttribute("img");	
+				   int tempCardBudget = Integer.parseInt(cardElement.getAttribute("budget"));	
+				   String tempCardDesc = cardElement.getFirstChild().toString();
+				   Node tempCardNode = cardElement.getElementsByTagName("scene").item(0);
+				   if(tempCardNode.getNodeType() == Node.ELEMENT_NODE){					   
+					   tempCardNumber = Integer.parseInt(((Element) tempCardNode).getAttribute("number"));
+				   }
+				   
+				   ArrayList<Part> tempParts = new ArrayList<Part>();
+				   NodeList partsNList = cardElement.getElementsByTagName("part");
+				   
+				   //Loop to traverse the list parts and create part objects
+				   for (int m = 0; m < partsNList.getLength(); m++) {
+					   Element partElement = (Element) partsNList.item(m);
+					   String tempPartName = partElement.getAttribute("name");
+					   int tempLevel = Integer.parseInt(partElement.getAttribute("level"));
+					   Element partAreaElement = (Element) partElement.getElementsByTagName("area").item(0);
+					   int[] tempExtraPartArea = new int[]{Integer.parseInt(partAreaElement.getAttribute("x")),
+		   						Integer.parseInt(partAreaElement.getAttribute("y")),
+		   						Integer.parseInt(partAreaElement.getAttribute("h")),
+		   						Integer.parseInt(partAreaElement.getAttribute("w"))};
+					   String tempLine = partElement.getElementsByTagName("line").item(0).toString();
+					   Part tempPart = new Part(tempPartName, tempLevel, tempExtraPartArea[0], tempExtraPartArea[1], tempExtraPartArea[2], tempExtraPartArea[3], tempLine);
+					   tempParts.add(tempPart);
+				   }
+				   
+				   Card tempCard = new Card(tempCardName, tempCardNumber, tempCardDesc, tempCardIMG, tempParts, tempCardBudget);
+				   cards.add(tempCard);
+			   }
+			   
+		   }
 	   } catch (Exception e){
 		   e.printStackTrace();
 	   }
