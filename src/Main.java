@@ -63,20 +63,42 @@ public class Main{
   						Integer.parseInt(areaElement.getAttribute("y")),
   						Integer.parseInt(areaElement.getAttribute("h")),
   						Integer.parseInt(areaElement.getAttribute("w"))};
-			   Trailers tempTrailer = new Trailers(1, tempOfficeArea[0], tempOfficeArea[1], tempOfficeArea[2], tempOfficeArea[3]);
 			   
-			   Element neighborsElementTrailers = (Element) officeElement.getElementsByTagName("neighbors").item(0);
-			   NodeList neighborsNListTrailers = neighborsElementTrailers.getElementsByTagName("neighbor");
-			   ArrayList<String> nearbyTrailerNames = new ArrayList<String>();
+			   Element neighborsElementOffice = (Element) officeElement.getElementsByTagName("neighbors").item(0);
+			   NodeList neighborsNListOffice = neighborsElementOffice.getElementsByTagName("neighbor");
+			   ArrayList<String> nearbyOfficeNames = new ArrayList<String>();
 			   //Loop to traverse the list of neighbors and obtain names
-			   for (int k = 0; k < neighborsNListTrailers.getLength(); k++) {
-				   if(neighborsNListTrailers.item(k).getNodeType() == Node.ELEMENT_NODE){
-					   Element neighborsChildElement = (Element) neighborsNListTrailers.item(k);
-					   nearbyTrailerNames.add(neighborsChildElement.getAttribute("name"));
+			   for (int k = 0; k < neighborsNListOffice.getLength(); k++) {
+				   if(neighborsNListOffice.item(k).getNodeType() == Node.ELEMENT_NODE){
+					   Element neighborsChildElement = (Element) neighborsNListOffice.item(k);
+					   nearbyOfficeNames.add(neighborsChildElement.getAttribute("name"));
 				   } 
 			   }
-			   tempTrailer.setNearbyNames(nearbyTrailerNames);
-			   rooms.add(tempTrailer);
+			   
+			   Element upgradesElementOffice = (Element) officeElement.getElementsByTagName("upgrades").item(0);
+			   NodeList uphgradesNListOffice = upgradesElementOffice.getElementsByTagName("upgrade");
+			   ArrayList<Upgrade> officeUpgrades = new ArrayList<Upgrade>();
+			   
+			   //Loop to traverse the list of upgrades and create objects, then add them to officeUpgrades
+			   for (int k = 0; k < uphgradesNListOffice.getLength(); k++) {
+				   if(uphgradesNListOffice.item(k).getNodeType() == Node.ELEMENT_NODE){
+					   Element upgradeChildElement = (Element) uphgradesNListOffice.item(k);
+					   int tempUpgradeLevel = Integer.parseInt(upgradeChildElement.getAttribute("level"));
+					   String tempUpgradeCurrency = upgradeChildElement.getAttribute("currency");
+					   int amt = Integer.parseInt(upgradeChildElement.getAttribute("amt"));
+					   Element upgradeAreaElement = (Element) upgradeChildElement.getElementsByTagName("area").item(0);
+					   int[] tempUpgradeArea = new int[]{Integer.parseInt(upgradeAreaElement.getAttribute("x")),
+		  						Integer.parseInt(upgradeAreaElement.getAttribute("y")),
+		  						Integer.parseInt(upgradeAreaElement.getAttribute("h")),
+		  						Integer.parseInt(upgradeAreaElement.getAttribute("w"))};
+					   
+					   Upgrade tempUpgrade = new Upgrade(tempUpgradeCurrency, tempUpgradeLevel, amt, tempUpgradeArea[0], tempUpgradeArea[1], tempUpgradeArea[2], tempUpgradeArea[3]);
+					   officeUpgrades.add(tempUpgrade);
+				   } 
+			   }
+			   CastingOffice tempOffice = new CastingOffice(officeUpgrades, tempOfficeArea[0], tempOfficeArea[1], tempOfficeArea[2], tempOfficeArea[3]);
+			   tempOffice.setNearbyNames(nearbyOfficeNames);
+			   rooms.add(tempOffice);
 		   }
 		   
 		   //Loop to traverse the list of set nodes and create Part objects, and then scene objects
