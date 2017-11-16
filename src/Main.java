@@ -14,12 +14,12 @@ import org.w3c.dom.Element;
 public class Main{
    Player[] players;
    Board board;
-   static ArrayList<Room> scenes = new ArrayList<Room>();
+   static ArrayList<Room> rooms = new ArrayList<Room>();
    static ArrayList<Card> cards = new ArrayList<Card>();
    
    public static void main(String[] args) {
 	   Board board = new Board();
-	   board.setRooms(scenes);
+	   board.setRooms(rooms);
 	   //Parsing the board.xml file to get our scene information
 	   try {
 		   
@@ -28,6 +28,56 @@ public class Main{
 		   Document scenesDoc = dBuilder.parse("board.xml");
 		   scenesDoc.getDocumentElement().normalize();
 		   NodeList setNList = scenesDoc.getElementsByTagName("set");
+		   NodeList trailerList = scenesDoc.getElementsByTagName("trailer");
+		   NodeList CastingOfficeList = scenesDoc.getElementsByTagName("office");
+		   
+		   //Creating the trailer object and adding it to rooms
+		   if(trailerList.item(0).getNodeType() == Node.ELEMENT_NODE) {
+			   Element trailerElement = (Element) trailerList.item(0);
+			   Element areaElement = (Element) trailerElement.getElementsByTagName("area").item(0);
+			   int[] tempTrailerArea = new int[]{Integer.parseInt(areaElement.getAttribute("x")),
+  						Integer.parseInt(areaElement.getAttribute("y")),
+  						Integer.parseInt(areaElement.getAttribute("h")),
+  						Integer.parseInt(areaElement.getAttribute("w"))};
+			   Trailers tempTrailer = new Trailers(1, tempTrailerArea[0], tempTrailerArea[1], tempTrailerArea[2], tempTrailerArea[3]);
+			   
+			   Element neighborsElementTrailers = (Element) trailerElement.getElementsByTagName("neighbors").item(0);
+			   NodeList neighborsNListTrailers = neighborsElementTrailers.getElementsByTagName("neighbor");
+			   ArrayList<String> nearbyTrailerNames = new ArrayList<String>();
+			   //Loop to traverse the list of neighbors and obtain names
+			   for (int k = 0; k < neighborsNListTrailers.getLength(); k++) {
+				   if(neighborsNListTrailers.item(k).getNodeType() == Node.ELEMENT_NODE){
+					   Element neighborsChildElement = (Element) neighborsNListTrailers.item(k);
+					   nearbyTrailerNames.add(neighborsChildElement.getAttribute("name"));
+				   } 
+			   }
+			   tempTrailer.setNearbyNames(nearbyTrailerNames);
+			   rooms.add(tempTrailer);
+		   }
+		   
+		   //Creating the Casting office object and adding it to rooms
+		   if(CastingOfficeList.item(0).getNodeType() == Node.ELEMENT_NODE) {
+			   Element officeElement = (Element) CastingOfficeList.item(0);
+			   Element areaElement = (Element) officeElement.getElementsByTagName("area").item(0);
+			   int[] tempOfficeArea = new int[]{Integer.parseInt(areaElement.getAttribute("x")),
+  						Integer.parseInt(areaElement.getAttribute("y")),
+  						Integer.parseInt(areaElement.getAttribute("h")),
+  						Integer.parseInt(areaElement.getAttribute("w"))};
+			   Trailers tempTrailer = new Trailers(1, tempOfficeArea[0], tempOfficeArea[1], tempOfficeArea[2], tempOfficeArea[3]);
+			   
+			   Element neighborsElementTrailers = (Element) officeElement.getElementsByTagName("neighbors").item(0);
+			   NodeList neighborsNListTrailers = neighborsElementTrailers.getElementsByTagName("neighbor");
+			   ArrayList<String> nearbyTrailerNames = new ArrayList<String>();
+			   //Loop to traverse the list of neighbors and obtain names
+			   for (int k = 0; k < neighborsNListTrailers.getLength(); k++) {
+				   if(neighborsNListTrailers.item(k).getNodeType() == Node.ELEMENT_NODE){
+					   Element neighborsChildElement = (Element) neighborsNListTrailers.item(k);
+					   nearbyTrailerNames.add(neighborsChildElement.getAttribute("name"));
+				   } 
+			   }
+			   tempTrailer.setNearbyNames(nearbyTrailerNames);
+			   rooms.add(tempTrailer);
+		   }
 		   
 		   //Loop to traverse the list of set nodes and create Part objects, and then scene objects
 		   for (int i = 0; i < setNList.getLength(); i++) {
@@ -44,7 +94,7 @@ public class Main{
 				   
 				   ArrayList<String> nearbyNames = new ArrayList<String>();
 				   Element neighborsElement = (Element) setElement.getElementsByTagName("neighbors").item(0);
-				   NodeList neighborsNList = neighborsElement.getChildNodes();
+				   NodeList neighborsNList = neighborsElement.getElementsByTagName("neighbor");
 				   
 				   //Loop to traverse the list of neighbors and obtain names
 				   for (int k = 0; k < neighborsNList.getLength(); k++) {
@@ -77,7 +127,7 @@ public class Main{
 				   
 				   Scene tempScene = new Scene(tempSetName, tempExtraParts, tempSceneArea[0], tempSceneArea[1], tempSceneArea[2], tempSceneArea[3]);
 				   tempScene.setNearbyNames(nearbyNames);
-				   scenes.add(tempScene);
+				   rooms.add(tempScene);
 			   }
 		   }
 		   

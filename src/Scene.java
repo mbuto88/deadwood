@@ -11,7 +11,7 @@ public class Scene extends Room {
    int h;
 
    //Constructors
-   public Scene(String name, ArrayList<Part> extraParts, int x, int y, int w, int h) {
+   public Scene(String name, ArrayList<Part> extraParts, int x, int y, int h, int w) {
 	  this.name = name;
       this.extraParts = extraParts;
       this.x = x;

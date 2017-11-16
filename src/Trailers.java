@@ -4,13 +4,21 @@ import java.util.*;
 
 public class Trailers extends Room {
    int currentDay;
+   int x;
+   int y;
+   int h;
+   int w;
 
    //Constructors
    public Trailers() {
    
    }
-   public Trailers(int day){
+   public Trailers(int day, int x, int y, int h, int w){
       currentDay = day;
+      this.x = x;
+      this.y = y;
+      this.w = h;
+      this.h = w;
    }
 
    
@@ -18,7 +26,11 @@ public class Trailers extends Room {
    public int getCurrentDay(){
       return currentDay;
    }
+   
    //Setters
+   public void setCurrentDay(int currentDay) {
+		this.currentDay = currentDay;
+	}
    
    //Other Methods
 
@@ -28,7 +40,7 @@ public class Trailers extends Room {
       }
    }
    
-   public void endDay(List<Player> players){
+public void endDay(List<Player> players){
       for (Player p : players){
          p.calcScore();
       }
