@@ -1,3 +1,5 @@
+import java.util.*;
+
 //Casting Office Class
 public class CastingOffice extends Room {
    int[] fameRequired;
@@ -6,12 +8,15 @@ public class CastingOffice extends Room {
    int y;
    int h;
    int w;
-
+   ArrayList<Upgrade> upgrades;
    //Constructors
    public CastingOffice() {
    
    }
-   public CastingOffice(int x, int y, int h, int w) {
+
+   public CastingOffice(ArrayList<Upgrade> upgrades, int x, int y, int h, int w) {
+	   this.upgrades = upgrades;
+
 	   this.x = x;
 	   this.y = y;
 	   this.h = h;
