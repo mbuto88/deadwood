@@ -20,13 +20,12 @@ public class Part{
 		this.w = 0;
 
 		//https://hipsum.co
-		this.line = "
-			Snackwave gastropub mustache austin bitters tousled viral cliche af retro fashion axe
-			single-origin coffee etsy +1 90's. Yuccie chicharrones taiyaki disrupt.
-			Cliche VHS intelligentsia poke franzen ennui lyft 8-bit lomo.
-			Edison bulb brooklyn mumblecore, vegan echo park jianbing paleo hoodie pok pok thundercats knausgaard small batch.
-			Celiac la croix cronut bespoke.
-			Venmo microdosing whatever pork belly.";
+		this.line = "Snackwave gastropub mustache austin bitters tousled viral cliche af retro fashion axe "
+			+ "single-origin coffee etsy +1 90s. Yuccie chicharrones taiyaki disrupt."
+			+ "Cliche VHS intelligentsia poke franzen ennui lyft 8-bit lomo."
+			+ "Edison bulb brooklyn mumblecore, vegan echo park jianbing paleo hoodie pok pok thundercats knausgaard small batch."
+			+ "Celiac la croix cronut bespoke."
+			+ "Venmo microdosing whatever pork belly.";
 	}
 
 	Part(String name, int level, int x, int y, int h, int w, String line) {

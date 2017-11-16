@@ -1,3 +1,5 @@
+import java.util.*;
+
 //Card Class
 public class Card{
 
@@ -5,7 +7,7 @@ public class Card{
 	public int number;
 	private String desc;
 	private String img;
-	public Part[] parts;
+	public ArrayList<Part> parts;
 	public int budget;
 
 	//Constructors
@@ -18,7 +20,7 @@ public class Card{
 		this.budget = 9002;
 	}
 
-	Card(String name, int number, String desc, String img, Part[] parts, int budget){
+	Card(String name, int number, String desc, String img, ArrayList<Part> parts, int budget){
 		this.name = name;
 		this.number = number;
 		this.desc = desc;
@@ -51,7 +53,7 @@ public class Card{
 			}
 		} else {
 				System.out.println("Practice makes perfect");
-				return 0;
+				return "0";
 		}
 	}
 }
