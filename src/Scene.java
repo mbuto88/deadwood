@@ -2,20 +2,6 @@ import java.util.*;
 
 //Scene Class
 public class Scene extends Room {
-<<<<<<< HEAD
-   Card card;
-
-   //Constructors
-   public Scene(Card card) {
-      this.card = card;
-   }
-   
-   //Getters
-   public Card getCard(){
-      return card;
-   }
-   //Setters
-=======
    String name;
    Card card;
    private ArrayList<Part> extraParts;
@@ -42,6 +28,9 @@ public class Scene extends Room {
    public ArrayList<Part> getExtraParts() {
 		return extraParts;
 	}
+   public String getName() {
+      return name;
+   }
    
    //Setters
    public void setCard(Card card) {
@@ -50,17 +39,10 @@ public class Scene extends Room {
    public void setExtraParts(ArrayList<Part> extraParts) {
 		this.extraParts = extraParts;
 	}
->>>>>>> 16172047c3867689875e7b829fc506228e9a91a8
    
    //Other Methods
    public void getPart(){
    }
-<<<<<<< HEAD
-   
-   public boolean evaluateWork(){
-      return false;
-   }
-=======
 
 public boolean evaluateWork(){
       return false;
@@ -71,5 +53,4 @@ public void interact(Player player) {
 	// TODO Auto-generated method stub
 	
 }
->>>>>>> 16172047c3867689875e7b829fc506228e9a91a8
 }

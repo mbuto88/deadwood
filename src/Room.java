@@ -3,9 +3,8 @@
 import java.util.*;
 public abstract class Room{
 		private String name;
-        private List<Room> nearby;
-		private List<Player> players;
-		private List<String> nearbyNames;
+        private ArrayList<Room> nearby;
+		private ArrayList<String> nearbyNames;
 
 		
 		
@@ -13,7 +12,7 @@ public abstract class Room{
 		public Room(){
       
 		}
-      public Room(String name, List<Room> nearby){
+      public Room(String name, ArrayList<Room> nearby){
          this.name = name;
          this.nearby = nearby;
    
@@ -24,28 +23,21 @@ public abstract class Room{
 		}
 
 		//Getters
-		public List<String> getNearbyNames() {
+		public ArrayList<String> getNearbyNames() {
 			return nearbyNames;
 		}
 		
 		public String getName(){
 			return name;
 		}
+      public ArrayList<Room> getNearby() {
+         return  nearby;
+      }
 
 		//Setters
-		public void setNearbyNames(List<String> nearbyNames) {
+		public void setNearbyNames(ArrayList<String> nearbyNames) {
 			this.nearbyNames = nearbyNames;
 		}
-		public void addPlayer(Player player){
-         players.add(player);
-		}
-      public void removePlayer(Player player){
-         for (Player p : players) {
-            if (player == p){
-               players.remove(p);
-            }
-         }
-      }
       public void addNearby(Room room){
          nearby.add(room);
       }
@@ -58,11 +50,16 @@ public abstract class Room{
          }
          return false;
 		}
-
+      
+      private void matchNearby(ArrayList<Room> rooms){
+         for (Room r : rooms) {
+            for (String s : nearbyNames) {
+               if (r.getName().equals(s)){
+                  nearby.add(r);
+               }
+            }
+         }
+      }
+      
 		public abstract void interact(Player player);
-
-      //I have no idea what this is supposed to do???
-		public void setPrediction(){
-
-		}
 }

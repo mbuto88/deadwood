@@ -2,8 +2,6 @@
 
 import java.util.*;
 import java.io.*;
-<<<<<<< HEAD
-=======
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
 import org.w3c.dom.Document;
@@ -11,19 +9,13 @@ import org.w3c.dom.NodeList;
 import org.w3c.dom.Node;
 import org.w3c.dom.Element;
 
-
->>>>>>> 16172047c3867689875e7b829fc506228e9a91a8
-
 public class Main{
    Player[] players;
    Board board;
-<<<<<<< HEAD
-   Card[] cards;
    public Main(String[] args){
       
    }
-   
-=======
+
    static ArrayList<Room> rooms = new ArrayList<Room>();
    static ArrayList<Card> cards = new ArrayList<Card>();
    
@@ -218,5 +210,4 @@ public class Main{
 		   e.printStackTrace();
 	   }
    }
->>>>>>> 16172047c3867689875e7b829fc506228e9a91a8
 }

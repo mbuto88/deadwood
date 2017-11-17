@@ -33,27 +33,29 @@ public class Card{
 	public String showName() {
 		return this.name;
 	}
+   public int getBudget() {
+      return budget;
+   }
+   public ArrayList<Part> getParts(){
+      return parts;
+   }
 
-	//Payout method
-	public String payout(boolean onCard, boolean isSuccessful, boolean rehearsing) {
+	//Payout method (returns 2 deep array of #of fame gained and #of dollars gained
+	public int[] payout(boolean onCard, boolean isSuccessful) {
 		if(onCard){
 			if(isSuccessful){
-				//advance scene here
-				//Give out 2 fame
-				return "2fame";
-			}else{
-				return "nothing";
-			}
-		} else if(!onCard && !rehearsing){
-			if(isSuccessful){
 				//advance scene
-				return "1dollar1fame";
+				return new int[] {2, 0};
 			}else{
-				return "1dollar";
+				return new int[] {0, 0};
 			}
 		} else {
-				System.out.println("Practice makes perfect");
-				return "0";
+			if(isSuccessful){
+				//advance scene
+				return new int[] {1, 1};
+			}else{
+				return new int[] {0, 1};
+			}
 		}
 	}
 }
