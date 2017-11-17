@@ -9,10 +9,6 @@ public class CastingOffice extends Room {
    int h;
    int w;
    ArrayList<Upgrade> upgrades;
-   //Constructors
-   public CastingOffice() {
-   
-   }
 
 
    public CastingOffice(int x, int y, int h, int w) {
@@ -34,7 +30,6 @@ public class CastingOffice extends Room {
    public boolean verifyPoints(){
       return false;
    }
-
 @Override
 public void interact(Player player) {
 	// TODO Auto-generated method stub

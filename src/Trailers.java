@@ -9,6 +9,7 @@ public class Trailers extends Room {
    int h;
    int w;
 
+
    //Constructors
    public Trailers() {
    
@@ -63,6 +64,5 @@ public void endDay(List<Player> players){
    
    public void interact(Player player){
       System.out.println("Nothing can be done here");
-
    }
 }

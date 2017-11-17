@@ -24,11 +24,15 @@ public class Board{
 		}
 
 		//Other Methods
-		public void rollDice(){
+		public int rollDice(){
+         Random rand = new Random();
+         int val = rand.nextInt(6) + 1;
+         System.out.println("You rolled a " + val);
+         return val;
 		}
 
-		private int calcScore(){
-      return 0;
+		private int calcScore(Player p){
+      return p.getFame() + p.getMoney() + p.getRank();
 		}
 
 		private void nextDay(){

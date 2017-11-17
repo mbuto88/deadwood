@@ -28,6 +28,9 @@ public class Scene extends Room {
    public ArrayList<Part> getExtraParts() {
 		return extraParts;
 	}
+   public String getName() {
+      return name;
+   }
    
    //Setters
    public void setCard(Card card) {

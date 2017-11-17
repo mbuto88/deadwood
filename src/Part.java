@@ -40,7 +40,7 @@ public class Part{
 
 	//Getters
 
-	private String getPartName() {
+	public String getPartName() {
 		return this.name;
 	}
 
