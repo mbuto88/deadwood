@@ -1,22 +1,29 @@
 //Player Class
 public class Player{
 
+<<<<<<< HEAD
 		private Room location;
       private String name;
+=======
+    private Room location;
+    private String name;
+>>>>>>> 16172047c3867689875e7b829fc506228e9a91a8
     private int fame;
     private int money;
     private int rehearsalMarkers;
-    private Card currentScene;
+    private Scene currentScene;
     private Part currentPart;
 
-		//Constructors
-		Player(){
-		}
+    //Constructors
+    Player(){
+    }
 
-		Player(String name){
-			this.name = name;
-		}
+    Player(String name){
+        this.name = name;
+    }
 
+
+<<<<<<< HEAD
 		//Getters
 		public String getName(){
       return "nothing";
@@ -24,12 +31,32 @@ public class Player{
 
     public String getFame(){
       return "nothing";
+=======
+    //Getters
+    public String getName(){
+        return name;
+    }
+
+    public int getFame(){
+      return fame;
+
+>>>>>>> 16172047c3867689875e7b829fc506228e9a91a8
     }
 
     public int getMoney(){
-      return 0;
-		}
+      return money;
+    }
 
+
+    public Room getLocation(){
+      return location;
+    }
+
+    public Scene getScene(){
+      return currentScene;
+    }
+
+<<<<<<< HEAD
     public String getLocation(){
       return "nothing";
 		}
@@ -41,24 +68,38 @@ public class Player{
     public String getPart(){
       return "nothing";
 		}
+=======
+    public Part getPart(){
+      return currentPart;
+    }
 
-		//Other Methods
-		public void takeTurn(){
-		}
+    //Setters
+    public void setRoom(Room room){
+        location = room;
+    }
 
-		private void act(){
-		}
+>>>>>>> 16172047c3867689875e7b829fc506228e9a91a8
 
-		private void rehearse(){
-		}
+    //Other Methods
+    public void takeTurn(){
+    }
+    
+    public void calcScore(){
+    }
+
+    private void act(){
+    }
+
+    private void rehearse(){
+    }
 
     private void move(){
-		}
+    }
 
     private void takeRole(){
-		}
+    }
 
     private void draw(){
-		}
+    }
 
 }

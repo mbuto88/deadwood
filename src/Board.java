@@ -1,22 +1,27 @@
+import java.util.*;
 //Board class
 public class Board{
-		private Player[] players;
-    private Room[] rooms;
+	private Player[] players;
+    private ArrayList<Room> rooms;
+
+		public void setRooms(ArrayList<Room> rooms) {
+		this.rooms = rooms;
+	}
 
 		//Constructors
 		Board(){
 
 		}
 
-		Board(Room[] rooms){
+		Board(ArrayList<Room> rooms){
 		}
 
 		//Getters
 		public void renderBoard(){
 		}
 
-    public void showScore(){
-    }
+		public void showScore(){
+		}
 
 		//Other Methods
 		public void rollDice(){

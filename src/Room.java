@@ -1,36 +1,67 @@
 //Room Class
-public class Room{
+
+import java.util.*;
+public abstract class Room{
 		private String name;
-		private Player[] players;
+        private List<Room> nearby;
+		private List<Player> players;
+		private List<String> nearbyNames;
 
+		
+		
 		//Constructors
-		Room(){
-
+		public Room(){
+      
 		}
+      public Room(String name, List<Room> nearby){
+         this.name = name;
+         this.nearby = nearby;
+   
+      }
 
 		Room(String name){
 			this.name = name;
 		}
 
 		//Getters
+		public List<String> getNearbyNames() {
+			return nearbyNames;
+		}
+		
 		public String getName(){
 			return name;
 		}
 
 		//Setters
-		public void addPlayer(){
-
+		public void setNearbyNames(List<String> nearbyNames) {
+			this.nearbyNames = nearbyNames;
 		}
-
+		public void addPlayer(Player player){
+         players.add(player);
+		}
+      public void removePlayer(Player player){
+         for (Player p : players) {
+            if (player == p){
+               players.remove(p);
+            }
+         }
+      }
+      public void addNearby(Room room){
+         nearby.add(room);
+      }
 		//Other Methods
-		public void isAdjacent(Room room){
-
+		public boolean isAdjacent(Room room){
+         for (Room r : nearby) {
+            if (room == r){
+               return true;
+            }
+         }
+         return false;
 		}
 
-		public void interact(){
+		public abstract void interact(Player player);
 
-		}
-
+      //I have no idea what this is supposed to do???
 		public void setPrediction(){
 
 		}
