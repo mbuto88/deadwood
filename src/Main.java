@@ -1,3 +1,5 @@
+import java.util.*;
+
 //Main Class
 
 
@@ -12,6 +14,8 @@ public class Main{
    
    public static void main(String[] args) {
 
-	   
+	   rooms = XmlParse.roomsXmlParse();
+	   cards = XmlParse.cardsXmlParse();
+
    }
 }

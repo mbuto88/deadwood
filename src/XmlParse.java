@@ -9,7 +9,7 @@ import org.w3c.dom.Element;
 public class XmlParse {
 	
 	//Parsing the board.xml file to get our scene information, returns a list of room objects from the board.xml file
-	public ArrayList<Room> roomsXmlParse() {
+	public static ArrayList<Room> roomsXmlParse() {
 		//List to be returned
 		ArrayList<Room> rooms = new ArrayList<Room>();
 		try {
@@ -69,7 +69,7 @@ public class XmlParse {
 				   } 
 			   }
 			   //Office object is created to be added to the list
-			   CastingOffice tempOffice = new CastingOffice(tempOfficeArea[0], tempOfficeArea[1], tempOfficeArea[2], tempOfficeArea[3]);
+			   CastingOffice tempOffice = new CastingOffice();
 			   tempOffice.setNearbyNames(nearbyOfficeNames);
 			   rooms.add(tempOffice);
 		   }
@@ -116,7 +116,7 @@ public class XmlParse {
 								   Integer.parseInt(extraPartAreaElement.getAttribute("y")),
 								   Integer.parseInt(extraPartAreaElement.getAttribute("h")),
 								   Integer.parseInt(extraPartAreaElement.getAttribute("w"))};
-						   String tempLine = extraPartChildElement.getElementsByTagName("line").item(0).toString();
+						   String tempLine = extraPartChildElement.getElementsByTagName("line").item(0).getTextContent();
 						   Part tempPart = new Part(tempPartName, tempLevel, tempExtraPartArea[0], tempExtraPartArea[1], tempExtraPartArea[2], tempExtraPartArea[3], tempLine);
 						   tempExtraParts.add(tempPart);
 					   }
@@ -133,7 +133,7 @@ public class XmlParse {
 		return rooms;
 	} 
 	//Parsing the cards.xml file to get the information for our scene cards
-		public ArrayList<Card> cardsXmlParse() {
+		public static ArrayList<Card> cardsXmlParse() {
 		   ArrayList<Card> cards = new ArrayList<Card>();
 
 		   try {
@@ -152,10 +152,12 @@ public class XmlParse {
 				   String tempCardName = (String)cardElement.getAttribute("name");
 				   String tempCardIMG = (String)cardElement.getAttribute("img");	
 				   int tempCardBudget = Integer.parseInt(cardElement.getAttribute("budget"));	
-				   String tempCardDesc = cardElement.getFirstChild().toString();
-				   Node tempCardNode = cardElement.getElementsByTagName("scene").item(0);
-				   if(tempCardNode.getNodeType() == Node.ELEMENT_NODE){					   
-					   tempCardNumber = Integer.parseInt(((Element) tempCardNode).getAttribute("number"));
+				   String tempCardDesc = "";
+				   
+				   Node tempScenedNode = cardElement.getElementsByTagName("scene").item(0);
+				   if(tempScenedNode.getNodeType() == Node.ELEMENT_NODE){					   
+					   tempCardNumber = Integer.parseInt(((Element) tempScenedNode).getAttribute("number"));
+					   tempCardDesc = tempScenedNode.getTextContent();
 				   }
 				   
 				   ArrayList<Part> tempParts = new ArrayList<Part>();
@@ -172,7 +174,7 @@ public class XmlParse {
 		   						Integer.parseInt(partAreaElement.getAttribute("y")),
 		   						Integer.parseInt(partAreaElement.getAttribute("h")),
 		   						Integer.parseInt(partAreaElement.getAttribute("w"))};
-					   String tempLine = partElement.getElementsByTagName("line").item(0).toString();
+					   String tempLine = partElement.getElementsByTagName("line").item(0).getTextContent();
 					   //Part object is created to be added to the list
 					   Part tempPart = new Part(tempPartName, tempLevel, tempExtraPartArea[0], tempExtraPartArea[1], tempExtraPartArea[2], tempExtraPartArea[3], tempLine);
 					   tempParts.add(tempPart);
