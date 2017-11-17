@@ -14,8 +14,8 @@ public class CastingOffice extends Room {
    
    }
 
-   public CastingOffice(ArrayList<Upgrade> upgrades, int x, int y, int h, int w) {
-	   this.upgrades = upgrades;
+
+   public CastingOffice(int x, int y, int h, int w) {
 
 	   this.x = x;
 	   this.y = y;
