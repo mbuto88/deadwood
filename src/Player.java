@@ -23,8 +23,15 @@ public class Player{
       currentPart = null;
     }
 
-    Player(String name){
+    Player(String name, Room location){
         this.name = name;
+        fame = 0;
+        money = 0;
+        rank = 1;
+        rehearsalMarkers = 0;
+        currentScene = null;
+        currentPart = null;
+        this.location = location;
     }
 
     //Getters
@@ -93,7 +100,7 @@ public class Player{
 
     public void levelUp(boolean isValid, int level){
       if(isValid){
-        this.level = level;
+        this.rank = level;
       }
     }
 
@@ -113,17 +120,22 @@ public class Player{
          if (currentPart == null) {
             switch (input.toLowerCase()){
                case "who":
-                  System.out.print("Name: " + name);
+                  System.out.print("Name: " + name +"\n");
                   if (currentPart != null) {
-                     System.out.print(" Current Part: " + currentPart.getPartName());
+                     System.out.print("Current Part: " + currentPart.getPartName());
+                  } else {
+                	 System.out.print("No Current part");
                   }
                   System.out.println();
                   break;
 
                case "where":
                   System.out.println("Currently located in " + location.getName());
+                  //System.out.println("Nearby rooms: " +  location.getNearbyNames());
                   if (location instanceof Scene) {
-                     System.out.println("Scene currently shooting " + ((Scene)location).getName());
+                     System.out.println("Scene currently shooting: " + ((Scene)location).getCard().showName());
+                  } else {
+                	  System.out.println("No current Scene worked");
                   }
                   break;
 
@@ -244,9 +256,9 @@ public class Player{
             location = r;
             System.out.println("Moved to " + r.getName());
             if(r.getName().toLowerCase().equals("office")){
-              this.mayUpdate = true;
+              this.mayUpgrade = true;
             } else {
-              return false;
+              this.mayUpgrade = false;
             }
          }
       }

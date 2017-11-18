@@ -9,82 +9,99 @@ import java.util.*;
 public class Main{
    //Player[] players;
    Board board;
-   Static ArrayList<Player> players = new ArrayList<Player>();
+   static ArrayList<Player> players = new ArrayList<Player>();
    static ArrayList<Room> rooms = new ArrayList<Room>();
    static ArrayList<Card> cards = new ArrayList<Card>();
    static CastingOffice office;
 
+
    public static void main(String[] args) {
-     //print greeting and instructions
-     printWelcome();
 
-     //print greeting and instructions
-     printWelcome();
-
-
-     //parse xml
+	 //parse xml
 	   rooms = XmlParse.roomsXmlParse();
 	   cards = XmlParse.cardsXmlParse();
+	   
+	 //Set nearby for room objects
+	  for(int i = 0; i < rooms.size(); i++) {
+		  rooms.get(i).matchNearby(rooms);
+	  }
+	//Set random cards for scene objects
+	  for(int i = 2; i < rooms.size(); i++) {
+		  Random randomGenerator = new Random();
+		  int randomInt = randomGenerator.nextInt(cards.size());
+		  rooms.get(i).setCard(cards.get(randomInt));
+		  
+	  }
+	   
+     //print greeting and instructions
+     printWelcome();
+
+
    }
 
    public static void printWelcome(){
      //Ask for player names
+	  System.out.println("Welcome to Deadwood");
+	    initializePlayers();
 
+	    //List commands
+	    String[] instructionsLeftSide = new String[]{"The commands for the game are as follows: \nwho --- ", "where --- ", "move --- ", "work --- ", "upgrade $ level --- ", "upgrade cr level --- ", "rehearse --- ", "act --- ", "end --- "};
+	     
+	    String[] instructionsRightSide = new String[]{"The software identifies the current player and any parts that the player is working.",
+	       "The software describes the current players room and any active scenes.",
+	       "The current player can choose a room to move to",
+	       "The current player can choose a role to take",
+	       "Upgrade the current player to the indicated level by paying with money",
+	       "Upgrade the current player to the indicated level by paying with fame credits",
+	       "The current player rehearses",
+	       "The current player performs in its current role.",
+	       "End the current players turn"};
+
+	    //prints the instructions to the console
+	    int i = 0;
+	    while(i < 9){
+	    	System.out.print(instructionsLeftSide[i]);
+	        System.out.print(instructionsRightSide[i] + "\n");
+	        i++;
+	      }
      //Construct Board
      Board gameBoard = new Board(rooms, players);
      int turn = 0;
 
      while(!gameBoard.isGameOver()){
-       //Loop the game steps
+    	//Check if the day is over
+    	 if (turn == players.size()) {
+    		//Set random cards for scene objects
+    		  for(int k = 2; k < rooms.size(); k++) {
+    			  Random randomGenerator = new Random();
+    			  int randomInt = randomGenerator.nextInt(cards.size());
+    			  rooms.get(i).setCard(cards.get(randomInt));
+    			  
+    		  }
+      	    gameBoard.nextDay();
+         }
+        //Loop the game steps
+    	System.out.println("Current turn: " + players.get(turn).getName());
        players.get(turn).takeTurn(gameBoard);
        if(players.get(turn).mayUpgrade()){
          //ask player if they would like to upgrade
          //if so use board method
        }
+       turn++;
      }
    }
 
-   public static void printWelcome(){
-     System.out.println("Welcome to Deadwood");
-     initializePlayers();
-
-     //List commands
-     String[][] instructions= new String[][]{
-       {"The commands for the game are as follows: \n
-       who", "where", "move room", "work part", "upgrade $ level", "upgrade cr level", "rehearse", "act", "end"},
-
-        {"The software identifies the current player and any parts that the player is working.",
-        "The software describes the current player’s room and any active scenes.",
-        "The current player moves to the indicated room.",
-        "Upgrade the current player to the indicated level by paying with money",
-        "Upgrade the current player to the indicated level by paying with fame credits",
-        "The current player rehearses",
-        "The current player performs in its current role.",
-        "End the current player’s turn"}
-     };
-
-     //prints the instructions to the console
-      int i = 0;
-      int k = 0;
-      while(i < 9){
-        System.out.print(instructions[i][k]);
-        k++;
-        System.out.print(instructions[i][k] + "\n");
-        k=0;
-        i++;
-      }
-   }
+   
 
    public static void initializePlayers(){
      String name;
      Scanner cmdLine = new Scanner(System.in);
      System.out.println("How many people are playing today?");
      int total = cmdLine.nextInt();
-
+     System.out.println("Please enter everyones names, one line at a time");
      while(total > 0){
-       System.out.println("Please enter everyones names, one line at a time");
-       name = cmdLine.nextLine();
-       this.players.add(new Player(name));
+       name = cmdLine.next();
+       players.add(new Player(name, rooms.get(0)));
        total--;
      }
    }
