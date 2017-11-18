@@ -2,8 +2,10 @@ import java.util.*;
 
 //Casting Office Class
 public class CastingOffice extends Room {
-	 private Player[] playersHere;
+	 private ArrayList<Player> playersHere;
+
 	 private ArrayList<Upgrade> upgrades;
+	 private ArrayList<Room> nearbyRooms;
 
 
    //Constructors
@@ -18,18 +20,8 @@ public class CastingOffice extends Room {
    }
 
 	 public CastingOffice(ArrayList<Upgrade> upgrades){
-		 
+
 	 }
-
-	 /*
-   public CastingOffice(ArrayList<Upgrade> upgrades, int x, int y, int h, int w) {
-	   this.upgrades = upgrades;
-
-	   this.x = x;
-	   this.y = y;
-	   this.h = h;
-	   this.w = w;
-   }*/
 
    //Getters
 
