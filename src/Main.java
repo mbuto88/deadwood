@@ -16,7 +16,6 @@ public class Main{
      //parse xml
 	   rooms = XmlParse.roomsXmlParse();
 	   cards = XmlParse.cardsXmlParse();
-
    }
 
    public static void printWelcome(){

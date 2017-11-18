@@ -28,6 +28,7 @@ public abstract class Room{
 			return name;
 		}
 
+
 		public ArrayList<Room> getNearby(){
        return nearby;
     }
@@ -36,7 +37,7 @@ public abstract class Room{
 		public void setNearbyNames(ArrayList<String> nearbyNames){
 			this.nearbyNames = nearbyNames;
 		}
-
+  
     public void addNearby(Room room){
       nearby.add(room);
     }

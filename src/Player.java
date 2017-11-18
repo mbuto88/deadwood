@@ -61,6 +61,7 @@ public class Player{
         location = room;
     }
 
+
     private int spendMoney(int spendAmount){
       if(spendAmount > this.money){
         System.out.println("Insufficient funds. Please try a smaller amount");
