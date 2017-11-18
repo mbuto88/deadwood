@@ -34,8 +34,6 @@ public class Main{
          //ask player if they would like to upgrade
          //if so use board method
        }
-
-
      }
    }
 
