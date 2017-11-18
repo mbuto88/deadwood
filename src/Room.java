@@ -3,20 +3,18 @@
 import java.util.*;
 public abstract class Room{
 		private String name;
-        private ArrayList<Room> nearby;
+    private ArrayList<Room> nearby;
 		private ArrayList<String> nearbyNames;
 
-		
-		
 		//Constructors
 		public Room(){
-      
+
 		}
-      public Room(String name, ArrayList<Room> nearby){
-         this.name = name;
-         this.nearby = nearby;
-   
-      }
+
+		public Room(String name, ArrayList<Room> nearby){
+       this.name = name;
+       this.nearby = nearby;
+    }
 
 		Room(String name){
 			this.name = name;
@@ -26,13 +24,14 @@ public abstract class Room{
 		public ArrayList<String> getNearbyNames() {
 			return nearbyNames;
 		}
-		
+
 		public String getName(){
 			return name;
 		}
-      public ArrayList<Room> getNearby() {
-         return  nearby;
-      }
+
+		public ArrayList<Room> getNearby() {
+       return  nearby;
+    }
 
 		//Setters
 		public void setNearbyNames(ArrayList<String> nearbyNames) {
@@ -41,6 +40,7 @@ public abstract class Room{
       public void addNearby(Room room){
          nearby.add(room);
       }
+
 		//Other Methods
 		public boolean isAdjacent(Room room){
          for (Room r : nearby) {
@@ -50,16 +50,16 @@ public abstract class Room{
          }
          return false;
 		}
-      
-      private void matchNearby(ArrayList<Room> rooms){
-         for (Room r : rooms) {
-            for (String s : nearbyNames) {
-               if (r.getName().equals(s)){
-                  nearby.add(r);
-               }
-            }
-         }
-      }
-      
+
+    private void matchNearby(ArrayList<Room> rooms){
+       for (Room r : rooms) {
+          for (String s : nearbyNames) {
+             if (r.getName().equals(s)){
+                nearby.add(r);
+             }
+          }
+       }
+    }
+
 		public abstract void interact(Player player);
 }

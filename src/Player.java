@@ -1,5 +1,6 @@
 import java.util.Scanner;
 //Player Class
+
 public class Player{
     private Room location;
     private String name;
@@ -25,9 +26,6 @@ public class Player{
         this.name = name;
     }
 
-
-
-
     //Getters
     public String getName(){
         return name;
@@ -35,7 +33,6 @@ public class Player{
 
     public int getFame(){
       return fame;
-
     }
 
     public int getRank() {
@@ -45,7 +42,6 @@ public class Player{
     public int getMoney(){
       return money;
     }
-
 
     public Room getLocation(){
       return location;
@@ -62,6 +58,18 @@ public class Player{
     //Setters
     public void setRoom(Room room){
         location = room;
+    }
+
+    public int spendMoney(int spendAmount){
+      if(spendAmount > this.money){
+        System.out.println("Insufficient funds. Please try a smaller amount");
+      }
+    }
+
+    public int spendFame(int spendAmount){
+      if(spendAmount > this.fame){
+        System.out.println("Insufficient funds. Please try a smaller amount");
+      }
     }
 
     //Other Methods
@@ -108,7 +116,7 @@ public class Player{
                      if (oldLocation != location) {
                         canMove = false;
                      }
-                     else 
+                     else
                      {
                         System.out.println("Something went wrong, try again!");
                      }
@@ -179,7 +187,7 @@ public class Player{
       money += result[1];
       }
     private boolean rehearse(){
-      if (currentPart != null && rehearsalMarkers < currentScene.getCard().getBudget()) 
+      if (currentPart != null && rehearsalMarkers < currentScene.getCard().getBudget())
       {
          rehearsalMarkers++;
          System.out.println("You now have " + rehearsalMarkers + "Reahearsal Markers!");
@@ -222,8 +230,8 @@ public class Player{
       }
     }
 
-    private void draw(){
-      //TODO for Assignment 3
-    }
+    /*private void draw(){
+      //for Assignment 3
+    }*/
 
 }
