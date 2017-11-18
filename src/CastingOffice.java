@@ -2,6 +2,7 @@
 import java.util.*;
 
 public class CastingOffice extends Room {
+
 	 private ArrayList<Upgrade> upgrades;
 	 private ArrayList<Room> nearbyRooms;
 

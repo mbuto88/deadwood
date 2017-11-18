@@ -129,6 +129,7 @@ public class Board{
 	public void nextDay(){
 		this.daysRemaining--;
 		if(this.daysRemaining == 0){
+      
 			//Game is over
 			this.gameOver = true;
 			System.out.println(printAllScores().getName());

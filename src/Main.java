@@ -1,3 +1,4 @@
+
 /*
 Deadwood, a text-based representation.
 */
@@ -14,6 +15,8 @@ public class Main{
    static CastingOffice office;
 
    public static void main(String[] args) {
+     //print greeting and instructions
+     printWelcome();
 
      //print greeting and instructions
      printWelcome();
@@ -22,6 +25,10 @@ public class Main{
      //parse xml
 	   rooms = XmlParse.roomsXmlParse();
 	   cards = XmlParse.cardsXmlParse();
+   }
+
+   public static void printWelcome(){
+     //Ask for player names
 
      //Construct Board
      Board gameBoard = new Board(rooms, players);
@@ -81,6 +88,7 @@ public class Main{
        total--;
      }
    }
+
 
 
 }
