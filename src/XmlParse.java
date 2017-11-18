@@ -38,7 +38,6 @@ public class XmlParse {
 						Integer.parseInt(areaElement.getAttribute("h")),
 						Integer.parseInt(areaElement.getAttribute("w"))};
 			   Trailers tempTrailer = new Trailers(1, tempTrailerArea[0], tempTrailerArea[1], tempTrailerArea[2], tempTrailerArea[3]);
-
 			   Element neighborsElementTrailers = (Element) trailerElement.getElementsByTagName("neighbors").item(0);
 			   NodeList neighborsNListTrailers = neighborsElementTrailers.getElementsByTagName("neighbor");
 			   ArrayList<String> nearbyTrailerNames = new ArrayList<String>();
@@ -51,6 +50,7 @@ public class XmlParse {
 				   }
 			   }
 			   tempTrailer.setNearbyNames(nearbyTrailerNames);
+			   tempTrailer.setName("Trailers");
 			   rooms.add(tempTrailer);
 		   }
 
@@ -80,6 +80,7 @@ public class XmlParse {
 			   //Office object is created to be added to the list
 			   CastingOffice tempOffice = new CastingOffice();
 			   tempOffice.setNearbyNames(nearbyOfficeNames);
+			   tempOffice.setName("Casting Office");
 			   rooms.add(tempOffice);
 		   }
 

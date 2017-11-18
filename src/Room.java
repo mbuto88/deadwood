@@ -3,7 +3,7 @@ import java.util.*;
 
 public abstract class Room{
 		private String name;
-		private ArrayList<Room> nearby;
+		private ArrayList<Room> nearby = new ArrayList<Room>();
 		private ArrayList<String> nearbyNames;
 
 		//Constructors
@@ -33,13 +33,17 @@ public abstract class Room{
     }
 
 		//Setters
+		public void setName (String name) {
+			this.name = name;
+		}
+		
 		public void setNearbyNames(ArrayList<String> nearbyNames){
 			this.nearbyNames = nearbyNames;
 		}
 
-    public void addNearby(Room room){
-      nearby.add(room);
-    }
+		public void addNearby(Room room){
+			nearby.add(room);
+		}
 
 		//Other Methods
 		public boolean isAdjacent(Room room){
@@ -51,11 +55,11 @@ public abstract class Room{
       return false;
 		}
 
-    private void matchNearby(ArrayList<Room> rooms){
+    public void matchNearby(ArrayList<Room> rooms){
        for (Room r : rooms) {
           for (String s : nearbyNames) {
              if (r.getName().equals(s)){
-                nearby.add(r);
+                this.nearby.add(r);
              }
           }
        }

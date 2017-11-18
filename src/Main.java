@@ -15,16 +15,21 @@ public class Main{
    static CastingOffice office;
 
    public static void main(String[] args) {
-//     //print greeting and instructions
-//     printWelcome();
 
+	 //parse xml
+	   rooms = XmlParse.roomsXmlParse();
+	   cards = XmlParse.cardsXmlParse();
+	   
+	 //Set nearby for Trailers and Office objects
+	  for(int i = 0; i < rooms.size(); i++) {
+		  rooms.get(i).matchNearby(rooms);
+	  }
+
+	   
      //print greeting and instructions
      printWelcome();
 
 
-     //parse xml
-	   rooms = XmlParse.roomsXmlParse();
-	   cards = XmlParse.cardsXmlParse();
    }
 
    public static void printWelcome(){
@@ -33,11 +38,11 @@ public class Main{
 	    initializePlayers();
 
 	    //List commands
-	    String[] instructionsLeftSide = new String[]{"The commands for the game are as follows: \nwho --- ", "where --- ", "move room --- ", "work part --- ", "upgrade $ level --- ", "upgrade cr level --- ", "rehearse --- ", "act --- ", "end --- "};
+	    String[] instructionsLeftSide = new String[]{"The commands for the game are as follows: \nwho --- ", "where --- ", "move --- ", "work part --- ", "upgrade $ level --- ", "upgrade cr level --- ", "rehearse --- ", "act --- ", "end --- "};
 	     
 	    String[] instructionsRightSide = new String[]{"The software identifies the current player and any parts that the player is working.",
 	       "The software describes the current players room and any active scenes.",
-	       "The current player moves to the indicated room.",
+	       "The current player can choose a room to move to",
 	       "The current player takes the indicated role",
 	       "Upgrade the current player to the indicated level by paying with money",
 	       "Upgrade the current player to the indicated level by paying with fame credits",
@@ -63,7 +68,6 @@ public class Main{
          //ask player if they would like to upgrade
          //if so use board method
        }
-       turn++;
      }
    }
 
@@ -75,10 +79,9 @@ public class Main{
      System.out.println("How many people are playing today?");
      int total = cmdLine.nextInt();
      System.out.println("Please enter everyones names, one line at a time");
-     while(total >= 0){
-
-       name = cmdLine.nextLine();
-       players.add(new Player(name));
+     while(total > 0){
+       name = cmdLine.next();
+       players.add(new Player(name, rooms.get(0)));
        total--;
      }
    }
