@@ -11,7 +11,7 @@ public class Player{
     private Scene currentScene;
     private Part currentPart;
     private boolean onCard;
-    private boolean mayUpdate;
+    private boolean mayUpgrade;
 
     //Constructors
     Player(){
@@ -54,6 +54,10 @@ public class Player{
 
     public Part getPart(){
       return currentPart;
+    }
+
+    public boolean mayUpgrade(){
+      return this.mayUpgrade;
     }
 
     //Setters
