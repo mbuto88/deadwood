@@ -133,7 +133,7 @@ public class Player{
                   System.out.println("Currently located in " + location.getName());
                   //System.out.println("Nearby rooms: " +  location.getNearbyNames());
                   if (location instanceof Scene) {
-                     System.out.println("Scene currently shooting " + ((Scene)location).getCard().showName());
+                     System.out.println("Scene currently shooting: " + ((Scene)location).getCard().showName());
                   } else {
                 	  System.out.println("No current Scene worked");
                   }

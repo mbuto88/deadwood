@@ -136,6 +136,7 @@ public class Board{
       
 			//Game is over
 			this.gameOver = true;
+			System.out.println("Game has ended.");
 			System.out.println(printAllScores().getName());
 		}
 	}

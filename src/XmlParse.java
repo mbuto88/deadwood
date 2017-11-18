@@ -58,6 +58,7 @@ public class XmlParse {
 		   if(CastingOfficeNode.getNodeType() == Node.ELEMENT_NODE) {
 			   Element officeElement = (Element) CastingOfficeNode;
 			   Element areaElement = (Element) officeElement.getElementsByTagName("area").item(0);
+			   Element upgradesElementOffice = (Element) officeElement.getElementsByTagName("upgrades").item(0);
 
 			 //Area info is added to an array
 			   int[] tempOfficeArea = new int[]{Integer.parseInt(areaElement.getAttribute("x")),
@@ -76,9 +77,28 @@ public class XmlParse {
 					   nearbyOfficeNames.add(neighborsChildElement.getAttribute("name"));
 				   }
 			   }
-
+			   NodeList uphgradesNListOffice = upgradesElementOffice.getElementsByTagName("upgrade");
+			   ArrayList<Upgrade> officeUpgrades = new ArrayList<Upgrade>();
+			   
+			   //Loop to traverse the list of upgrades and create objects, then add them to officeUpgrades
+			   for (int k = 0; k < uphgradesNListOffice.getLength(); k++) {
+				   if(uphgradesNListOffice.item(k).getNodeType() == Node.ELEMENT_NODE){
+					   Element upgradeChildElement = (Element) uphgradesNListOffice.item(k);
+					   int tempUpgradeLevel = Integer.parseInt(upgradeChildElement.getAttribute("level"));
+					   String tempUpgradeCurrency = upgradeChildElement.getAttribute("currency");
+					   int amt = Integer.parseInt(upgradeChildElement.getAttribute("amt"));
+					   Element upgradeAreaElement = (Element) upgradeChildElement.getElementsByTagName("area").item(0);
+					   int[] tempUpgradeArea = new int[]{Integer.parseInt(upgradeAreaElement.getAttribute("x")),
+		  						Integer.parseInt(upgradeAreaElement.getAttribute("y")),
+		  						Integer.parseInt(upgradeAreaElement.getAttribute("h")),
+		  						Integer.parseInt(upgradeAreaElement.getAttribute("w"))};
+					   
+					   Upgrade tempUpgrade = new Upgrade(tempUpgradeCurrency, tempUpgradeLevel, amt, tempUpgradeArea[0], tempUpgradeArea[1], tempUpgradeArea[2], tempUpgradeArea[3]);
+					   officeUpgrades.add(tempUpgrade);
+				   }
+			   }
 			   //Office object is created to be added to the list
-			   CastingOffice tempOffice = new CastingOffice();
+			   CastingOffice tempOffice = new CastingOffice(officeUpgrades);
 			   tempOffice.setNearbyNames(nearbyOfficeNames);
 			   tempOffice.setName("Casting Office");
 			   rooms.add(tempOffice);

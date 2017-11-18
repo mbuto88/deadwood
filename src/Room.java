@@ -2,6 +2,7 @@
 import java.util.*;
 
 public abstract class Room{
+		private Card card;
 		private String name;
 		private ArrayList<Room> nearby = new ArrayList<Room>();
 		private ArrayList<String> nearbyNames;
@@ -20,6 +21,9 @@ public abstract class Room{
 		}
 
 		//Getters
+		public Card getCard() {
+			return card;
+		}
 		public ArrayList<String> getNearbyNames(){
 			return nearbyNames;
 		}
@@ -33,6 +37,9 @@ public abstract class Room{
     }
 
 		//Setters
+		public void setCard(Card card) {
+			this.card = card;
+		}
 		public void setName (String name) {
 			this.name = name;
 		}
@@ -64,6 +71,5 @@ public abstract class Room{
           }
        }
     }
-
-		public abstract void interact(Player player);
 }
+

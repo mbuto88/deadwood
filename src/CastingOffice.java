@@ -12,9 +12,8 @@ public class CastingOffice extends Room {
 		 this.nearbyRooms = new ArrayList<Room>();
    }
 
-	 public CastingOffice(ArrayList<Room> nearby, ArrayList<Upgrade> upgradeList) {
+	 public CastingOffice( ArrayList<Upgrade> upgradeList) {
 		 this.upgrades = upgradeList;
-		 this.nearbyRooms = nearby;
    }
 
    //Upgrade rank method
@@ -37,10 +36,4 @@ public class CastingOffice extends Room {
 			  }
 		  }
 	  }
-
-@Override
-public void interact(Player player) {
-	// TODO Auto-generated method stub
-	
-}
    }
