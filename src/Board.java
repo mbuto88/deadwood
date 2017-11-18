@@ -5,6 +5,7 @@ public class Board{
 	private Room[] rooms;
   private ArrayList<Player> players;
 	private int daysRemaining;
+	private boolean gameOver;
 
 	//Constructors
 	Board(){
@@ -54,9 +55,17 @@ public class Board{
 		} else {
 			this.daysRemaining = 4;
 		}
+		if(this.daysRemaining > 0){
+			this.gameOver = false;
+		}
 	}
 
 	//Getters
+
+	public boolean isGameOver(){
+		return this.gameOver;
+	}
+
 	/* GUI Related method
 	public void renderBoard(){
 	} */
@@ -120,7 +129,9 @@ public class Board{
 	public void nextDay(){
 		this.daysRemaining--;
 		if(this.daysRemaining == 0){
+      
 			//Game is over
+			this.gameOver = true;
 			System.out.println(printAllScores().getName());
 		}
 	}

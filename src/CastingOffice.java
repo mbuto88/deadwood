@@ -6,7 +6,6 @@ public class CastingOffice extends Room {
 	 private ArrayList<Upgrade> upgrades;
 	 private ArrayList<Room> nearbyRooms;
 
-
    //Constructors
    public CastingOffice() {
 		 this.upgrades = new ArrayList<Upgrade>();

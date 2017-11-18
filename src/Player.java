@@ -11,7 +11,7 @@ public class Player{
     private Scene currentScene;
     private Part currentPart;
     private boolean onCard;
-    private boolean mayUpdate;
+    private boolean mayUpgrade;
 
     //Constructors
     Player(){
@@ -56,11 +56,14 @@ public class Player{
       return currentPart;
     }
 
+    public boolean mayUpgrade(){
+      return this.mayUpgrade;
+    }
+
     //Setters
     public void setRoom(Room room){
         location = room;
     }
-
 
     private int spendMoney(int spendAmount){
       if(spendAmount > this.money){
