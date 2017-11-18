@@ -132,7 +132,7 @@ public class XmlParse {
 						   tempExtraParts.add(tempPart);
 					   }
 				   }
-					 
+
 				   //Scene object is created to be added to the list
 				   Scene tempScene = new Scene(tempSetName, tempExtraParts, tempSceneArea[0], tempSceneArea[1], tempSceneArea[2], tempSceneArea[3]);
 				   tempScene.setNearbyNames(nearbyNames);

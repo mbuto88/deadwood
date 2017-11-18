@@ -9,44 +9,41 @@ public class Trailers extends Room {
    int h;
    int w;
 
-
    //Constructors
    public Trailers() {
-   
    }
+
    public Trailers(int day, int x, int y, int h, int w){
-      currentDay = day;
+      this.currentDay = day;
       this.x = x;
       this.y = y;
       this.w = h;
       this.h = w;
    }
 
-   
    //Getters
    public int getCurrentDay(){
       return currentDay;
    }
-   
+
    //Setters
    public void setCurrentDay(int currentDay) {
 		this.currentDay = currentDay;
 	}
-   
-   //Other Methods
 
+   //Other Methods
    public void startDay(List<Player> players){
       for (Player p : players){
          p.setRoom(this);
       }
    }
-   
-public void endDay(List<Player> players){
+
+   public void endDay(List<Player> players){
       for (Player p : players){
          p.calcScore();
       }
    }
-   
+
    public void updateRules(int numPlayers){
       if (numPlayers <= 3){
          //Set to 3 days
@@ -61,7 +58,7 @@ public void endDay(List<Player> players){
          //Set player rank to 2
       }
    }
-   
+
    public void interact(Player player){
       System.out.println("Nothing can be done here");
    }

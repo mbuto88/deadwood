@@ -1,6 +1,5 @@
-import java.util.*;
-
 //Main Class
+import java.util.*;
 
 public class Main{
    Player[] players;
@@ -17,7 +16,6 @@ public class Main{
      //parse xml
 	   rooms = XmlParse.roomsXmlParse();
 	   cards = XmlParse.cardsXmlParse();
-
    }
 
    public static void printWelcome(){

@@ -1,6 +1,6 @@
 //Room Class
-
 import java.util.*;
+
 public abstract class Room{
 		private String name;
     private ArrayList<Room> nearby;
@@ -8,7 +8,6 @@ public abstract class Room{
 
 		//Constructors
 		public Room(){
-
 		}
 
 		public Room(String name, ArrayList<Room> nearby){
@@ -21,7 +20,7 @@ public abstract class Room{
 		}
 
 		//Getters
-		public ArrayList<String> getNearbyNames() {
+		public ArrayList<String> getNearbyNames(){
 			return nearbyNames;
 		}
 
@@ -29,17 +28,19 @@ public abstract class Room{
 			return name;
 		}
 
-		public ArrayList<Room> getNearby() {
-       return  nearby;
+
+		public ArrayList<Room> getNearby(){
+       return nearby;
     }
 
 		//Setters
-		public void setNearbyNames(ArrayList<String> nearbyNames) {
+		public void setNearbyNames(ArrayList<String> nearbyNames){
 			this.nearbyNames = nearbyNames;
 		}
-      public void addNearby(Room room){
-         nearby.add(room);
-      }
+  
+    public void addNearby(Room room){
+      nearby.add(room);
+    }
 
 		//Other Methods
 		public boolean isAdjacent(Room room){
@@ -48,7 +49,7 @@ public abstract class Room{
                return true;
             }
          }
-         return false;
+      return false;
 		}
 
     private void matchNearby(ArrayList<Room> rooms){

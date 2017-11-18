@@ -20,8 +20,8 @@ public class Upgrade {
 		this.w = w;
 	}
 
+	//Default Constructor
 	public Upgrade(){
-
 	}
 
 	//Getters
