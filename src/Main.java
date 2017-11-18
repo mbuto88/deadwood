@@ -1,6 +1,5 @@
-import java.util.*;
-
 //Main Class
+import java.util.*;
 
 public class Main{
    Player[] players;

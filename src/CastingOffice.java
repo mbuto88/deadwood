@@ -1,43 +1,38 @@
+//Casting Office Class
 import java.util.*;
 
-//Casting Office Class
 public class CastingOffice extends Room {
-	 private ArrayList<Player> playersHere;
-
 	 private ArrayList<Upgrade> upgrades;
 	 private ArrayList<Room> nearbyRooms;
-
 
    //Constructors
    public CastingOffice() {
 		 this.upgrades = new ArrayList<Upgrade>();
-		 this.playersHere = new ArrayList<Player>();
+		 this.nearbyRooms = new ArrayList<Room>();
    }
 
-	 public CastingOffice(ArrayList<Room> nearby, ArrayList<Player> players, ArrayList<Room> nearby) {
-		 this.upgrades = new ArrayList<Upgrade>();
-		 this.playersHere = new ArrayList<Player>();
+	 public CastingOffice(ArrayList<Room> nearby, ArrayList<Upgrade> upgradeList) {
+		 this.upgrades = upgradeList;
+		 this.nearbyRooms = nearby;
    }
 
-	 public CastingOffice(ArrayList<Upgrade> upgrades){
+   //Upgrade rank method
+   public void raiseRank(Player player, String currency, int level){
+		 //Player must be in casting office
+		 if(player.getLocation().equals(this.name)){
 
-	 }
+			 //look for the desired upgrade
+				while(i < this.upgrades.size()){
 
-   //Getters
-
-   //Setters
-
-   //Other Methods
-   public int raiseRank(){
+					//Check if the player can afford upgrade
+					if((level == upgrades.get(i).getLevel() )&& upgrades.get(i).getCurrency().equals(currency) ){
+						boolean isValid = (player.spend(upgrades.get(i).getAmt(), currency) > 0);
+						if(isValid){
+							player.levelUp(isValid, level);
+							System.out.println("Upgrade successful, your new rank is " + level);
+						}
+					}
+			  }
+		  }
+	  }
    }
-
-   public boolean verifyPoints(){
-      return false;
-   }
-
-@Override
-public void interact(Player player) {
-	// TODO Auto-generated method stub
-
-}
-}

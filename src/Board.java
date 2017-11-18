@@ -1,5 +1,5 @@
-import java.util.*;
 //Board class
+import java.util.*;
 
 public class Board{
 	private Room[] rooms;
@@ -7,8 +7,6 @@ public class Board{
 	private int daysRemaining;
 
 	//Constructors
-
-	//Default
 	Board(){
 		this.players = new Player[5];
 		this.players = new ArrayList<Player>();
@@ -99,7 +97,31 @@ public class Board{
 		return score;
 	}
 
-	private void nextDay(){
+	public void printScore(Player player){
+		System.out.println(player.getName() + "'s score was: " + calcScore(player));
+	}
+
+	public Player printAllScores(){
+		int score;
+		int i = 0;
+		Player winner = new Player();
+
+		while(i < this.players.size()){
+			printScore(this.players.get(i));
+			score = calcScore(this.players.get(i));
+
+			if(score > calcScore(winner)){
+				winner = this.players.get(i);
+			}
+		}
+		return winner;
+	}
+
+	public void nextDay(){
 		this.daysRemaining--;
+		if(this.daysRemaining == 0){
+			//Game is over
+			System.out.println(printAllScores().getName());
+		}
 	}
 }

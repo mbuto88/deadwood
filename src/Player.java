@@ -11,6 +11,7 @@ public class Player{
     private Scene currentScene;
     private Part currentPart;
     private boolean onCard;
+    private boolean mayUpdate;
 
     //Constructors
     Player(){
@@ -60,15 +61,35 @@ public class Player{
         location = room;
     }
 
-    public int spendMoney(int spendAmount){
+    private int spendMoney(int spendAmount){
       if(spendAmount > this.money){
         System.out.println("Insufficient funds. Please try a smaller amount");
+        return 0;
+      }
+      this.money = (this.money - spendAmount);
+      return spendAmount;
+    }
+
+    private int spendFame(int spendAmount){
+      if(spendAmount > this.fame){
+        System.out.println("Insufficient fame. Please try a smaller amount");
+        return 0;
+      }
+      this.fame = (this.fame - spendAmount);
+      return spendAmount;
+    }
+
+    public int spend(int spendAmount, String currency){
+      if(currency.equals("dollar")){
+        return spendMoney(spendAmount);
+      } else {
+        return spendFame(spendAmount);
       }
     }
 
-    public int spendFame(int spendAmount){
-      if(spendAmount > this.fame){
-        System.out.println("Insufficient funds. Please try a smaller amount");
+    public void levelUp(boolean isValid, int level){
+      if(isValid){
+        this.level = level;
       }
     }
 
@@ -94,22 +115,26 @@ public class Player{
                   }
                   System.out.println();
                   break;
+
                case "where":
                   System.out.println("Currently located in " + location.getName());
                   if (location instanceof Scene) {
                      System.out.println("Scene currently shooting " + ((Scene)location).getName());
                   }
                   break;
+
                case "move":
                   if (canMove) {
                      System.out.println("What room do you want to move to?");
                      System.out.print("Current nearby rooms are: ");
+
                      //Prints out rooms available to be moved to
                      for (Room r : location.getNearby()) {
                         System.out.print(r.getName() + "   ");
                      }
                      System.out.println();
                      input = sc.nextLine();
+
                      //Tries to move, and checks to see if you succeeded
                      Room oldLocation = location;
                      move(input);
@@ -125,6 +150,7 @@ public class Player{
                      System.out.println("You've already moved this turn!");
                   }
                   break;
+
                case "work":
                   if (canTakeRole) {
                      if (location instanceof Scene) {
@@ -133,6 +159,7 @@ public class Player{
                         for (Part p : ((Scene)location).getCard().getParts()) {
                            System.out.print(p.getPartName() + "   ");
                         }
+
                         System.out.println();
                         System.out.print("Off card roles: ");
                         for (Part p : ((Scene)location).getExtraParts()) {
@@ -155,6 +182,7 @@ public class Player{
                      }
                   }
                   break;
+
                default:
                   System.out.println("Couldn't understand input. Please try again.");
                   break;
@@ -168,9 +196,11 @@ public class Player{
                   act(b);
                   over = true;
                   break;
+
                case "rehearse":
                   over = rehearse();
                   break;
+
                default:
                   System.out.println("Couldn't understand input. Please try again.");
                   break;
@@ -186,6 +216,7 @@ public class Player{
       fame += result[0];
       money += result[1];
       }
+
     private boolean rehearse(){
       if (currentPart != null && rehearsalMarkers < currentScene.getCard().getBudget())
       {
@@ -208,6 +239,11 @@ public class Player{
          if (s.toLowerCase().equals(r.getName().toLowerCase())){
             location = r;
             System.out.println("Moved to " + r.getName());
+            if(r.getName().toLowerCase().equals("office")){
+              this.mayUpdate = true;
+            } else {
+              return false;
+            }
          }
       }
     }
