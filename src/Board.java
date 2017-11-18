@@ -58,7 +58,6 @@ public class Board{
 		}
 	}
 
-
 	//Getters
 	/* GUI Related method
 	public void renderBoard(){
