@@ -3,7 +3,7 @@ import java.util.*;
 
 public abstract class Room{
 		private String name;
-    private ArrayList<Room> nearby;
+		private ArrayList<Room> nearby;
 		private ArrayList<String> nearbyNames;
 
 		//Constructors

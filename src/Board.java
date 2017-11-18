@@ -2,48 +2,47 @@
 import java.util.*;
 
 public class Board{
-	private Room[] rooms;
-  private ArrayList<Player> players;
+	private ArrayList<Room> rooms;
+    private ArrayList<Player> players;
 	private int daysRemaining;
 	private boolean gameOver;
 
+
 	//Constructors
 	Board(){
-		this.players = new Player[5];
 		this.players = new ArrayList<Player>();
-		setGameLength();
+		setGameLength(daysRemaining);
 	}
 
 	//Only room parameters
 	Board(ArrayList<Room> parsedRooms){
 		this.players = new ArrayList<Player>();
-		this.rooms = new Room[rooms.size()];
-		setRooms(parsedRooms);
-		setGameLength();
+		this.rooms = new ArrayList<Room>();
+		this.setRooms(parsedRooms);
 	}
 
 	//Both room and player parameters
 	Board(ArrayList<Room> parsedRooms, ArrayList<Player> parsedPlayers){
 		this.players = new ArrayList<Player>();
-		this.rooms = new Room[rooms.size()];
-		populate(parsedRooms);
-		populate(players);
-		setGameLength();
+		this.rooms = new ArrayList<Room>();
+		populateRooms(parsedRooms);
+		populatePlayers(players);
+		setGameLength(parsedPlayers.size());
 	}
 
 	//Helper methods for Constructors
-	private void populate(ArrayList<Room> parsedRooms) {
+	private void populateRooms(ArrayList<Room> parsedRooms) {
 		int i = 0;
 		while(i < parsedRooms.size()){
-			this.rooms[i] = parsedRooms.get(i);
+			this.rooms.add(parsedRooms.get(i));
 			i++;
 		}
 	}
 
-	private void populate(ArrayList<Player> parsedPlayers) {
+	private void populatePlayers(ArrayList<Player> parsedPlayers) {
 		int i = 0;
-		while(i < parsedRooms.size()){
-			this.players.add(parsedRooms.get(i));
+		while(i < parsedPlayers.size()){
+			this.players.add(parsedPlayers.get(i));
 			i++;
 		}
 	}
@@ -59,7 +58,12 @@ public class Board{
 			this.gameOver = false;
 		}
 	}
-
+	//Setters
+	
+	public void setRooms(ArrayList<Room> parsedRooms) {
+		this.rooms = parsedRooms;
+	}
+	
 	//Getters
 
 	public boolean isGameOver(){
@@ -70,11 +74,12 @@ public class Board{
 	public void renderBoard(){
 	} */
 
+
 	//Outputs score of all players
 	public void showScore(){
 		int i = 0;
 		while(i < players.size()){
-			system.out.println("Cr/Fame: " +  players.get(i).getFame()
+			System.out.println("Cr/Fame: " +  players.get(i).getFame()
 																+ " $" + players.get(i).getFame());
 			i++;
 		}
@@ -82,8 +87,7 @@ public class Board{
 
 	//Outputs score of specified player
 	public void showScore(Player player){
-			system.out.print("Cr/Fame: " +  player.getFame()
-																+ " Money: $" + players.get(i).getFame());
+		System.out.print("Cr/Fame: " +  player.getFame()+ " Money: $" + player.getMoney());
 	}
 
 	public int getDaysLeft(){
@@ -100,7 +104,7 @@ public class Board{
 		return result;
 	}
 
-	private int calcScore(Player player){
+	public static int calcScore(Player player){
 		//dollars + fame + (5* rank)
 		int score = player.getFame() + player.getMoney() + (5 * player.getRank());
 		return score;

@@ -40,7 +40,7 @@ public class Trailers extends Room {
 
    public void endDay(List<Player> players){
       for (Player p : players){
-         p.calcScore();
+         System.out.println(Board.calcScore(p));
       }
    }
 

@@ -20,9 +20,10 @@ public class CastingOffice extends Room {
    //Upgrade rank method
    public void raiseRank(Player player, String currency, int level){
 		 //Player must be in casting office
-		 if(player.getLocation().equals(this.name)){
+		 if(player.getLocation().equals(this.getName())){
 
 			 //look for the desired upgrade
+			 int i = 0;
 				while(i < this.upgrades.size()){
 
 					//Check if the player can afford upgrade
@@ -36,4 +37,10 @@ public class CastingOffice extends Room {
 			  }
 		  }
 	  }
+
+@Override
+public void interact(Player player) {
+	// TODO Auto-generated method stub
+	
+}
    }

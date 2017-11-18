@@ -93,7 +93,7 @@ public class Player{
 
     public void levelUp(boolean isValid, int level){
       if(isValid){
-        this.level = level;
+        this.rank = level;
       }
     }
 
@@ -113,9 +113,11 @@ public class Player{
          if (currentPart == null) {
             switch (input.toLowerCase()){
                case "who":
-                  System.out.print("Name: " + name);
+                  System.out.print("Name: " + this.name);
                   if (currentPart != null) {
                      System.out.print(" Current Part: " + currentPart.getPartName());
+                  } else {
+                	 System.out.print(" None");
                   }
                   System.out.println();
                   break;
@@ -244,9 +246,9 @@ public class Player{
             location = r;
             System.out.println("Moved to " + r.getName());
             if(r.getName().toLowerCase().equals("office")){
-              this.mayUpdate = true;
+              this.mayUpgrade = true;
             } else {
-              return false;
+              this.mayUpgrade = false;
             }
          }
       }
