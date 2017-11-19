@@ -1,6 +1,9 @@
 
 /*
 Deadwood, a text-based representation.
+
+Thank you to http://patorjk.com/software/taag/ and https://www.freeformatter.com/java-dotnet-escape.html
+for help with the ASCII art title
 */
 
 //Main Class
@@ -21,7 +24,7 @@ public class Deadwood{
 	   rooms = XmlParse.roomsXmlParse();
 	   cards = XmlParse.cardsXmlParse();
 
-	   
+
 	 //Set nearby for room objects
 	  for(int i = 0; i < rooms.size(); i++) {
 		  rooms.get(i).matchNearby(rooms, (CastingOffice)rooms.get(1), (Trailers)rooms.get(0));
@@ -32,9 +35,9 @@ public class Deadwood{
 		  int randomInt = randomGenerator.nextInt(cards.size());
 		  rooms.get(i).setCard(cards.get(randomInt));
 
-		  
+
 	  }
-	   
+
      //print greeting and instructions
      printWelcome();
 
@@ -43,7 +46,10 @@ public class Deadwood{
 
    public static void printWelcome(){
      //Ask for player names
-	  System.out.println("Welcome to Deadwood");
+		 System.out.println();
+ 		System.out.println(" /$$      /$$           /$$                                            \r\n| $$  /$ | $$          | $$                                            \r\n| $$ /$$$| $$  /$$$$$$ | $$  /$$$$$$$  /$$$$$$  /$$$$$$/$$$$   /$$$$$$ \r\n| $$/$$ $$ $$ /$$__  $$| $$ /$$_____/ /$$__  $$| $$_  $$_  $$ /$$__  $$\r\n| $$$$_  $$$$| $$$$$$$$| $$| $$      | $$  \\ $$| $$ \\ $$ \\ $$| $$$$$$$$\r\n| $$$/ \\  $$$| $$_____/| $$| $$      | $$  | $$| $$ | $$ | $$| $$_____/\r\n| $$/   \\  $$|  $$$$$$$| $$|  $$$$$$$|  $$$$$$/| $$ | $$ | $$|  $$$$$$$\r\n|__/     \\__/ \\_______/|__/ \\_______/ \\______/ |__/ |__/ |__/ \\_______/\r\n                                                            ");
+ 		System.out.println(" /$$$$$$$$          \r\n|__  $$__/          \r\n   | $$     /$$$$$$ \r\n   | $$    /$$__  $$\r\n   | $$   | $$  \\ $$\r\n   | $$   | $$  | $$\r\n   | $$   |  $$$$$$/\r\n   |__/    \\______/ ");
+ 		System.out.println("$$$$$$$\\                            $$\\                                         $$\\ \r\n$$  __$$\\                           $$ |                                        $$ |\r\n$$ |  $$ | $$$$$$\\   $$$$$$\\   $$$$$$$ |$$\\  $$\\  $$\\  $$$$$$\\   $$$$$$\\   $$$$$$$ |\r\n$$ |  $$ |$$  __$$\\  \\____$$\\ $$  __$$ |$$ | $$ | $$ |$$  __$$\\ $$  __$$\\ $$  __$$ |\r\n$$ |  $$ |$$$$$$$$ | $$$$$$$ |$$ /  $$ |$$ | $$ | $$ |$$ /  $$ |$$ /  $$ |$$ /  $$ |\r\n$$ |  $$ |$$   ____|$$  __$$ |$$ |  $$ |$$ | $$ | $$ |$$ |  $$ |$$ |  $$ |$$ |  $$ |\r\n$$$$$$$  |\\$$$$$$$\\ \\$$$$$$$ |\\$$$$$$$ |\\$$$$$\\$$$$  |\\$$$$$$  |\\$$$$$$  |\\$$$$$$$ |\r\n\\_______/  \\_______| \\_______| \\_______| \\_____\\____/  \\______/  \\______/  \\_______|\r\n                                                              ");
 	    initializePlayers();
 
 	    //List commands
@@ -103,7 +109,7 @@ public class Deadwood{
      }
    }
 
-  
+
    public static void initializePlayers(){
      String name;
      Scanner cmdLine = new Scanner(System.in);
