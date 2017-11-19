@@ -19,7 +19,7 @@ public class XmlParse {
 			//Creating the factory to parse the info
 		   DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 		   DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-		   Document scenesDoc = dBuilder.parse("board.xml");
+		   Document scenesDoc = dBuilder.parse("../board.xml");
 		   scenesDoc.getDocumentElement().normalize();
 
 			 //Creating the lists of nodes to be parsed through, set, trailer, and office
@@ -79,7 +79,7 @@ public class XmlParse {
 			   }
 			   NodeList uphgradesNListOffice = upgradesElementOffice.getElementsByTagName("upgrade");
 			   ArrayList<Upgrade> officeUpgrades = new ArrayList<Upgrade>();
-			   
+
 			   //Loop to traverse the list of upgrades and create objects, then add them to officeUpgrades
 			   for (int k = 0; k < uphgradesNListOffice.getLength(); k++) {
 				   if(uphgradesNListOffice.item(k).getNodeType() == Node.ELEMENT_NODE){
@@ -92,7 +92,7 @@ public class XmlParse {
 		  						Integer.parseInt(upgradeAreaElement.getAttribute("y")),
 		  						Integer.parseInt(upgradeAreaElement.getAttribute("h")),
 		  						Integer.parseInt(upgradeAreaElement.getAttribute("w"))};
-					   
+
 					   Upgrade tempUpgrade = new Upgrade(tempUpgradeCurrency, tempUpgradeLevel, amt, tempUpgradeArea[0], tempUpgradeArea[1], tempUpgradeArea[2], tempUpgradeArea[3]);
 					   officeUpgrades.add(tempUpgrade);
 				   }
@@ -173,7 +173,7 @@ public class XmlParse {
 		   try {
 		   DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 		   DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-		   Document cardsDoc = dBuilder.parse("cards.xml");
+		   Document cardsDoc = dBuilder.parse("../cards.xml");
 		   cardsDoc.getDocumentElement().normalize();
 		   NodeList cardNList = cardsDoc.getElementsByTagName("card");
 
