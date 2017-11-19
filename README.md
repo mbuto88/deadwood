@@ -9,4 +9,4 @@ Then change directories into the directory:
 /path/to/current/directory/deadwood/src
 
 To compile program use command in bash terminal:
-javac Main.java 
+javac Deadwood.java 
