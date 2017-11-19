@@ -117,7 +117,7 @@ public class Player{
       money += toAdd;
       System.out.println(name + " recieved " + toAdd + " dollars, now a total of " + money);
     }
-    
+
     public void addFame(int toAdd) {
       fame += toAdd;
       System.out.println(name + " recieved " + toAdd + " fame, now a total of " + fame);
@@ -203,7 +203,7 @@ public class Player{
                                  System.out.print(p.getPartName() + " (" + p.getLevel() + ")   ");
                               }
                            }
-   
+
                            System.out.println();
                            System.out.print("Off card roles: ");
                            for (Part p : ((Scene)location).getExtraParts()) {
@@ -218,7 +218,7 @@ public class Player{
                               }
                            }
                            System.out.println();
-   
+
                            input = sc.nextLine();
                            Part oldPart = currentPart;
                            takeRole(input, players);
@@ -252,7 +252,7 @@ public class Player{
                      catch (Exception e){
                         System.out.println("Could not parse input, try again");
                      }
-                     
+
                   }
                   break;
                case "upgrade cr":
@@ -270,7 +270,7 @@ public class Player{
                   }
                   break;
                case "help":
-                  Deadwood.printWelcome();
+                  Deadwood.printCommands();
                   break;
                default:
                   System.out.println("Couldn't understand input. Please try again.");

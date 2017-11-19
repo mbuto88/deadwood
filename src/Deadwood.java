@@ -48,34 +48,15 @@ public class Deadwood{
      //Ask for player names
 
 	    initializePlayers();
-
-	    //List commands
-	    String[] instructionsLeftSide = new String[]{"The commands for the game are as follows: \nwho --- ", "where --- ", "move --- ", "work --- ", "upgrade $ level --- ", "upgrade cr level --- ", "rehearse --- ", "act --- ", "end --- "};
-	    String[] instructionsRightSide = new String[]{"The software identifies the current player and any parts that the player is working.",
-	       "The software describes the current players room and any active scenes.",
-	       "The current player can choose a room to move to",
-	       "The current player can choose a role to take",
-	       "Upgrade the current player to the indicated level by paying with money",
-	       "Upgrade the current player to the indicated level by paying with fame credits",
-	       "The current player rehearses",
-	       "The current player performs in its current role.",
-	       "End the current players turn"};
-
-	    //prints the instructions to the console
-	    int i = 0;
-	    while(i < 9){
-	    	System.out.print(instructionsLeftSide[i]);
-	        System.out.print(instructionsRightSide[i] + "\n");
-	        i++;
-	      }
+			printCommands();
      //Construct Board
      Board gameBoard = new Board(rooms, players);
      int turn = 0;
 
      while(!gameBoard.isGameOver()){
     	//Check if the day is over
-
        boolean isDayOver = true;
+
        for(Room r : gameBoard.getRooms()){
          if (r instanceof Scene){
             if (!((Scene)r).isOver()){
@@ -84,12 +65,11 @@ public class Deadwood{
          }
        }
     	 if (isDayOver) {
-
     		//Set random cards for scene objects
     		  for(int k = 2; k < rooms.size(); k++) {
     			  Random randomGenerator = new Random();
     			  int randomInt = randomGenerator.nextInt(cards.size());
-    			  rooms.get(i).setCard(cards.get(randomInt));
+    			  rooms.get(k).setCard(cards.get(randomInt));
     		  }
       	    gameBoard.nextDay(players);
          }
@@ -106,6 +86,28 @@ public class Deadwood{
      }
    }
 
+	 public static void printCommands(){
+		 //List commands
+		 String[] instructionsLeftSide = new String[]{"The commands for the game are as follows: \nwho --- ", "where --- ", "move --- ", "work --- ", "upgrade $ level --- ", "upgrade cr level --- ", "rehearse --- ", "act --- ", "end --- "};
+		 String[] instructionsRightSide = new String[]{"The software identifies the current player and any parts that the player is working.",
+				"The software describes the current players room and any active scenes.",
+				"The current player can choose a room to move to",
+				"The current player can choose a role to take",
+				"Upgrade the current player to the indicated level by paying with money",
+				"Upgrade the current player to the indicated level by paying with fame credits",
+				"The current player rehearses",
+				"The current player performs in its current role.",
+				"End the current players turn"};
+
+		 //prints the instructions to the console
+		 int i = 0;
+		 while(i < 9){
+			 System.out.print(instructionsLeftSide[i]);
+				 System.out.print(instructionsRightSide[i] + "\n");
+				 i++;
+			 }
+
+	 }
 
    public static void initializePlayers(){
      String name;
