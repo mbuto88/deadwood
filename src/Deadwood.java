@@ -6,7 +6,7 @@ Deadwood, a text-based representation.
 //Main Class
 import java.util.*;
 
-public class Main{
+public class Deadwood{
    //Player[] players;
    Board board;
    static ArrayList<Player> players = new ArrayList<Player>();
@@ -23,7 +23,7 @@ public class Main{
 	   
 	 //Set nearby for room objects
 	  for(int i = 0; i < rooms.size(); i++) {
-		  rooms.get(i).matchNearby(rooms);
+		  rooms.get(i).matchNearby(rooms, (CastingOffice)rooms.get(1), (Trailers)rooms.get(0));
 	  }
 	//Set random cards for scene objects
 	  for(int i = 2; i < rooms.size(); i++) {
@@ -70,7 +70,15 @@ public class Main{
 
      while(!gameBoard.isGameOver()){
     	//Check if the day is over
-    	 if (turn == players.size()) {
+       boolean isDayOver = true;
+       for(Room r : gameBoard.getRooms()){
+         if (r instanceof Scene){
+            if (!((Scene)r).isOver()){
+               isDayOver = false;
+            }
+         }
+       }
+    	 if (isDayOver) {
     		//Set random cards for scene objects
     		  for(int k = 2; k < rooms.size(); k++) {
     			  Random randomGenerator = new Random();
@@ -78,16 +86,17 @@ public class Main{
     			  rooms.get(i).setCard(cards.get(randomInt));
     			  
     		  }
-      	    gameBoard.nextDay();
+      	    gameBoard.nextDay(players);
          }
         //Loop the game steps
     	System.out.println("Current turn: " + players.get(turn).getName());
-       players.get(turn).takeTurn(gameBoard);
+       players.get(turn).takeTurn(gameBoard, players);
        if(players.get(turn).mayUpgrade()){
          //ask player if they would like to upgrade
          //if so use board method
        }
        turn++;
+       turn %= players.size();
      }
    }
 
