@@ -6,7 +6,7 @@ Deadwood, a text-based representation.
 //Main Class
 import java.util.*;
 
-public class Main{
+public class Deadwood{
    //Player[] players;
    Board board;
    static ArrayList<Player> players = new ArrayList<Player>();
@@ -20,7 +20,7 @@ public class Main{
 	 //parse xml
 	   rooms = XmlParse.roomsXmlParse();
 	   cards = XmlParse.cardsXmlParse();
-	   
+
 	 //Set nearby for room objects
 	  for(int i = 0; i < rooms.size(); i++) {
 		  rooms.get(i).matchNearby(rooms);
@@ -30,9 +30,9 @@ public class Main{
 		  Random randomGenerator = new Random();
 		  int randomInt = randomGenerator.nextInt(cards.size());
 		  rooms.get(i).setCard(cards.get(randomInt));
-		  
+
 	  }
-	   
+
      //print greeting and instructions
      printWelcome();
 
@@ -46,7 +46,7 @@ public class Main{
 
 	    //List commands
 	    String[] instructionsLeftSide = new String[]{"The commands for the game are as follows: \nwho --- ", "where --- ", "move --- ", "work --- ", "upgrade $ level --- ", "upgrade cr level --- ", "rehearse --- ", "act --- ", "end --- "};
-	     
+
 	    String[] instructionsRightSide = new String[]{"The software identifies the current player and any parts that the player is working.",
 	       "The software describes the current players room and any active scenes.",
 	       "The current player can choose a room to move to",
@@ -76,7 +76,7 @@ public class Main{
     			  Random randomGenerator = new Random();
     			  int randomInt = randomGenerator.nextInt(cards.size());
     			  rooms.get(i).setCard(cards.get(randomInt));
-    			  
+
     		  }
       	    gameBoard.nextDay();
          }
@@ -91,7 +91,7 @@ public class Main{
      }
    }
 
-   
+
 
    public static void initializePlayers(){
      String name;
