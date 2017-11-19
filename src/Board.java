@@ -66,6 +66,9 @@ public class Board{
 	
 	//Getters
 
+   public ArrayList<Room> getRooms(){
+      return rooms;
+   }
 	public boolean isGameOver(){
 		return this.gameOver;
 	}
@@ -98,7 +101,7 @@ public class Board{
 	public int rollDice(){
 		int result;
 		Random roll = new Random();
-	  result = roll.nextInt(6);
+	  result = roll.nextInt(6) + 1;
 
 		System.out.println("Roll was: "+ result);
 		return result;
@@ -114,30 +117,46 @@ public class Board{
 		System.out.println(player.getName() + "'s score was: " + calcScore(player));
 	}
 
-	public Player printAllScores(){
+	public Player printAllScores(ArrayList<Player> ps){
 		int score;
 		int i = 0;
-		Player winner = new Player();
+		Player winner = ps.get(0);
 
-		while(i < this.players.size()){
-			printScore(this.players.get(i));
-			score = calcScore(this.players.get(i));
+      for(Player p : players){
+			
+			score = calcScore(p);
+         printScore(p);
 
 			if(score > calcScore(winner)){
-				winner = this.players.get(i);
+				winner = p;
 			}
 		}
 		return winner;
 	}
 
-	public void nextDay(){
+	public void nextDay(ArrayList<Player> players){
 		this.daysRemaining--;
+      for(Room r : rooms) {
+         if (r instanceof Scene){
+            ((Scene)r).reset();
+         }
+      }
+      System.out.println("The day has ended. Everyone returns to the trailers to see the score");
+      for (Player p : players) {
+         p.setRoom(rooms.get(0));
+      }
+      Player leader = printAllScores(players);
+      if (this.daysRemaining != 0) {
+         System.out.println("The current leader is " + leader.getName());
+      }
 		if(this.daysRemaining == 0){
       
 			//Game is over
 			this.gameOver = true;
 			System.out.println("Game has ended.");
-			System.out.println(printAllScores().getName());
+         System.out.println("AND THE WINNER IS...");
+         System.out.println(leader.getName().toUpperCase() + "!!!");
+         System.out.println("Congratulations to everyone on a job well done!");
 		}
 	}
 }

@@ -62,13 +62,21 @@ public abstract class Room{
       return false;
 		}
 
-    public void matchNearby(ArrayList<Room> rooms){
+    public void matchNearby(ArrayList<Room> rooms, CastingOffice office, Trailers trailers){
        for (Room r : rooms) {
           for (String s : nearbyNames) {
              if (r.getName().equals(s)){
                 this.nearby.add(r);
              }
           }
+       }
+       for (String s: nearbyNames) {
+         if (s.equals("office")){
+            this.nearby.add(office);
+         }
+         if (s.equals("trailer")){
+            this.nearby.add(trailers);
+         }
        }
     }
 }

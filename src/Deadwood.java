@@ -21,9 +21,10 @@ public class Deadwood{
 	   rooms = XmlParse.roomsXmlParse();
 	   cards = XmlParse.cardsXmlParse();
 
+	   
 	 //Set nearby for room objects
 	  for(int i = 0; i < rooms.size(); i++) {
-		  rooms.get(i).matchNearby(rooms);
+		  rooms.get(i).matchNearby(rooms, (CastingOffice)rooms.get(1), (Trailers)rooms.get(0));
 	  }
 	//Set random cards for scene objects
 	  for(int i = 2; i < rooms.size(); i++) {
@@ -31,8 +32,9 @@ public class Deadwood{
 		  int randomInt = randomGenerator.nextInt(cards.size());
 		  rooms.get(i).setCard(cards.get(randomInt));
 
+		  
 	  }
-
+	   
      //print greeting and instructions
      printWelcome();
 
@@ -46,7 +48,6 @@ public class Deadwood{
 
 	    //List commands
 	    String[] instructionsLeftSide = new String[]{"The commands for the game are as follows: \nwho --- ", "where --- ", "move --- ", "work --- ", "upgrade $ level --- ", "upgrade cr level --- ", "rehearse --- ", "act --- ", "end --- "};
-
 	    String[] instructionsRightSide = new String[]{"The software identifies the current player and any parts that the player is working.",
 	       "The software describes the current players room and any active scenes.",
 	       "The current player can choose a room to move to",
@@ -70,29 +71,39 @@ public class Deadwood{
 
      while(!gameBoard.isGameOver()){
     	//Check if the day is over
-    	 if (turn == players.size()) {
+
+       boolean isDayOver = true;
+       for(Room r : gameBoard.getRooms()){
+         if (r instanceof Scene){
+            if (!((Scene)r).isOver()){
+               isDayOver = false;
+            }
+         }
+       }
+    	 if (isDayOver) {
+
     		//Set random cards for scene objects
     		  for(int k = 2; k < rooms.size(); k++) {
     			  Random randomGenerator = new Random();
     			  int randomInt = randomGenerator.nextInt(cards.size());
     			  rooms.get(i).setCard(cards.get(randomInt));
-
     		  }
-      	    gameBoard.nextDay();
+      	    gameBoard.nextDay(players);
          }
         //Loop the game steps
     	System.out.println("Current turn: " + players.get(turn).getName());
-       players.get(turn).takeTurn(gameBoard);
+       players.get(turn).takeTurn(gameBoard, players);
+
        if(players.get(turn).mayUpgrade()){
          //ask player if they would like to upgrade
          //if so use board method
        }
        turn++;
+       turn %= players.size();
      }
    }
 
-
-
+  
    public static void initializePlayers(){
      String name;
      Scanner cmdLine = new Scanner(System.in);
@@ -105,7 +116,4 @@ public class Deadwood{
        total--;
      }
    }
-
-
-
 }

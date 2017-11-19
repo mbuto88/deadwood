@@ -1,4 +1,4 @@
-import java.util.Scanner;
+import java.util.*;
 //Player Class
 
 public class Player{
@@ -15,6 +15,7 @@ public class Player{
 
     //Constructors
     Player(){
+      name = null;
       fame = 0;
       money = 0;
       rank = 1;
@@ -71,6 +72,12 @@ public class Player{
     public void setRoom(Room room){
         location = room;
     }
+    public void setScene(Scene scene){
+      this.currentScene = scene;
+    }
+    public void setPart(Part part){
+      this.currentPart = part;
+    }
 
     private int spendMoney(int spendAmount){
       if(spendAmount > this.money){
@@ -79,6 +86,9 @@ public class Player{
       }
       this.money = (this.money - spendAmount);
       return spendAmount;
+    }
+    public void clearRehearsalMarkers() {
+      rehearsalMarkers = 0;
     }
 
     private int spendFame(int spendAmount){
@@ -103,24 +113,33 @@ public class Player{
         this.rank = level;
       }
     }
+    public void addMoney(int toAdd){
+      money += toAdd;
+      System.out.println(name + " recieved " + toAdd + " dollars, now a total of " + money);
+    }
+    
+    public void addFame(int toAdd) {
+      fame += toAdd;
+      System.out.println(name + " recieved " + toAdd + " fame, now a total of " + fame);
+    }
 
     //Other Methods
-    public void takeTurn(Board b){
+    public void takeTurn(Board b, ArrayList<Player> players){
       boolean over = false;
       Scanner sc = new Scanner(System.in);
       boolean canMove = true;
       boolean canTakeRole = true;
       String input;
       while (!over) {
-         input = sc.nextLine();
-         //It's a secret to everybody
-         if (input.equals("flip board")){
-            System.exit(0);
-         }
          if (currentPart == null) {
+            input = sc.nextLine();
+            //It's a secret to everybody
+            if (input.equals("flip board")){
+               System.exit(0);
+            }
             switch (input.toLowerCase()){
                case "who":
-                  System.out.print("Name: " + name +"\n");
+                  System.out.println("Name: " + name + " $" + money + " Fame:" + fame);
                   if (currentPart != null) {
                      System.out.print("Current Part: " + currentPart.getPartName());
                   } else {
@@ -169,36 +188,90 @@ public class Player{
 
                case "work":
                   if (canTakeRole) {
-                     if (location instanceof Scene) {
-                        System.out.println("What role would you like to take?");
-                        System.out.print("On card roles: ");
-                        for (Part p : ((Scene)location).getCard().getParts()) {
-                           System.out.print(p.getPartName() + "   ");
-                        }
-
-                        System.out.println();
-                        System.out.print("Off card roles: ");
-                        for (Part p : ((Scene)location).getExtraParts()) {
-                           System.out.print(p.getPartName() + "   ");
-                        }
-                        System.out.println();
-
-                        input = sc.nextLine();
-                        Part oldPart = currentPart;
-                        takeRole(input);
-                        if (oldPart != currentPart){
-                           canTakeRole = false;
+                     if (currentScene != null && !currentScene.isOver()) {
+                        if (location instanceof Scene) {
+                           System.out.println("What role would you like to take?");
+                           System.out.print("On card roles: ");
+                           for (Part p : ((Scene)location).getCard().getParts()) {
+                              boolean isTaken = false;
+                              for (Player pl : players) {
+                                 if (pl.getPart() == p){
+                                    isTaken = true;
+                                 }
+                              }
+                              if (!isTaken){
+                                 System.out.print(p.getPartName() + " (" + p.getLevel() + ")   ");
+                              }
+                           }
+   
+                           System.out.println();
+                           System.out.print("Off card roles: ");
+                           for (Part p : ((Scene)location).getExtraParts()) {
+                              boolean isTaken = false;
+                              for (Player pl : players) {
+                                 if (pl.getPart() == p){
+                                    isTaken = true;
+                                 }
+                              }
+                              if (!isTaken){
+                                 System.out.print(p.getPartName() + " (" + p.getLevel() + ")   ");
+                              }
+                           }
+                           System.out.println();
+   
+                           input = sc.nextLine();
+                           Part oldPart = currentPart;
+                           takeRole(input, players);
+                           if (oldPart != currentPart){
+                              canTakeRole = false;
+                           }
+                           else {
+                              System.out.println("Something went wrong, try again!");
+                           }
                         }
                         else {
-                           System.out.println("Something went wrong, try again!");
+                           System.out.println("Sorry, you can't do that here! Try moving to a scene.");
                         }
                      }
                      else {
-                        System.out.println("Sorry, you can't do that here! Try moving to a scene.");
+                        System.out.println("This scene has already wrapped");
                      }
                   }
                   break;
+               case "end":
+                  over = true;
+                  break;
+               case "upgrade $":
+                  if (location instanceof CastingOffice){
+                     System.out.println("What level would you like to upgrade to?");
+                     String answer = sc.nextLine();
+                     try{
+                        int level = Integer.parseInt(answer);
+                        ((CastingOffice)location).raiseRank(this, "dollar", level);
+                     }
+                     catch (Exception e){
+                        System.out.println("Could not parse input, try again");
+                     }
+                     
+                  }
+                  break;
+               case "upgrade cr":
+                  if (location instanceof CastingOffice){
+                     System.out.println("What level would you like to upgrade to?");
+                     String answer = sc.nextLine();
+                     try{
+                        int level = Integer.parseInt(answer);
+                        ((CastingOffice)location).raiseRank(this, "credit", level);
+                     }
+                     catch (Exception e){
+                        System.out.println("Could not parse input, try again");
+                     }
 
+                  }
+                  break;
+               case "help":
+                  Deadwood.printWelcome();
+                  break;
                default:
                   System.out.println("Couldn't understand input. Please try again.");
                   break;
@@ -206,10 +279,11 @@ public class Player{
          }
          else {
             System.out.println("Do you want to act or rehearse for your part " + currentPart.getPartName() + "?");
+            System.out.println("You have " + rehearsalMarkers + " rehearsal markers and need to roll at least a " + currentScene.getCard().getBudget());
             input = sc.nextLine();
             switch (input.toLowerCase()) {
                case "act":
-                  act(b);
+                  act(b,players);
                   over = true;
                   break;
 
@@ -225,19 +299,72 @@ public class Player{
       }
     }
 
-    private void act(Board b){
+    private void act(Board b, ArrayList<Player> players){
+      System.out.println("You need to roll a " + currentScene.getCard().getBudget() + " or higher to advance");
       int roll = b.rollDice();
       boolean successful = (currentScene.getCard().getBudget() <= rehearsalMarkers + roll);
-      int[] result = currentScene.getCard().payout(onCard, successful);
-      fame += result[0];
-      money += result[1];
+      if (successful){
+         System.out.println("Acting successful!");
+         currentScene.completeTake();
+         if (currentScene.isOver()){
+            System.out.println("Scene completed!");
+            boolean isWrapBonus = false;
+            for (Player p : players){
+               if (p.getScene() == this.currentScene){
+                  for (Part pa : currentScene.getCard().getParts()){
+                     if (p.currentPart == pa){
+                        isWrapBonus = true;
+                     }
+                  }
+               }
+            }
+            if (isWrapBonus) {
+               System.out.println("Time for the wrap bonus!");
+               ArrayList<Integer> rolls = new ArrayList<Integer>();
+               for (int i = 1; i <= currentScene.getCard().getBudget(); i++){
+                  rolls.add(b.rollDice());
+               }
+               Collections.sort(rolls);
+               ArrayList<Part> parts = currentScene.getCard().getParts();
+               for (int i = rolls.size() - 1; i >= 0; i--) {
+                  for (Player pl : players) {
+                      if (pl.getPart() == parts.get(i % parts.size())){
+                        pl.addMoney(rolls.get(i));
+                      }
+                      if (pl.currentScene == currentScene)
+                      {
+                        pl.clearRehearsalMarkers();
+                      }
+                  }
+               }
+            }
+            Scene thisScene = currentScene;
+            for (Player p : players) {
+               if (p.getScene() == thisScene){
+                  p.setScene(null);
+                  p.setPart(null);
+               }
+            }
+            int[] result = thisScene.getCard().payout(onCard, successful);
+            fame += result[0];
+            money += result[1];
+         }
       }
+      else {
+         System.out.println("Acting failed, try again next time!");
+      }
+      if (currentScene != null){
+         int[] result = currentScene.getCard().payout(onCard, successful);
+         fame += result[0];
+         money += result[1];
+      }
+    }
 
     private boolean rehearse(){
       if (currentPart != null && rehearsalMarkers < currentScene.getCard().getBudget())
       {
          rehearsalMarkers++;
-         System.out.println("You now have " + rehearsalMarkers + "Reahearsal Markers!");
+         System.out.println("You now have " + rehearsalMarkers + " Reahearsal Markers!");
          return true;
       }
       else if (currentPart == null){
@@ -260,24 +387,56 @@ public class Player{
             } else {
               this.mayUpgrade = false;
             }
+            if(r instanceof Scene){
+               currentScene = (Scene)r;
+            }
+            else {
+               currentScene = null;
+            }
          }
       }
     }
 
-    private void takeRole(String s){
+    private void takeRole(String s, ArrayList<Player> players){
       //Check each part and match it to the provided string setting it to the selected part if they match
       for(Part p : currentScene.getCard().getParts()) {
-         if (s.toLowerCase().equals(p.getPartName().toLowerCase())) {
-            currentPart = p;
-            System.out.println("Part " + p.getPartName() + " taken!");
-            onCard = true;
+         boolean isTaken = false;
+         for (Player pl : players) {
+            if (pl.getPart() == p){
+               isTaken = true;
+            }
+         }
+         if (!isTaken){
+            if (s.toLowerCase().equals(p.getPartName().toLowerCase())) {
+               if (rank >= p.getLevel()){
+                  currentPart = p;
+                  System.out.println("Part " + p.getPartName() + " taken!");
+                  onCard = true;
+               }
+               else {
+                  System.out.println("You're not a high enough rank to take that role yet!");
+               }
+            }
          }
       }
       for(Part p: ((Scene)location).getExtraParts()){
-         if (s.toLowerCase().equals(p.getPartName().toLowerCase())) {
-            currentPart = p;
-            System.out.println("Part " + p.getPartName() + " taken!");
-            onCard = false;
+         boolean isTaken = false;
+            for (Player pl : players) {
+               if (pl.getPart() == p){
+                  isTaken = true;
+               }
+            }
+            if (!isTaken){
+               if (s.toLowerCase().equals(p.getPartName().toLowerCase())) {
+               if (rank >= p.getLevel()){
+                  currentPart = p;
+                  System.out.println("Part " + p.getPartName() + " taken!");
+                  onCard = true;
+               }
+               else {
+                  System.out.println("You're not a high enough rank to take that role yet!");
+               }
+            }
          }
       }
     }

@@ -19,21 +19,54 @@ public class CastingOffice extends Room {
    //Upgrade rank method
    public void raiseRank(Player player, String currency, int level){
 		 //Player must be in casting office
-		 if(player.getLocation().equals(this.getName())){
+       /*
+		 if(player.getLocation() instanceof CastingOffice){
 
 			 //look for the desired upgrade
-			 int i = 0;
-				while(i < this.upgrades.size()){
+				for (int i = 0; i < this.upgrades.size(), i++){
 
 					//Check if the player can afford upgrade
 					if((level == upgrades.get(i).getLevel() )&& upgrades.get(i).getCurrency().equals(currency) ){
-						boolean isValid = (player.spend(upgrades.get(i).getAmt(), currency) > 0);
-						if(isValid){
-							player.levelUp(isValid, level);
+                  if (player.spend(upgrades.get(i).getAmt(), currency) > 0){
+                     player.levelUp(isValid, level);
 							System.out.println("Upgrade successful, your new rank is " + level);
-						}
+                  }
+                  else {
+                     System.out.println("You don't have enough " + upgrades.get(i).getCurrency() + "s" );
+                  }
 					}
 			  }
 		  }
+        */
+        
+        
+        
+        
+        
+        boolean foundUpgrade = false;
+        for (Upgrade u : upgrades) {
+            if (u.getLevel() == level && u.getCurrency().equals(currency)){
+               foundUpgrade = true;
+               int check;
+               if (u.getCurrency().equals("dollars")){
+                  check = player.getMoney();
+               }
+               else{
+                  check = player.getFame();
+               }
+               if (check >= u.getAmt()){
+                  player.levelUp(true, level);
+						System.out.println("Upgrade successful, your new rank is " + level);
+                  
+               }
+               else {
+                  System.out.println("You don't have enough " + u.getCurrency() + "s" );
+               }
+               
+            }
+        }
+        if (!foundUpgrade){
+            System.out.println("That's not an upgrade you can get!");
+        }
 	  }
    }
