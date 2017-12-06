@@ -12,8 +12,13 @@
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.ImageIcon;
+
+import javafx.scene.shape.Path;
+
 import javax.imageio.ImageIO;
 import java.awt.event.*;
+import java.nio.file.Paths;
+
 
 
 public class BoardLayersListener extends JFrame {
@@ -47,7 +52,7 @@ public class BoardLayersListener extends JFrame {
 
        bPane = getLayeredPane();
     
-       // Create the deadwood board
+       // Create the Deadwood board
        boardlabel = new JLabel();
        ImageIcon icon =  new ImageIcon("board.jpg");
        boardlabel.setIcon(icon); 
@@ -57,23 +62,26 @@ public class BoardLayersListener extends JFrame {
        bPane.add(boardlabel, new Integer(0));
       
        // Set the size of the GUI
-       setSize(icon.getIconWidth()+200,icon.getIconHeight());
+       setSize(icon.getIconWidth()+200,icon.getIconHeight()+100);
        
-       // Add a scene card to this room
-       cardlabel = new JLabel();
-       ImageIcon cIcon =  new ImageIcon("01.png");
-       cardlabel.setIcon(cIcon); 
-       cardlabel.setBounds(20,60,cIcon.getIconWidth(),cIcon.getIconHeight());
-       cardlabel.setOpaque(true);
-      
-       // Add the card to the lower layer
-       bPane.add(cardlabel, new Integer(1));
+       // Add scene cards to the rooms
+       for (int i = 2; i < Deadwood.rooms.size(); i++) {
+    	   cardlabel = new JLabel();
+    	   String cardPathName = "cards/" + Deadwood.rooms.get(i).getCard().getImg();
+           ImageIcon cIcon =  new ImageIcon("./cards/01.png");
+           cardlabel.setIcon(cIcon); 
+           cardlabel.setBounds(Deadwood.rooms.get(i).getX(),Deadwood.rooms.get(i).getY(),Deadwood.rooms.get(i).getW(),Deadwood.rooms.get(i).getH());
+
+           cardlabel.setOpaque(true);
+        // Add the card to the lower layer
+           bPane.add(cardlabel, new Integer(1));
+       }
 
     
        // Add a dice to represent a player. 
        // Role for Crusty the prospector. The x and y co-ordiantes are taken from Board.xml file
        playerlabel = new JLabel();
-       ImageIcon pIcon = new ImageIcon("r2.png");
+       ImageIcon pIcon = new ImageIcon("dice/r2.png");
        playerlabel.setIcon(pIcon);
        //playerlabel.setBounds(114,227,pIcon.getIconWidth(),pIcon.getIconHeight());  
        playerlabel.setBounds(114,227,46,46);
@@ -125,12 +133,16 @@ public class BoardLayersListener extends JFrame {
          }         
       }
       public void mousePressed(MouseEvent e) {
+    	  
       }
       public void mouseReleased(MouseEvent e) {
+    	  
       }
       public void mouseEntered(MouseEvent e) {
+    	  
       }
       public void mouseExited(MouseEvent e) {
+    	  
       }
    }
 }

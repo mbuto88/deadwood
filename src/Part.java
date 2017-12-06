@@ -28,6 +28,7 @@ public class Part{
 			+ "Venmo microdosing whatever pork belly.";
 	}
 
+
 	Part(String name, int level, int x, int y, int h, int w, String line) {
 		this.name = name;
 		this.level = level;
@@ -49,5 +50,21 @@ public class Part{
 	}
 	public String getLine() {
 		return this.line;
+	}
+
+	public int getX() {
+		return x;
+	}
+
+	public int getY() {
+		return y;
+	}
+
+	public int getH() {
+		return h;
+	}
+
+	public int getW() {
+		return w;
 	}
 }

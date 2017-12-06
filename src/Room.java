@@ -6,6 +6,10 @@ public abstract class Room{
 		private String name;
 		private ArrayList<Room> nearby = new ArrayList<Room>();
 		private ArrayList<String> nearbyNames;
+		int x;
+		int y;
+		int h;
+		int w;
 
 		//Constructors
 		public Room(){
@@ -33,8 +37,24 @@ public abstract class Room{
 		}
 
 		public ArrayList<Room> getNearby(){
-       return nearby;
-    }
+			return nearby;
+		}
+
+		public int getX() {
+			return x;
+		}
+
+		public int getY() {
+			return y;
+		}
+
+		public int getH() {
+			return h;
+		}
+
+		public int getW() {
+			return w;
+		}
 
 		//Setters
 		public void setCard(Card card) {

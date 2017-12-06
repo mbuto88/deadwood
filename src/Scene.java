@@ -4,10 +4,6 @@ import java.util.*;
 public class Scene extends Room {
    String name;
    private ArrayList<Part> extraParts;
-   int x;
-   int y;
-   int w;
-   int h;
    int takes;
    int completedTakes;
 
@@ -16,8 +12,8 @@ public class Scene extends Room {
 	  this.name = name;
       this.extraParts = extraParts;
       this.x = x;
-	  this.y = y;
-	  this.h = h;
+      this.y = y;
+      this.h = h;
       this.w = w;
       this.takes = calcTakes();
    }
