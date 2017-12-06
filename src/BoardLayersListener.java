@@ -13,12 +13,10 @@ import java.awt.*;
 import javax.swing.*;
 import javax.swing.ImageIcon;
 
-import javafx.scene.shape.Path;
-
 import javax.imageio.ImageIO;
 import java.awt.event.*;
-import java.nio.file.Paths;
 import java.util.ArrayList;
+
 
 
 
@@ -79,7 +77,9 @@ public class BoardLayersListener extends JFrame {
 
        bPane = getLayeredPane();
     
+
        // Create the Deadwood board
+
        boardlabel = new JLabel();
        ImageIcon icon =  new ImageIcon("../board.jpg");
        boardlabel.setIcon(icon); 
@@ -89,6 +89,7 @@ public class BoardLayersListener extends JFrame {
        bPane.add(boardlabel, new Integer(0));
       
        // Set the size of the GUI
+
        setSize(icon.getIconWidth()+200,icon.getIconHeight()+100);
        
        // Add scene cards to the rooms
@@ -117,6 +118,7 @@ public class BoardLayersListener extends JFrame {
            playerLabels.add(shotLabel);
            
        }
+
       
        // Create the Menu for action buttons
        mLabel = new JLabel("MENU");
@@ -164,6 +166,7 @@ public class BoardLayersListener extends JFrame {
          }         
       }
       public void mousePressed(MouseEvent e) {
+
     	  
       }
       public void mouseReleased(MouseEvent e) {
@@ -174,6 +177,7 @@ public class BoardLayersListener extends JFrame {
       }
       public void mouseExited(MouseEvent e) {
     	  
+
       }
    }
 }
