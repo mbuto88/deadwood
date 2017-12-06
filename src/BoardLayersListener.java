@@ -13,11 +13,8 @@ import java.awt.*;
 import javax.swing.*;
 import javax.swing.ImageIcon;
 
-import javafx.scene.shape.Path;
-
 import javax.imageio.ImageIO;
 import java.awt.event.*;
-import java.nio.file.Paths;
 
 
 
@@ -52,7 +49,9 @@ public class BoardLayersListener extends JFrame {
 
        bPane = getLayeredPane();
     
+
        // Create the Deadwood board
+
        boardlabel = new JLabel();
        ImageIcon icon =  new ImageIcon("board.jpg");
        boardlabel.setIcon(icon); 
@@ -62,6 +61,7 @@ public class BoardLayersListener extends JFrame {
        bPane.add(boardlabel, new Integer(0));
       
        // Set the size of the GUI
+
        setSize(icon.getIconWidth()+200,icon.getIconHeight()+100);
        
        // Add scene cards to the rooms
@@ -77,11 +77,14 @@ public class BoardLayersListener extends JFrame {
            bPane.add(cardlabel, new Integer(1));
        }
 
+
     
        // Add a dice to represent a player. 
        // Role for Crusty the prospector. The x and y co-ordiantes are taken from Board.xml file
        playerlabel = new JLabel();
+
        ImageIcon pIcon = new ImageIcon("dice/r2.png");
+
        playerlabel.setIcon(pIcon);
        //playerlabel.setBounds(114,227,pIcon.getIconWidth(),pIcon.getIconHeight());  
        playerlabel.setBounds(114,227,46,46);
@@ -133,6 +136,7 @@ public class BoardLayersListener extends JFrame {
          }         
       }
       public void mousePressed(MouseEvent e) {
+
     	  
       }
       public void mouseReleased(MouseEvent e) {
@@ -143,6 +147,7 @@ public class BoardLayersListener extends JFrame {
       }
       public void mouseExited(MouseEvent e) {
     	  
+
       }
    }
 }
