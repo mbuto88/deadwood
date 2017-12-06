@@ -23,14 +23,11 @@ public class Deadwood{
  		System.out.println(" /$$      /$$           /$$                                            \r\n| $$  /$ | $$          | $$                                            \r\n| $$ /$$$| $$  /$$$$$$ | $$  /$$$$$$$  /$$$$$$  /$$$$$$/$$$$   /$$$$$$ \r\n| $$/$$ $$ $$ /$$__  $$| $$ /$$_____/ /$$__  $$| $$_  $$_  $$ /$$__  $$\r\n| $$$$_  $$$$| $$$$$$$$| $$| $$      | $$  \\ $$| $$ \\ $$ \\ $$| $$$$$$$$\r\n| $$$/ \\  $$$| $$_____/| $$| $$      | $$  | $$| $$ | $$ | $$| $$_____/\r\n| $$/   \\  $$|  $$$$$$$| $$|  $$$$$$$|  $$$$$$/| $$ | $$ | $$|  $$$$$$$\r\n|__/     \\__/ \\_______/|__/ \\_______/ \\______/ |__/ |__/ |__/ \\_______/\r\n                                                            ");
  		System.out.println(" /$$$$$$$$          \r\n|__  $$__/          \r\n   | $$     /$$$$$$ \r\n   | $$    /$$__  $$\r\n   | $$   | $$  \\ $$\r\n   | $$   | $$  | $$\r\n   | $$   |  $$$$$$/\r\n   |__/    \\______/ ");
  		System.out.println("$$$$$$$\\                            $$\\                                         $$\\ \r\n$$  __$$\\                           $$ |                                        $$ |\r\n$$ |  $$ | $$$$$$\\   $$$$$$\\   $$$$$$$ |$$\\  $$\\  $$\\  $$$$$$\\   $$$$$$\\   $$$$$$$ |\r\n$$ |  $$ |$$  __$$\\  \\____$$\\ $$  __$$ |$$ | $$ | $$ |$$  __$$\\ $$  __$$\\ $$  __$$ |\r\n$$ |  $$ |$$$$$$$$ | $$$$$$$ |$$ /  $$ |$$ | $$ | $$ |$$ /  $$ |$$ /  $$ |$$ /  $$ |\r\n$$ |  $$ |$$   ____|$$  __$$ |$$ |  $$ |$$ | $$ | $$ |$$ |  $$ |$$ |  $$ |$$ |  $$ |\r\n$$$$$$$  |\\$$$$$$$\\ \\$$$$$$$ |\\$$$$$$$ |\\$$$$$\\$$$$  |\\$$$$$$  |\\$$$$$$  |\\$$$$$$$ |\r\n\\_______/  \\_______| \\_______| \\_______| \\_____\\____/  \\______/  \\______/  \\_______|\r\n                                                              ");
- 	
- 			
 
 	 //parse xml
 	   rooms = XmlParse.roomsXmlParse();
 	   cards = XmlParse.cardsXmlParse();
-	 
-	   
+
 	 //Set nearby for room objects
 	  for(int i = 0; i < rooms.size(); i++) {
 		  rooms.get(i).matchNearby(rooms, (CastingOffice)rooms.get(1), (Trailers)rooms.get(0));
@@ -42,11 +39,12 @@ public class Deadwood{
 		  int randomInt = randomGenerator.nextInt(cards.size());
 		  rooms.get(i).setCard(cards.get(randomInt));
 	  }
+
 	//Creating board GUI component
 	   BoardLayersListener board = new BoardLayersListener();
-	   board.setVisible(true);	
+	   board.setVisible(true);
 	   board.addPlayersToFrame(8);
-	   
+
      //print greeting and instructions
      printWelcome();
      }
@@ -56,6 +54,7 @@ public class Deadwood{
 
 	    initializePlayers();
 			printCommands();
+
      //Construct Board
      Board gameBoard = new Board(rooms, players);
      int turn = 0;
@@ -71,17 +70,19 @@ public class Deadwood{
             }
          }
        }
+
+       //Set random cards for scene objects
     	 if (isDayOver) {
-    		//Set random cards for scene objects
     		  for(int k = 2; k < rooms.size(); k++) {
     			  Random randomGenerator = new Random();
     			  int randomInt = randomGenerator.nextInt(cards.size());
     			  rooms.get(k).setCard(cards.get(randomInt));
     		  }
       	    gameBoard.nextDay(players);
-         }
-        //Loop the game steps
-    	System.out.println("Current turn: " + players.get(turn).getName());
+       }
+
+      //Loop the game steps
+    	 System.out.println("Current turn: " + players.get(turn).getName());
        players.get(turn).takeTurn(gameBoard, players);
 
        if(players.get(turn).mayUpgrade()){
@@ -113,8 +114,7 @@ public class Deadwood{
 				 System.out.print(instructionsRightSide[i] + "\n");
 				 i++;
 			 }
-
-	 }
+	   }
 
    public static void initializePlayers(){
      String name;
