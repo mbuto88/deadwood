@@ -3,10 +3,9 @@ import java.util.*;
 
 public class Board{
 	private ArrayList<Room> rooms;
-    private ArrayList<Player> players;
+  private ArrayList<Player> players;
 	private int daysRemaining;
 	private boolean gameOver;
-
 
 	//Constructors
 	Board(){
@@ -59,11 +58,11 @@ public class Board{
 		}
 	}
 	//Setters
-	
+
 	public void setRooms(ArrayList<Room> parsedRooms) {
 		this.rooms = parsedRooms;
 	}
-	
+
 	//Getters
 
    public ArrayList<Room> getRooms(){
@@ -123,7 +122,7 @@ public class Board{
 		Player winner = ps.get(0);
 
       for(Player p : players){
-			
+
 			score = calcScore(p);
          printScore(p);
 
@@ -150,7 +149,7 @@ public class Board{
          System.out.println("The current leader is " + leader.getName());
       }
 		if(this.daysRemaining == 0){
-      
+
 			//Game is over
 			this.gameOver = true;
 			System.out.println("Game has ended.");
