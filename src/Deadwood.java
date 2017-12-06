@@ -26,8 +26,6 @@ public class Deadwood{
  	
  			
 
- 	
- 		
 	 //parse xml
 	   rooms = XmlParse.roomsXmlParse();
 	   cards = XmlParse.cardsXmlParse();
@@ -47,7 +45,8 @@ public class Deadwood{
 	//Creating board GUI component
 	   BoardLayersListener board = new BoardLayersListener();
 	   board.setVisible(true);	
-
+	   board.addPlayersToFrame(8);
+	   
      //print greeting and instructions
      printWelcome();
      }

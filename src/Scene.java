@@ -4,13 +4,15 @@ import java.util.*;
 public class Scene extends Room {
    String name;
    private ArrayList<Part> extraParts;
+   private ArrayList<Shot> shots;
    int takes;
    int completedTakes;
 
    //Constructors
-   public Scene(String name, ArrayList<Part> extraParts, int x, int y, int h, int w) {
+   public Scene(String name, ArrayList<Part> extraParts, ArrayList<Shot> shots, int x, int y, int h, int w) {
 	  this.name = name;
       this.extraParts = extraParts;
+      this.shots = shots;
       this.x = x;
       this.y = y;
       this.h = h;
@@ -29,6 +31,9 @@ public class Scene extends Room {
    }
    public int getTakes(){
       return takes;
+   }
+   public ArrayList<Shot> getShots() {
+	   return shots;
    }
    
    //Setters
