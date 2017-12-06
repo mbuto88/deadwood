@@ -39,6 +39,10 @@ public class Card{
    public ArrayList<Part> getParts(){
       return parts;
    }
+   
+	public String getImg() {
+	return img;
+}
 
 	//Payout method (returns 2 deep array of #of fame gained and #of dollars gained
 	public int[] payout(boolean onCard, boolean isSuccessful) {

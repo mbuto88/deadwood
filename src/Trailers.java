@@ -4,10 +4,7 @@ import java.util.*;
 
 public class Trailers extends Room {
    int currentDay;
-   int x;
-   int y;
-   int h;
-   int w;
+
 
    //Constructors
    public Trailers() {

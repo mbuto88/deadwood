@@ -98,7 +98,7 @@ public class XmlParse {
 				   }
 			   }
 			   //Office object is created to be added to the list
-			   CastingOffice tempOffice = new CastingOffice(officeUpgrades);
+			   CastingOffice tempOffice = new CastingOffice(officeUpgrades, tempOfficeArea[0], tempOfficeArea[1], tempOfficeArea[2], tempOfficeArea[3]);
 			   tempOffice.setNearbyNames(nearbyOfficeNames);
 			   tempOffice.setName("Casting Office");
 			   rooms.add(tempOffice);

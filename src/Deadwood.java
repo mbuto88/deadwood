@@ -24,16 +24,15 @@ public class Deadwood{
  		System.out.println(" /$$$$$$$$          \r\n|__  $$__/          \r\n   | $$     /$$$$$$ \r\n   | $$    /$$__  $$\r\n   | $$   | $$  \\ $$\r\n   | $$   | $$  | $$\r\n   | $$   |  $$$$$$/\r\n   |__/    \\______/ ");
  		System.out.println("$$$$$$$\\                            $$\\                                         $$\\ \r\n$$  __$$\\                           $$ |                                        $$ |\r\n$$ |  $$ | $$$$$$\\   $$$$$$\\   $$$$$$$ |$$\\  $$\\  $$\\  $$$$$$\\   $$$$$$\\   $$$$$$$ |\r\n$$ |  $$ |$$  __$$\\  \\____$$\\ $$  __$$ |$$ | $$ | $$ |$$  __$$\\ $$  __$$\\ $$  __$$ |\r\n$$ |  $$ |$$$$$$$$ | $$$$$$$ |$$ /  $$ |$$ | $$ | $$ |$$ /  $$ |$$ /  $$ |$$ /  $$ |\r\n$$ |  $$ |$$   ____|$$  __$$ |$$ |  $$ |$$ | $$ | $$ |$$ |  $$ |$$ |  $$ |$$ |  $$ |\r\n$$$$$$$  |\\$$$$$$$\\ \\$$$$$$$ |\\$$$$$$$ |\\$$$$$\\$$$$  |\\$$$$$$  |\\$$$$$$  |\\$$$$$$$ |\r\n\\_______/  \\_______| \\_______| \\_______| \\_____\\____/  \\______/  \\______/  \\_______|\r\n                                                              ");
  	
- 		//Creating board GUI component
- 	   BoardLayersListener board = new BoardLayersListener();
- 	   board.setVisible(true);		
+ 			
+
  	
  		
 	 //parse xml
 	   rooms = XmlParse.roomsXmlParse();
 	   cards = XmlParse.cardsXmlParse();
-
-
+	 
+	   
 	 //Set nearby for room objects
 	  for(int i = 0; i < rooms.size(); i++) {
 		  rooms.get(i).matchNearby(rooms, (CastingOffice)rooms.get(1), (Trailers)rooms.get(0));
@@ -45,9 +44,13 @@ public class Deadwood{
 		  int randomInt = randomGenerator.nextInt(cards.size());
 		  rooms.get(i).setCard(cards.get(randomInt));
 	  }
+	//Creating board GUI component
+	   BoardLayersListener board = new BoardLayersListener();
+	   board.setVisible(true);	
+
      //print greeting and instructions
      printWelcome();
-   }
+     }
 
    public static void printWelcome(){
      //Ask for player names
