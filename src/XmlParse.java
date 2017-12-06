@@ -153,9 +153,32 @@ public class XmlParse {
 						   tempExtraParts.add(tempPart);
 					   }
 				   }
+				   
+				   
+				   ArrayList<Shot> tempShots = new ArrayList<Shot>();
+				   Element shotsElement = (Element) setElement.getElementsByTagName("takes").item(0);
+				   NodeList shotsNList = shotsElement.getElementsByTagName("take");
+				  
+				   
+				   //Loop to traverse the list of takes and create shot objects
+				   for (int p = 0; p < shotsNList.getLength(); p++) {
+					   if(shotsNList.item(p).getNodeType() == Node.ELEMENT_NODE){
+						   Element shotChildElement = (Element) shotsNList.item(p);
+						   int number = Integer.parseInt(shotChildElement.getAttribute("number"));
+						   Element shotAreaElement = (Element) shotChildElement.getElementsByTagName("area").item(0);
+
+						 //Area info is added to an array
+						   int[] tempShotArea = new int[]{Integer.parseInt(shotAreaElement.getAttribute("x")),
+								   Integer.parseInt(shotAreaElement.getAttribute("y")),
+								   Integer.parseInt(shotAreaElement.getAttribute("h")),
+								   Integer.parseInt(shotAreaElement.getAttribute("w"))};
+						   Shot tempShot = new Shot(tempShotArea[0], tempShotArea[1], tempShotArea[2], tempShotArea[3], number);						   
+						   tempShots.add(0, tempShot);
+					   }
+				   }
 
 				   //Scene object is created to be added to the list
-				   Scene tempScene = new Scene(tempSetName, tempExtraParts, tempSceneArea[0], tempSceneArea[1], tempSceneArea[2], tempSceneArea[3]);
+				   Scene tempScene = new Scene(tempSetName, tempExtraParts, tempShots, tempSceneArea[0], tempSceneArea[1], tempSceneArea[2], tempSceneArea[3]);
 				   tempScene.setNearbyNames(nearbyNames);
 				   rooms.add(tempScene);
 			   }
