@@ -3,7 +3,11 @@ import java.util.*;
 //Scene Class
 public class Scene extends Room {
    String name;
-   private ArrayList<Part> extraParts;
+   private Card card;
+
+
+
+private ArrayList<Part> extraParts;
    private ArrayList<Shot> shots;
    int takes;
    int completedTakes;
@@ -13,10 +17,10 @@ public class Scene extends Room {
 	  this.name = name;
       this.extraParts = extraParts;
       this.shots = shots;
-      this.x = x;
-      this.y = y;
-      this.h = h;
-      this.w = w;
+      this.setX(x);
+      this.setY(y);
+      this.setH(h);
+      this.setW(w);
       this.takes = calcTakes();
    }
   
@@ -35,9 +39,16 @@ public class Scene extends Room {
    public ArrayList<Shot> getShots() {
 	   return shots;
    }
+   public Card getCard() {
+	return card;
+   }
    
    //Setters
 
+   public void setCard(Card card) {
+		this.card = card;
+	}
+   
    public void setExtraParts(ArrayList<Part> extraParts) {
 		this.extraParts = extraParts;
 	}

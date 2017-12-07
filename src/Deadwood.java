@@ -39,7 +39,7 @@ public class Deadwood{
 	  for(int i = 2; i < rooms.size(); i++) {
 		  Random randomGenerator = new Random();
 		  int randomInt = randomGenerator.nextInt(cards.size());
-		  rooms.get(i).setCard(cards.get(randomInt));
+		  ((Scene)rooms.get(i)).setCard(cards.get(randomInt));
 	  }
 
 	//Creating board GUI component
@@ -60,7 +60,10 @@ public class Deadwood{
      board = new Board(rooms, players);
      turn = 0;
 
-     while(!board.isGameOver()){
+     //Start the first turn
+     players.get(turn).takeTurn(board, players);
+     
+     while(!board.isGameOver()){    	 
     	//Check if the day is over
        boolean isDayOver = true;
 
@@ -77,39 +80,28 @@ public class Deadwood{
     		  for(int k = 2; k < rooms.size(); k++) {
     			  Random randomGenerator = new Random();
     			  int randomInt = randomGenerator.nextInt(cards.size());
-    			  rooms.get(k).setCard(cards.get(randomInt));
+    			  ((Scene)rooms.get(k)).setCard(cards.get(randomInt));
     		  }
     		  GUIBoard.startDay();
     		  board.nextDay(players);
        }
-
-      //Loop the game steps
-       System.out.println("Current turn: " + players.get(turn).getName());
-       players.get(turn).takeTurn(board, players, turn);
-       turn++;
-       turn %= players.size();
      }
    }
 
 	 public static void printCommands(){
 		 //List commands
-		 String[] instructionsLeftSide = new String[]{"The commands for the game are as follows: \nwho --- ", "where --- ", "move --- ", "work --- ", "upgrade $ level --- ", "upgrade cr level --- ", "rehearse --- ", "act --- ", "end --- "};
-		 String[] instructionsRightSide = new String[]{"The software identifies the current player and any parts that the player is working.",
-				"The software describes the current players room and any active scenes.",
-				"The current player can choose a room to move to",
-				"The current player can choose a role to take",
-				"Upgrade the current player to the indicated level by paying with money",
-				"Upgrade the current player to the indicated level by paying with fame credits",
+		 String[] instructionsLeftSide = new String[]{"upgrade cr level --- ", "rehearse --- ", "act --- ", "end --- "};
+		 String[] instructionsRightSide = new String[]{"Upgrade the current player to the indicated level by paying with fame credits",
 				"The current player rehearses",
 				"The current player performs in its current role.",
 				"End the current players turn"};
 
 		 //prints the instructions to the console
 		 int i = 0;
-		 while(i < 9){
+		 while(i < 4){
 			 System.out.print(instructionsLeftSide[i]);
-				 System.out.print(instructionsRightSide[i] + "\n");
-				 i++;
+			 System.out.print(instructionsRightSide[i] + "\n");
+			 i++;
 			 }
 	   }
 

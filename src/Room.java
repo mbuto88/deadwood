@@ -2,14 +2,13 @@
 import java.util.*;
 
 public abstract class Room{
-		private Card card;
 		private String name;
 		private ArrayList<Room> nearby = new ArrayList<Room>();
 		private ArrayList<String> nearbyNames;
-		int x;
-		int y;
-		int h;
-		int w;
+		private int x;
+		private int y;
+		private int h;
+		private int w;
 
 		//Constructors
 		public Room(){
@@ -25,9 +24,7 @@ public abstract class Room{
 		}
 
 		//Getters
-		public Card getCard() {
-			return card;
-		}
+		
 		public ArrayList<String> getNearbyNames(){
 			return nearbyNames;
 		}
@@ -57,9 +54,24 @@ public abstract class Room{
 		}
 
 		//Setters
-		public void setCard(Card card) {
-			this.card = card;
+		
+
+		public void setX(int x) {
+			this.x = x;
 		}
+
+		public void setY(int y) {
+			this.y = y;
+		}
+
+		public void setH(int h) {
+			this.h = h;
+		}
+
+		public void setW(int w) {
+			this.w = w;
+		}
+
 		public void setName (String name) {
 			this.name = name;
 		}

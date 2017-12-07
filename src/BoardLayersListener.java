@@ -1,11 +1,12 @@
 
 /*
 
-   Deadwood GUI helper file
-   Author: Moushumi Sharmin
-   This file shows how to create a simple GUI using Java Swing and Awt Library
-   Classes Used: JFrame, JLabel, JButton, JLayeredPane
-
+    Deadwood GUI helper file
+    Author: Moushumi Sharmin
+    This file shows how to create a simple GUI using Java Swing and Awt Library
+    Classes Used: JFrame, JLabel, JButton, JLayeredPane
+ ********************************************
+ 	Modified by: Nick Amundsen
 */
 
 
@@ -37,13 +38,30 @@ public class BoardLayersListener extends JFrame {
   JButton bAct;
   JButton bRehearse;
   JButton bMove;
-
+  JButton bChooseRole;
+  JButton bEndTurn;
+  JButton bUpgrade;
+  
   // JLayered Pane
   JLayeredPane bPane;
+
 
   // Adds text to the game log 
   public void updateGameLog(String newEvent) {
 	  logTextArea.setText(logTextArea.getText() + "\n" + newEvent);
+  }
+  
+  // Dialogue box for taking a role, and moving the player
+  public void roleDialogoue(int x) {
+	  if (x == 1) {
+		  JOptionPane.showMessageDialog(null, "Congrats, you got the part!");
+		  playerLabels.get(Deadwood.turn).setBounds(Deadwood.players.get(Deadwood.turn).getPart().getX(), Deadwood.players.get(Deadwood.turn).getPart().getY(), 
+					 Deadwood.players.get(Deadwood.turn).getPart().getW(), Deadwood.players.get(Deadwood.turn).getPart().getH());
+	  } else  if (x == 2) {
+		  JOptionPane.showMessageDialog(null, "Rank not high enough!");
+	  } else {
+		  JOptionPane.showMessageDialog(null, "Part already taken!");
+	  }
   }
   
   // Add players to the board frame
@@ -52,13 +70,17 @@ public class BoardLayersListener extends JFrame {
 	 while (numberOfPlayers < 2 | numberOfPlayers > 8){
 		 String numberInput = (String) JOptionPane.showInputDialog("Please enter the number of players (2-8):");
 		 if (numberInput == null) {
-			 System.out.println("Thanks for playing!");
+			 JOptionPane.showMessageDialog(null, "Thanks for playing!");
 			 System.exit(0);
-		 }
-		 if (!numberInput.equals("")) {
-			 numberOfPlayers = Integer.parseInt(numberInput);
-			 if (numberOfPlayers < 2 | numberOfPlayers > 8 ) {
+		 } else {
+			 try { 
+				 numberOfPlayers = Integer.parseInt(numberInput);
+				 if (numberOfPlayers < 2 | numberOfPlayers > 8 ) {
+					 JOptionPane.showMessageDialog(null, "Number of players not allowed, please input the correct number (2-8)");
+				 	} 
+			 } catch (NumberFormatException nfe) {
 				 JOptionPane.showMessageDialog(null, "Number of players not allowed, please input the correct number (2-8)");
+				 numberOfPlayers = 10;
 			 }
 		 }
 	 }
@@ -68,7 +90,7 @@ public class BoardLayersListener extends JFrame {
 		 while (name.equals("")) {
 			 name = JOptionPane.showInputDialog("Please enter the name for player "+ (count+1) +":");
 			 if (name == null) {
-				 System.out.println("Thanks for playing!");
+				 JOptionPane.showMessageDialog(null, "Thanks for playing!");
 				 System.exit(0);
 			 }
 		 }
@@ -92,7 +114,7 @@ public class BoardLayersListener extends JFrame {
    	   String dicePathName = "../dice/" + dice[playerNumber] + ".png";
    	   ImageIcon pIcon = new ImageIcon(dicePathName);
    	   playerLabel.setIcon(pIcon);
-   	   playerLabel.setBounds(Deadwood.rooms.get(0).getX() + offsetX, Deadwood.rooms.get(0).getY() + offsetY, Deadwood.rooms.get(0).getW(), Deadwood.rooms.get(0).getH());
+   	   playerLabel.setBounds(Deadwood.rooms.get(0).getX() + offsetX, Deadwood.rooms.get(0).getY() + offsetY, 40, 40);
    	   bPane.add(playerLabel,new Integer(3));
        playerLabels.add(playerLabel);
 
@@ -100,29 +122,31 @@ public class BoardLayersListener extends JFrame {
   }
   
   //Display the current turn information
-  public void currentTurn(Player player, int turnNumber) {
+  public void currentTurn(Player player) {
 	  String playerName = player.getName();
 	  String playerMoney = Integer.toString(player.getMoney());
 	  String playerFame = Integer.toString(player.getFame());
 	  String playerLocation = player.getLocation().getName();
-	  String currentPart = player.currentPart.name;
-	  if (currentPart == null) {
-          currentPart = "none";
-       } 
+	  String part;
+	  if (player.getPart() != null) {
+          part = player.getPart().name;
+       } else {
+     	 part = "none";
+       }
 	  playerInfoTextArea.setText("Current player info:\n"
-	  		+ "Name :" + playerName +"\n"
+	  		+ "Name: " + playerName +"\n"
 	  				+ "Money: " + playerMoney + "\n"
 	  						+ "Fame: " + playerFame + "\n"
-	  								+ "Current Location: " + playerLocation + "\n"
-	  										+ "Current Part: " + currentPart);
-  }
+	  								+ "Location: " + playerLocation + "\n"
+	  										+ "Part: " + part);
+	  }
   
   // Add cards and shot markers to board
   public void startDay () {
 	// Add scene cards to the rooms
       for (int i = 2; i < Deadwood.rooms.size(); i++) {
    	   JLabel cardLabel = new JLabel();
-   	   String cardPathName = "../cards/" + Deadwood.rooms.get(i).getCard().getImg();
+   	   String cardPathName = "../cards/" + ((Scene)Deadwood.rooms.get(i)).getCard().getImg();
           ImageIcon cIcon =  new ImageIcon(cardPathName);
           cardLabel.setIcon(cIcon);
           cardLabel.setBounds(Deadwood.rooms.get(i).getX(),Deadwood.rooms.get(i).getY(),Deadwood.rooms.get(i).getW(),Deadwood.rooms.get(i).getH());
@@ -184,7 +208,7 @@ public class BoardLayersListener extends JFrame {
        
        logTextArea = new JTextArea();
        logTextArea.setEditable(false);
-       logTextArea.setText("Game log:\n");
+       logTextArea.setText("Game log:");
        logSPane = new JScrollPane(logTextArea);
        logSPane.setBounds(icon.getIconWidth()+10, 120, 250, 200);
        logSPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
@@ -202,25 +226,41 @@ public class BoardLayersListener extends JFrame {
        
        bAct = new JButton("ACT");
        bAct.setBackground(Color.white);
-       bAct.setBounds(icon.getIconWidth()+10, 30, 100, 20);
+       bAct.setBounds(icon.getIconWidth()+10, 30, 120, 20);
        bAct.addMouseListener(new boardMouseListener());
 
        bRehearse = new JButton("REHEARSE");
        bRehearse.setBackground(Color.white);
-       bRehearse.setBounds(icon.getIconWidth()+10, 60, 100, 20);
+       bRehearse.setBounds(icon.getIconWidth()+10, 60, 120, 20);
        bRehearse.addMouseListener(new boardMouseListener());
 
        bMove = new JButton("MOVE");
        bMove.setBackground(Color.white);
-       bMove.setBounds(icon.getIconWidth()+10, 90, 100, 20);
+       bMove.setBounds(icon.getIconWidth()+10, 90, 120, 20);
        bMove.addMouseListener(new boardMouseListener());
 
+       bChooseRole = new JButton("CHOOSE PART");
+       bChooseRole.setBackground(Color.white);
+       bChooseRole.setBounds(icon.getIconWidth()+120, 30, 120, 20);
+       bChooseRole.addMouseListener(new boardMouseListener());
 
+       bEndTurn = new JButton("END TURN");
+       bEndTurn.setBackground(Color.white);
+       bEndTurn.setBounds(icon.getIconWidth()+120, 60, 120, 20);
+       bEndTurn.addMouseListener(new boardMouseListener());
+       
+       bUpgrade = new JButton("UPGRADE");
+       bUpgrade.setBackground(Color.white);
+       bUpgrade.setBounds(icon.getIconWidth()+120, 90, 120, 20);
+       bUpgrade.addMouseListener(new boardMouseListener());
        // Place the action buttons in the top layer
        
        bPane.add(bAct, new Integer(2));
        bPane.add(bRehearse, new Integer(2));
        bPane.add(bMove, new Integer(2));
+       bPane.add(bChooseRole, new Integer(2));
+       bPane.add(bEndTurn, new Integer(2));
+       bPane.add(bUpgrade, new Integer(2));
   }
 
   // This class implements Mouse Events
@@ -236,20 +276,82 @@ public class BoardLayersListener extends JFrame {
          else if (e.getSource()== bRehearse){
             System.out.println("Rehearse is Selected\n");
          }
+         
+         //	Move command that moves the player
+         
          else if (e.getSource()== bMove){
-        	 ArrayList<String> adjLocations = Deadwood.players.get(Deadwood.turn).getLocation().getNearbyNames();
-        	 String moveLocation = (String)JOptionPane.showInputDialog(
-        	                     null,
-        	                     "Please select where to move: ",
-        	                     null, JOptionPane.PLAIN_MESSAGE,
-        	                     null,
-        	                     adjLocations.toArray(),
-        	                     adjLocations.get(0));
+        	 if (Deadwood.players.get(Deadwood.turn).canMove() && Deadwood.players.get(Deadwood.turn).getPart() == null) {
+        		 ArrayList<String> adjLocations = Deadwood.players.get(Deadwood.turn).getLocation().getNearbyNames();
+        		 String moveLocation = (String)JOptionPane.showInputDialog(
+        				 null,
+        				 "Please select where to move: ",
+        				 null, JOptionPane.PLAIN_MESSAGE,
+        				 null,
+        				 adjLocations.toArray(),
+        				 adjLocations.get(0));
         	
-        	Deadwood.players.get(Deadwood.turn).move(moveLocation);
-        	Deadwood.GUIBoard.currentTurn(Deadwood.players.get(Deadwood.turn), Deadwood.turn);
-            Deadwood.GUIBoard.updateGameLog(Deadwood.players.get(Deadwood.turn).getName() + " has moved to " + moveLocation);
+        		 Deadwood.players.get(Deadwood.turn).move(moveLocation);
+        		 //Deadwood.players.get(Deadwood.turn).setCanMove(false);
+        		 playerLabels.get(Deadwood.turn).setBounds(Deadwood.players.get(Deadwood.turn).getLocation().getX()+(40 * Deadwood.turn), Deadwood.players.get(Deadwood.turn).getLocation().getY()+120, 40, 40);
+        		 Deadwood.GUIBoard.currentTurn(Deadwood.players.get(Deadwood.turn));
+        		 Deadwood.GUIBoard.updateGameLog(Deadwood.players.get(Deadwood.turn).getName() + " has moved to " + moveLocation);
+        	 } 
+        	 else if (Deadwood.players.get(Deadwood.turn).getPart() != null) {
+        		 JOptionPane.showMessageDialog(null, "You are working a part!");
+        	 }
+        	 else {
+        		 JOptionPane.showMessageDialog(null, "You already moved this turn!");
+        	 }
          }
+         
+         // Take role command that can give the player a role if eligible 
+         
+         else if (e.getSource()== bChooseRole){
+        	 if (Deadwood.players.get(Deadwood.turn).canTakeRole() &&! Deadwood.players.get(Deadwood.turn).getLocation().equals(Deadwood.rooms.get(0)) &&! Deadwood.players.get(Deadwood.turn).getLocation().equals(Deadwood.rooms.get(1))) {        
+        		 ArrayList<Part> extraParts = ((Scene)Deadwood.players.get(Deadwood.turn).getLocation()).getExtraParts();
+        		 ArrayList<Part> mainParts = ((Scene)Deadwood.players.get(Deadwood.turn).getLocation()).getCard().getParts();
+        		 ArrayList<String> availableParts = new ArrayList<String>();
+        		 for (int i = 0; i < extraParts.size(); i++) {
+        			 availableParts.add(extraParts.get(i).name);
+        		 }
+        		 for (int k = 0; k < mainParts.size(); k++) {
+        			 availableParts.add(mainParts.get(k).name);
+        		 }
+        		 String partSelection = (String)JOptionPane.showInputDialog(
+        				 null,
+        				 "Please select where to move: ",
+        				 null, JOptionPane.PLAIN_MESSAGE,
+        				 null,
+        				 availableParts.toArray(),
+        				 availableParts.get(0));
+        		 if (partSelection != null) {
+        			 Deadwood.players.get(Deadwood.turn).takeRole(partSelection, Deadwood.players);
+            		 Deadwood.GUIBoard.currentTurn(Deadwood.players.get(Deadwood.turn));
+        		 }
+        	 } 
+        	 else if (Deadwood.players.get(Deadwood.turn).getLocation().equals(Deadwood.rooms.get(0))){
+        		 JOptionPane.showMessageDialog(null, "You are in the trailer!");
+        	 } 
+        	 else if (Deadwood.players.get(Deadwood.turn).getLocation().equals(Deadwood.rooms.get(1))) {
+        		 JOptionPane.showMessageDialog(null, "You are in the office!");
+        	 } 
+        	 else if (Deadwood.players.get(Deadwood.turn).getPart() != null) {
+        		 JOptionPane.showMessageDialog(null, "You are working a part!");
+        	 }
+        	 else {
+        		 JOptionPane.showMessageDialog(null, "You already took a role this turn!");
+        	 } 
+         }
+         else if (e.getSource()== bEndTurn){
+        	 Deadwood.players.get(Deadwood.turn).setOver(true);
+        	 Deadwood.turn++;
+             Deadwood.turn %= Deadwood.players.size();
+             Deadwood.players.get(Deadwood.turn).takeTurn(Deadwood.board, Deadwood.players);
+             
+         }
+         else if (e.getSource()== bUpgrade){
+             System.out.println("upgrade this bitch\n");
+        }
       }
       
       public void mousePressed(MouseEvent e) {

@@ -9,9 +9,12 @@ public class Player{
     private int rank;
     private int rehearsalMarkers;
     private Scene currentScene;
-    public Part currentPart;
+    private Part currentPart;
     private boolean onCard;
     private boolean mayUpgrade;
+    private boolean over;
+    private boolean canMove;
+    private boolean canTakeRole = true;
 
     //Constructors
     Player(){
@@ -36,11 +39,24 @@ public class Player{
     }
 
     //Getters
+    
     public String getName(){
         return name;
     }
 
-    public int getFame(){
+    public boolean isOver() {
+		return over;
+	}
+
+	public boolean canMove() {
+		return canMove;
+	}
+
+	public boolean canTakeRole() {
+		return canTakeRole;
+	}
+
+	public int getFame(){
       return fame;
     }
 
@@ -78,7 +94,12 @@ public class Player{
     public void setPart(Part part){
       this.currentPart = part;
     }
-
+    public void setOver(boolean over) {
+    	this.over = over;
+    }
+    public void setCanMove(boolean canMove) {
+    	this.canMove = canMove;
+    }
     private int spendMoney(int spendAmount){
       if(spendAmount > this.money){
         System.out.println("Insufficient funds. Please try a smaller amount");
@@ -124,180 +145,177 @@ public class Player{
     }
 
     //Other Methods
-    public void takeTurn(Board b, ArrayList<Player> players, int playerNumber){
-      boolean over = false;
-      Scanner sc = new Scanner(System.in);
-      boolean canMove = true;
-      boolean canTakeRole = true;
-      String input;
-      Deadwood.GUIBoard.currentTurn(this, playerNumber);
-      while (!over) {
-         if (currentPart == null) {
-            input = sc.nextLine();
-            //It's a secret to everybody
-            if (input.equals("flip board")){
-               System.exit(0);
-            }
-            switch (input.toLowerCase()){
-               case "who":
-                  System.out.println("Name: " + name + " $" + money + " Fame:" + fame);
-                  if (currentPart != null) {
-                     System.out.print("Current Part: " + currentPart.getPartName());
-                  } else {
-                	 System.out.print("No Current part");
-                  }
-                  System.out.println();
-                  break;
+    public void takeTurn(Board b, ArrayList<Player> players){
+      over = false;
+      canMove = true;
+      Deadwood.GUIBoard.currentTurn(this);
+//      while (!over) {
+//         if (currentPart == null) {
+//            input = sc.nextLine();
+//            //It's a secret to everybody
+//            if (input.equals("flip board")){
+//               System.exit(0);
+//            }
 
-               case "where":
-                  System.out.println("Currently located in " + location.getName());
-                  //System.out.println("Nearby rooms: " +  location.getNearbyNames());
-                  if (location instanceof Scene) {
-                     System.out.println("Scene currently shooting: " + ((Scene)location).getCard().showName());
-                  } else {
-                	  System.out.println("No current Scene worked");
-                  }
-                  break;
-
-               case "move":
-                  if (canMove) {
-                     System.out.println("What room do you want to move to?");
-                     System.out.print("Current nearby rooms are: ");
-
-                     //Prints out rooms available to be moved to
-                     for (Room r : location.getNearby()) {
-                        System.out.print(r.getName() + "   ");
-                     }
-                     System.out.println();
-                     input = sc.nextLine();
-
-                     //Tries to move, and checks to see if you succeeded
-                     Room oldLocation = location;
-                     move(input);
-                     if (oldLocation != location) {
-                        canMove = false;
-                     }
-                     else
-                     {
-                        System.out.println("Something went wrong, try again!");
-                     }
-                  }
-                  else {
-                     System.out.println("You've already moved this turn!");
-                  }
-                  break;
-
-               case "work":
-                  if (canTakeRole) {
-                     if (currentScene != null && !currentScene.isOver()) {
-                        if (location instanceof Scene) {
-                           System.out.println("What role would you like to take?");
-                           System.out.print("On card roles: ");
-                           for (Part p : ((Scene)location).getCard().getParts()) {
-                              boolean isTaken = false;
-                              for (Player pl : players) {
-                                 if (pl.getPart() == p){
-                                    isTaken = true;
-                                 }
-                              }
-                              if (!isTaken){
-                                 System.out.print(p.getPartName() + " (" + p.getLevel() + ")   ");
-                              }
-                           }
-
-                           System.out.println();
-                           System.out.print("Off card roles: ");
-                           for (Part p : ((Scene)location).getExtraParts()) {
-                              boolean isTaken = false;
-                              for (Player pl : players) {
-                                 if (pl.getPart() == p){
-                                    isTaken = true;
-                                 }
-                              }
-                              if (!isTaken){
-                                 System.out.print(p.getPartName() + " (" + p.getLevel() + ")   ");
-                              }
-                           }
-                           System.out.println();
-
-                           input = sc.nextLine();
-                           Part oldPart = currentPart;
-                           takeRole(input, players);
-                           if (oldPart != currentPart){
-                              canTakeRole = false;
-                           }
-                           else {
-                              System.out.println("Something went wrong, try again!");
-                           }
-                        }
-                        else {
-                           System.out.println("Sorry, you can't do that here! Try moving to a scene.");
-                        }
-                     }
-                     else {
-                        System.out.println("This scene has already wrapped");
-                     }
-                  }
-                  break;
-               case "end":
-                  over = true;
-                  break;
-               case "upgrade $":
-                  if (location instanceof CastingOffice){
-                     System.out.println("What level would you like to upgrade to?");
-                     String answer = sc.nextLine();
-                     try{
-                        int level = Integer.parseInt(answer);
-                        ((CastingOffice)location).raiseRank(this, "dollar", level);
-                     }
-                     catch (Exception e){
-                        System.out.println("Could not parse input, try again");
-                     }
-
-                  }
-                  break;
-               case "upgrade cr":
-                  if (location instanceof CastingOffice){
-                     System.out.println("What level would you like to upgrade to?");
-                     String answer = sc.nextLine();
-                     try{
-                        int level = Integer.parseInt(answer);
-                        ((CastingOffice)location).raiseRank(this, "credit", level);
-                     }
-                     catch (Exception e){
-                        System.out.println("Could not parse input, try again");
-                     }
-
-                  }
-                  break;
-               case "help":
-                  Deadwood.printCommands();
-                  break;
-               default:
-                  System.out.println("Couldn't understand input. Please try again.");
-                  break;
-            }
-         }
-         else {
-            System.out.println("Do you want to act or rehearse for your part " + currentPart.getPartName() + "?");
-            System.out.println("You have " + rehearsalMarkers + " rehearsal markers and need to roll at least a " + currentScene.getCard().getBudget());
-            input = sc.nextLine();
-            switch (input.toLowerCase()) {
-               case "act":
-                  act(b,players);
-                  over = true;
-                  break;
-
-               case "rehearse":
-                  over = rehearse();
-                  break;
-
-               default:
-                  System.out.println("Couldn't understand input. Please try again.");
-                  break;
-            }
-         }
-      }
+//               case "who":
+//                  System.out.println("Name: " + name + " $" + money + " Fame:" + fame);
+//                  if (currentPart != null) {
+//                     System.out.print("Current Part: " + currentPart.getPartName());
+//                  } else {
+//                	 System.out.print("No Current part");
+//                  }
+//                  System.out.println();
+//                  break;
+//
+//               case "where":
+//                  System.out.println("Currently located in " + location.getName());
+//                  //System.out.println("Nearby rooms: " +  location.getNearbyNames());
+//                  if (location instanceof Scene) {
+//                     System.out.println("Scene currently shooting: " + ((Scene)location).getCard().showName());
+//                  } else {
+//                	  System.out.println("No current Scene worked");
+//                  }
+//                  break;
+//
+//               case "move":
+//                  if (canMove) {
+//                     System.out.println("What room do you want to move to?");
+//                     System.out.print("Current nearby rooms are: ");
+//
+//                     //Prints out rooms available to be moved to
+//                     for (Room r : location.getNearby()) {
+//                        System.out.print(r.getName() + "   ");
+//                     }
+//                     System.out.println();
+//                     input = sc.nextLine();
+//
+//                     //Tries to move, and checks to see if you succeeded
+//                     Room oldLocation = location;
+//                     move(input);
+//                     if (oldLocation != location) {
+//                        canMove = false;
+//                     }
+//                     else
+//                     {
+//                        System.out.println("Something went wrong, try again!");
+//                     }
+//                  }
+//                  else {
+//                     System.out.println("You've already moved this turn!");
+//                  }
+//                  break;
+//
+//               case "work":
+//                  if (canTakeRole) {
+//                     if (currentScene != null && !currentScene.isOver()) {
+//                        if (location instanceof Scene) {
+//                           System.out.println("What role would you like to take?");
+//                           System.out.print("On card roles: ");
+//                           for (Part p : ((Scene)location).getCard().getParts()) {
+//                              boolean isTaken = false;
+//                              for (Player pl : players) {
+//                                 if (pl.getPart() == p){
+//                                    isTaken = true;
+//                                 }
+//                              }
+//                              if (!isTaken){
+//                                 System.out.print(p.getPartName() + " (" + p.getLevel() + ")   ");
+//                              }
+//                           }
+//
+//                           System.out.println();
+//                           System.out.print("Off card roles: ");
+//                           for (Part p : ((Scene)location).getExtraParts()) {
+//                              boolean isTaken = false;
+//                              for (Player pl : players) {
+//                                 if (pl.getPart() == p){
+//                                    isTaken = true;
+//                                 }
+//                              }
+//                              if (!isTaken){
+//                                 System.out.print(p.getPartName() + " (" + p.getLevel() + ")   ");
+//                              }
+//                           }
+//                           System.out.println();
+//
+//                           input = sc.nextLine();
+//                           Part oldPart = currentPart;
+//                           takeRole(input, players);
+//                           if (oldPart != currentPart){
+//                              canTakeRole = false;
+//                           }
+//                           else {
+//                              System.out.println("Something went wrong, try again!");
+//                           }
+//                        }
+//                        else {
+//                           System.out.println("Sorry, you can't do that here! Try moving to a scene.");
+//                        }
+//                     }
+//                     else {
+//                        System.out.println("This scene has already wrapped");
+//                     }
+//                  }
+//                  break;
+//               case "end":
+//                  over = true;
+//                  break;
+//               case "upgrade $":
+//                  if (location instanceof CastingOffice){
+//                     System.out.println("What level would you like to upgrade to?");
+//                     String answer = sc.nextLine();
+//                     try{
+//                        int level = Integer.parseInt(answer);
+//                        ((CastingOffice)location).raiseRank(this, "dollar", level);
+//                     }
+//                     catch (Exception e){
+//                        System.out.println("Could not parse input, try again");
+//                     }
+//
+//                  }
+//                  break;
+//               case "upgrade cr":
+//                  if (location instanceof CastingOffice){
+//                     System.out.println("What level would you like to upgrade to?");
+//                     String answer = sc.nextLine();
+//                     try{
+//                        int level = Integer.parseInt(answer);
+//                        ((CastingOffice)location).raiseRank(this, "credit", level);
+//                     }
+//                     catch (Exception e){
+//                        System.out.println("Could not parse input, try again");
+//                     }
+//
+//                  }
+//                  break;
+//               case "help":
+//                  Deadwood.printCommands();
+//                  break;
+//               default:
+//                  System.out.println("Couldn't understand input. Please try again.");
+//                  break;
+//            }
+//         }
+//         else {
+//            System.out.println("Do you want to act or rehearse for your part " + currentPart.getPartName() + "?");
+//            System.out.println("You have " + rehearsalMarkers + " rehearsal markers and need to roll at least a " + currentScene.getCard().getBudget());
+//            input = sc.nextLine();
+//            switch (input.toLowerCase()) {
+//               case "act":
+//                  act(b,players);
+//                  over = true;
+//                  break;
+//
+//               case "rehearse":
+//                  over = rehearse();
+//                  break;
+//
+//               default:
+//                  System.out.println("Couldn't understand input. Please try again.");
+//                  break;
+//            }
+//         }
+//      }
     }
 
     private void act(Board b, ArrayList<Player> players){
@@ -382,11 +400,10 @@ public class Player{
       for(Room r : location.getNearby()) {
          if (s.toLowerCase().equals(r.getName().toLowerCase())){
             location = r;
-            System.out.println("Moved to " + r.getName());
             if(r.getName().toLowerCase().equals("office")){
-              this.mayUpgrade = true;
+              mayUpgrade = true;
             } else {
-              this.mayUpgrade = false;
+              mayUpgrade = false;
             }
             if(r instanceof Scene){
                currentScene = (Scene)r;
@@ -394,11 +411,12 @@ public class Player{
             else {
                currentScene = null;
             }
+            canMove = false;
          }
       }
     }
 
-    private void takeRole(String s, ArrayList<Player> players){
+    public void takeRole(String s, ArrayList<Player> players){
       //Check each part and match it to the provided string setting it to the selected part if they match
       for(Part p : currentScene.getCard().getParts()) {
          boolean isTaken = false;
@@ -411,39 +429,41 @@ public class Player{
             if (s.toLowerCase().equals(p.getPartName().toLowerCase())) {
                if (rank >= p.getLevel()){
                   currentPart = p;
-                  System.out.println("Part " + p.getPartName() + " taken!");
+                  Deadwood.GUIBoard.roleDialogoue(1);
+                  canTakeRole = false;
                   onCard = true;
                }
                else {
-                  System.out.println("You're not a high enough rank to take that role yet!");
+            	   Deadwood.GUIBoard.roleDialogoue(2);
                }
             }
+         }
+         else if (isTaken == true && s.toLowerCase().equals(p.getPartName().toLowerCase())) {
+        	 Deadwood.GUIBoard.roleDialogoue(3);               
          }
       }
       for(Part p: ((Scene)location).getExtraParts()){
          boolean isTaken = false;
             for (Player pl : players) {
                if (pl.getPart() == p){
-                  isTaken = true;
+                  isTaken = true;                  
                }
             }
             if (!isTaken){
                if (s.toLowerCase().equals(p.getPartName().toLowerCase())) {
                if (rank >= p.getLevel()){
                   currentPart = p;
-                  System.out.println("Part " + p.getPartName() + " taken!");
+                  Deadwood.GUIBoard.roleDialogoue(1);
+                  canTakeRole = false;
                   onCard = true;
                }
                else {
-                  System.out.println("You're not a high enough rank to take that role yet!");
+            	   Deadwood.GUIBoard.roleDialogoue(2);
                }
             }
+         } else if (isTaken == true && s.toLowerCase().equals(p.getPartName().toLowerCase())) {
+        	 Deadwood.GUIBoard.roleDialogoue(3);               
          }
       }
     }
-
-    /*private void draw(){
-      //for Assignment 3
-    }*/
-
 }
