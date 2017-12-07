@@ -12,10 +12,10 @@ public class Trailers extends Room {
 
    public Trailers(int day, int x, int y, int h, int w){
       this.currentDay = day;
-      this.x = x;
-      this.y = y;
-      this.w = h;
-      this.h = w;
+      this.setX(x);
+      this.setY(y);
+      this.setH(h);
+      this.setW(w);
    }
 
    //Getters

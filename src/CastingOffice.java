@@ -14,10 +14,10 @@ public class CastingOffice extends Room {
 
 	 public CastingOffice( ArrayList<Upgrade> upgradeList, int x, int y, int h, int w) {
 		 this.upgrades = upgradeList;
-		 this.x = x;
-		 this.y = y;
-		 this.h = h;
-		 this.w = w;
+		 this.setX(x);
+		 this.setY(y);
+		 this.setH(h);
+		 this.setW(w);
    }
 
    //Upgrade rank method
