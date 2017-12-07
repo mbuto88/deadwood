@@ -52,16 +52,67 @@ public class BoardLayersListener extends JFrame {
   }
   
   // Dialogue box for taking a role, and moving the player
-  public void roleDialogoue(int x) {
+  public void roleDialogue(int x) {
 	  if (x == 1) {
 		  JOptionPane.showMessageDialog(null, "Congrats, you got the part!");
 		  playerLabels.get(Deadwood.turn).setBounds(Deadwood.players.get(Deadwood.turn).getPart().getX(), Deadwood.players.get(Deadwood.turn).getPart().getY(), 
 					 Deadwood.players.get(Deadwood.turn).getPart().getW(), Deadwood.players.get(Deadwood.turn).getPart().getH());
-	  } else  if (x == 2) {
+		  this.updateGameLog(Deadwood.players.get(Deadwood.turn).getName());
+	  } 
+	  else  if (x == 2) {
 		  JOptionPane.showMessageDialog(null, "Rank not high enough!");
-	  } else {
+	  } 
+	  else {
 		  JOptionPane.showMessageDialog(null, "Part already taken!");
 	  }
+  }
+  
+  //Dialogue box for rehearsing a part
+  public void rehearseDialogue(int x) {
+	  if (x == 1) {
+		  JOptionPane.showMessageDialog(null, "You now have " + Deadwood.players.get(Deadwood.turn).getRehearsalMarkers() + " Reahearsal Markers!");
+		  Deadwood.GUIBoard.currentTurn(Deadwood.players.get(Deadwood.turn));
+	  } 
+	  else  if (x == 2) {
+		  JOptionPane.showMessageDialog(null, "You don't have a part yet!");
+	  } 
+	  else {
+		  JOptionPane.showMessageDialog(null, "You already have enough Rehearsal Markers!");
+	  }
+  }
+ 
+  //Dialogue box for acting out a part
+  public void actingDialogue(int x) {
+	  if (x == 1) {
+		  JOptionPane.showMessageDialog(null, "You need to roll a " + Deadwood.players.get(Deadwood.turn).getScene().getCard().getBudget() + " or higher to advance");
+	  } 
+	  else  if (x == 2) {
+		  JOptionPane.showMessageDialog(null, "Acting successful!");
+		  Deadwood.GUIBoard.currentTurn(Deadwood.players.get(Deadwood.turn));
+	  } 
+	  else  if (x == 3) {
+		  JOptionPane.showMessageDialog(null, "Scene completed!");
+		  Deadwood.GUIBoard.currentTurn(Deadwood.players.get(Deadwood.turn));
+	  } 
+	  else  if (x == 4) {
+		  JOptionPane.showMessageDialog(null, "Time for the wrap bonus!");
+		  Deadwood.GUIBoard.currentTurn(Deadwood.players.get(Deadwood.turn));
+	  } 
+	  else  if (x == 5) {
+		  JOptionPane.showMessageDialog(null, "End of your turn!");
+		  Deadwood.players.get(Deadwood.turn).setOver(true);
+		  Deadwood.turn++;
+          Deadwood.turn %= Deadwood.players.size();
+          Deadwood.players.get(Deadwood.turn).takeTurn(Deadwood.board, Deadwood.players);
+	  }
+	  else {
+		  JOptionPane.showMessageDialog(null, "Acting failed, try again next time!");
+		  JOptionPane.showMessageDialog(null, "End of your turn!");
+		  Deadwood.players.get(Deadwood.turn).setOver(true);
+		  Deadwood.turn++;
+          Deadwood.turn %= Deadwood.players.size();
+          Deadwood.players.get(Deadwood.turn).takeTurn(Deadwood.board, Deadwood.players);
+	  } 
   }
   
   // Add players to the board frame
@@ -127,6 +178,8 @@ public class BoardLayersListener extends JFrame {
 	  String playerMoney = Integer.toString(player.getMoney());
 	  String playerFame = Integer.toString(player.getFame());
 	  String playerLocation = player.getLocation().getName();
+	  String playerRank = Integer.toString(player.getRank());
+	  String rehearsalMarkers = Integer.toString(player.getRehearsalMarkers());
 	  String part;
 	  if (player.getPart() != null) {
           part = player.getPart().name;
@@ -138,7 +191,9 @@ public class BoardLayersListener extends JFrame {
 	  				+ "Money: " + playerMoney + "\n"
 	  						+ "Fame: " + playerFame + "\n"
 	  								+ "Location: " + playerLocation + "\n"
-	  										+ "Part: " + part);
+	  										+ "Part: " + part + "\n"
+	  												+ "Rank: " + playerRank + "\n"
+	  														+ "Rehearsal markers: " + rehearsalMarkers);
 	  }
   
   // Add cards and shot markers to board
@@ -269,12 +324,32 @@ public class BoardLayersListener extends JFrame {
 
       // Code for the different button clicks
       public void mouseClicked(MouseEvent e) {
-
+    	  
+    	 // Act command to act out a scene
+    	  
          if (e.getSource()== bAct){
-            System.out.println("Acting is Selected\n");
+        	 if (Deadwood.players.get(Deadwood.turn).canAct()) {
+        		 Deadwood.players.get(Deadwood.turn).act(Deadwood.board, Deadwood.players);       		 
+        	 } 
+        	 else if (Deadwood.players.get(Deadwood.turn).getPart() == null) {
+        		 JOptionPane.showMessageDialog(null, "You dont have a part!");
+        	 } else {
+        		 JOptionPane.showMessageDialog(null, "Wait until next turn!");
+        	 }
          }
+         
+         // Rehearse command to rehearse a scene
+         
          else if (e.getSource()== bRehearse){
-            System.out.println("Rehearse is Selected\n");
+            if (Deadwood.players.get(Deadwood.turn).canAct()) {
+            	Deadwood.players.get(Deadwood.turn).rehearse();
+            } 
+            else if (Deadwood.players.get(Deadwood.turn).getPart() == null) {
+       		 JOptionPane.showMessageDialog(null, "You dont have a part!");
+            }
+            else {
+       		 JOptionPane.showMessageDialog(null, "Wait until next turn!");
+       	 	}
          }
          
          //	Move command that moves the player

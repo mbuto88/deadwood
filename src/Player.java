@@ -15,6 +15,8 @@ public class Player{
     private boolean over;
     private boolean canMove;
     private boolean canTakeRole = true;
+    private boolean canAct;
+
 
     //Constructors
     Player(){
@@ -44,7 +46,15 @@ public class Player{
         return name;
     }
 
-    public boolean isOver() {
+    public boolean canAct() {
+		return canAct;
+	}
+
+	public int getRehearsalMarkers() {
+		return rehearsalMarkers;
+	}
+
+	public boolean isOver() {
 		return over;
 	}
 
@@ -85,6 +95,10 @@ public class Player{
     }
 
     //Setters
+    
+    public void setCanAct(boolean canAct) {
+		this.canAct = canAct;
+	}
     public void setRoom(Room room){
         location = room;
     }
@@ -146,6 +160,11 @@ public class Player{
 
     //Other Methods
     public void takeTurn(Board b, ArrayList<Player> players){
+      if (currentPart != null) {
+    	  canAct = true;
+      } else {
+    	  canAct = false;
+      }
       over = false;
       canMove = true;
       Deadwood.GUIBoard.currentTurn(this);
@@ -318,15 +337,15 @@ public class Player{
 //      }
     }
 
-    private void act(Board b, ArrayList<Player> players){
-      System.out.println("You need to roll a " + currentScene.getCard().getBudget() + " or higher to advance");
+    public void act(Board b, ArrayList<Player> players){
+      Deadwood.GUIBoard.actingDialogue(1);
       int roll = b.rollDice();
       boolean successful = (currentScene.getCard().getBudget() <= rehearsalMarkers + roll);
       if (successful){
-         System.out.println("Acting successful!");
+    	  Deadwood.GUIBoard.actingDialogue(2);
          currentScene.completeTake();
          if (currentScene.isOver()){
-            System.out.println("Scene completed!");
+        	 Deadwood.GUIBoard.actingDialogue(3);
             boolean isWrapBonus = false;
             for (Player p : players){
                if (p.getScene() == this.currentScene){
@@ -338,7 +357,7 @@ public class Player{
                }
             }
             if (isWrapBonus) {
-               System.out.println("Time for the wrap bonus!");
+               Deadwood.GUIBoard.actingDialogue(4);
                ArrayList<Integer> rolls = new ArrayList<Integer>();
                for (int i = 1; i <= currentScene.getCard().getBudget(); i++){
                   rolls.add(b.rollDice());
@@ -370,29 +389,28 @@ public class Player{
          }
       }
       else {
-         System.out.println("Acting failed, try again next time!");
+    	  Deadwood.GUIBoard.actingDialogue(10);
       }
       if (currentScene != null){
          int[] result = currentScene.getCard().payout(onCard, successful);
          fame += result[0];
          money += result[1];
       }
+      Deadwood.GUIBoard.actingDialogue(5);
+      canAct = false;
     }
 
-    private boolean rehearse(){
+    public void rehearse(){
       if (currentPart != null && rehearsalMarkers < currentScene.getCard().getBudget())
       {
          rehearsalMarkers++;
-         System.out.println("You now have " + rehearsalMarkers + " Reahearsal Markers!");
-         return true;
+         Deadwood.GUIBoard.rehearseDialogue(1);
       }
       else if (currentPart == null){
-         System.out.println("You don't have a part yet!");
-         return false;
+    	 Deadwood.GUIBoard.rehearseDialogue(2);
       }
       else {
-         System.out.println("You already have enough Rehearsal Markers!");
-         return false;
+    	 Deadwood.GUIBoard.rehearseDialogue(3);
       }
     }
 
@@ -429,17 +447,17 @@ public class Player{
             if (s.toLowerCase().equals(p.getPartName().toLowerCase())) {
                if (rank >= p.getLevel()){
                   currentPart = p;
-                  Deadwood.GUIBoard.roleDialogoue(1);
+                  Deadwood.GUIBoard.roleDialogue(1);
                   canTakeRole = false;
                   onCard = true;
                }
                else {
-            	   Deadwood.GUIBoard.roleDialogoue(2);
+            	   Deadwood.GUIBoard.roleDialogue(2);
                }
             }
          }
          else if (isTaken == true && s.toLowerCase().equals(p.getPartName().toLowerCase())) {
-        	 Deadwood.GUIBoard.roleDialogoue(3);               
+        	 Deadwood.GUIBoard.roleDialogue(3);               
          }
       }
       for(Part p: ((Scene)location).getExtraParts()){
@@ -453,16 +471,16 @@ public class Player{
                if (s.toLowerCase().equals(p.getPartName().toLowerCase())) {
                if (rank >= p.getLevel()){
                   currentPart = p;
-                  Deadwood.GUIBoard.roleDialogoue(1);
+                  Deadwood.GUIBoard.roleDialogue(1);
                   canTakeRole = false;
                   onCard = true;
                }
                else {
-            	   Deadwood.GUIBoard.roleDialogoue(2);
+            	   Deadwood.GUIBoard.roleDialogue(2);
                }
             }
          } else if (isTaken == true && s.toLowerCase().equals(p.getPartName().toLowerCase())) {
-        	 Deadwood.GUIBoard.roleDialogoue(3);               
+        	 Deadwood.GUIBoard.roleDialogue(3);               
          }
       }
     }
