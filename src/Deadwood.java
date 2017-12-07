@@ -10,12 +10,14 @@ for help with the ASCII art title
 import java.util.*;
 
 public class Deadwood{
-   //Player[] players;
-   Board board;
+
+   static Board board;
    static ArrayList<Player> players = new ArrayList<Player>();
    static ArrayList<Room> rooms = new ArrayList<Room>();
    static ArrayList<Card> cards = new ArrayList<Card>();
    static CastingOffice office;
+   static BoardLayersListener GUIBoard;
+   static int turn;
 
 
    public static void main(String[] args) {
@@ -41,29 +43,28 @@ public class Deadwood{
 	  }
 
 	//Creating board GUI component
-	   BoardLayersListener board = new BoardLayersListener();
-	   board.setVisible(true);
-	   board.addPlayersToFrame(8);
+	   GUIBoard = new BoardLayersListener();
+	   GUIBoard.setVisible(true);
+	   GUIBoard.addPlayers();
+	   GUIBoard.startDay();
 
      //print greeting and instructions
      printWelcome();
      }
 
    public static void printWelcome(){
-     //Ask for player names
-
-	    initializePlayers();
+     //Print commands ---REMOVE---
 			printCommands();
 
      //Construct Board
-     Board gameBoard = new Board(rooms, players);
-     int turn = 0;
+     board = new Board(rooms, players);
+     turn = 0;
 
-     while(!gameBoard.isGameOver()){
+     while(!board.isGameOver()){
     	//Check if the day is over
        boolean isDayOver = true;
 
-       for(Room r : gameBoard.getRooms()){
+       for(Room r : board.getRooms()){
          if (r instanceof Scene){
             if (!((Scene)r).isOver()){
                isDayOver = false;
@@ -78,17 +79,13 @@ public class Deadwood{
     			  int randomInt = randomGenerator.nextInt(cards.size());
     			  rooms.get(k).setCard(cards.get(randomInt));
     		  }
-      	    gameBoard.nextDay(players);
+    		  GUIBoard.startDay();
+    		  board.nextDay(players);
        }
 
       //Loop the game steps
-    	 System.out.println("Current turn: " + players.get(turn).getName());
-       players.get(turn).takeTurn(gameBoard, players);
-
-       if(players.get(turn).mayUpgrade()){
-         //ask player if they would like to upgrade
-         //if so use board method
-       }
+       System.out.println("Current turn: " + players.get(turn).getName());
+       players.get(turn).takeTurn(board, players, turn);
        turn++;
        turn %= players.size();
      }
@@ -116,16 +113,7 @@ public class Deadwood{
 			 }
 	   }
 
-   public static void initializePlayers(){
-     String name;
-     Scanner cmdLine = new Scanner(System.in);
-     System.out.println("How many people are playing today?");
-     int total = cmdLine.nextInt();
-     System.out.println("Please enter everyones names, one line at a time");
-     while(total > 0){
-       name = cmdLine.next();
+   public static void initializePlayer(String name){
        players.add(new Player(name, rooms.get(0)));
-       total--;
-     }
    }
 }

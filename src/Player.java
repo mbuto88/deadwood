@@ -9,7 +9,7 @@ public class Player{
     private int rank;
     private int rehearsalMarkers;
     private Scene currentScene;
-    private Part currentPart;
+    public Part currentPart;
     private boolean onCard;
     private boolean mayUpgrade;
 
@@ -124,12 +124,13 @@ public class Player{
     }
 
     //Other Methods
-    public void takeTurn(Board b, ArrayList<Player> players){
+    public void takeTurn(Board b, ArrayList<Player> players, int playerNumber){
       boolean over = false;
       Scanner sc = new Scanner(System.in);
       boolean canMove = true;
       boolean canTakeRole = true;
       String input;
+      Deadwood.GUIBoard.currentTurn(this, playerNumber);
       while (!over) {
          if (currentPart == null) {
             input = sc.nextLine();
@@ -377,7 +378,7 @@ public class Player{
       }
     }
 
-    private void move(String s){
+    public void move(String s){
       for(Room r : location.getNearby()) {
          if (s.toLowerCase().equals(r.getName().toLowerCase())){
             location = r;
