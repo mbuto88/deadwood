@@ -19,7 +19,10 @@ public class CastingOffice extends Room {
 		 this.setH(h);
 		 this.setW(w);
    }
-
+   
+   public ArrayList<Upgrade> getUpgrades(){
+      return upgrades;
+   }
    //Upgrade rank method
    public void raiseRank(Player player, String currency, int level){
 		 //Player must be in casting office
