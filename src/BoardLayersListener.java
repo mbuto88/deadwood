@@ -26,7 +26,8 @@ public class BoardLayersListener extends JFrame {
   JLabel boardlabel;
   ArrayList<JLabel> cardLabels = new ArrayList<JLabel>();
   ArrayList<JLabel> playerLabels = new ArrayList<JLabel>();
-  ArrayList<JLabel> takeLabels = new ArrayList<JLabel>();;
+  ArrayList<JLabel> takeLabels = new ArrayList<JLabel>();
+  ArrayList<JLabel> shotLabels = new ArrayList<JLabel>();
   JLabel mLabel;
   
   // Information text area and scroll pane
@@ -51,15 +52,55 @@ public class BoardLayersListener extends JFrame {
 	  logTextArea.setText(logTextArea.getText() + "\n" + newEvent);
   }
   
+  // Adds take markers when a shot is completed
+  public void addMarkers(int x) {
+	  if (x == 0) {
+		   JLabel shotLabel = new JLabel();
+	   	   String shotPathName = "../shot.png";
+	   	   ImageIcon sIcon = new ImageIcon(shotPathName);
+	   	   shotLabel.setIcon(sIcon);
+	   	   shotLabel.setBounds(((Scene)Deadwood.players.get(Deadwood.turn).getLocation()).getShots().get(0).getX(), ((Scene)Deadwood.players.get(Deadwood.turn).getLocation()).getShots().get(0).getY(),
+	   			   ((Scene)Deadwood.players.get(Deadwood.turn).getLocation()).getShots().get(0).getW(), ((Scene)Deadwood.players.get(Deadwood.turn).getLocation()).getShots().get(0).getH());
+	   	   bPane.add(shotLabel,new Integer(2));
+	       shotLabels.add(shotLabel);
+	  } 
+	  else if (x == 1) {
+		  JLabel shotLabel = new JLabel();
+	   	   String shotPathName = "../shot.png";
+	   	   ImageIcon pIcon = new ImageIcon(shotPathName);
+	   	   shotLabel.setIcon(pIcon);
+	   	   shotLabel.setBounds(((Scene)Deadwood.players.get(Deadwood.turn).getLocation()).getShots().get(1).getX(), ((Scene)Deadwood.players.get(Deadwood.turn).getLocation()).getShots().get(1).getY(),
+	   			   ((Scene)Deadwood.players.get(Deadwood.turn).getLocation()).getShots().get(1).getW(), ((Scene)Deadwood.players.get(Deadwood.turn).getLocation()).getShots().get(1).getH());
+	   	   bPane.add(shotLabel,new Integer(2));
+	       shotLabels.add(shotLabel);
+	  } 
+	  else if (x == 2) {
+		  JLabel shotLabel = new JLabel();
+	   	   String shotPathName = "../shot.png";
+	   	   ImageIcon pIcon = new ImageIcon(shotPathName);
+	   	   shotLabel.setIcon(pIcon);
+	   	   shotLabel.setBounds(((Scene)Deadwood.players.get(Deadwood.turn).getLocation()).getShots().get(2).getX(), ((Scene)Deadwood.players.get(Deadwood.turn).getLocation()).getShots().get(2).getY(),
+	   			   ((Scene)Deadwood.players.get(Deadwood.turn).getLocation()).getShots().get(2).getW(), ((Scene)Deadwood.players.get(Deadwood.turn).getLocation()).getShots().get(2).getH());
+	   	   bPane.add(shotLabel,new Integer(2));
+	       shotLabels.add(shotLabel);
+	  }
+  }
+  
   // Dialogue box for taking a role, and moving the player
   public void roleDialogue(int x) {
 	  if (x == 1) {
 		  JOptionPane.showMessageDialog(null, "Congrats, you got the part!");
 		  playerLabels.get(Deadwood.turn).setBounds(Deadwood.players.get(Deadwood.turn).getPart().getX(), Deadwood.players.get(Deadwood.turn).getPart().getY(), 
 					 Deadwood.players.get(Deadwood.turn).getPart().getW(), Deadwood.players.get(Deadwood.turn).getPart().getH());
-		  this.updateGameLog(Deadwood.players.get(Deadwood.turn).getName());
+		  this.updateGameLog(Deadwood.players.get(Deadwood.turn).getName() + " got a part");
 	  } 
-	  else  if (x == 2) {
+	  else if (x == 2) {
+		  JOptionPane.showMessageDialog(null, "Congrats, you got the part!");
+		  playerLabels.get(Deadwood.turn).setBounds((Deadwood.players.get(Deadwood.turn).getPart().getX() + Deadwood.players.get(Deadwood.turn).getScene().getX()), (Deadwood.players.get(Deadwood.turn).getPart().getY() + Deadwood.players.get(Deadwood.turn).getScene().getY()), 
+					 Deadwood.players.get(Deadwood.turn).getPart().getW(), Deadwood.players.get(Deadwood.turn).getPart().getH());
+		  this.updateGameLog(Deadwood.players.get(Deadwood.turn).getName() + " got a part");
+	  } 
+	  else  if (x == 3) {
 		  JOptionPane.showMessageDialog(null, "Rank not high enough!");
 	  } 
 	  else {
@@ -67,11 +108,12 @@ public class BoardLayersListener extends JFrame {
 	  }
   }
   
-  //Dialogue box for rehearsing a part
+  // Dialogue box for rehearsing a part
   public void rehearseDialogue(int x) {
 	  if (x == 1) {
 		  JOptionPane.showMessageDialog(null, "You now have " + Deadwood.players.get(Deadwood.turn).getRehearsalMarkers() + " Reahearsal Markers!");
 		  Deadwood.GUIBoard.currentTurn(Deadwood.players.get(Deadwood.turn));
+		  this.updateGameLog(Deadwood.players.get(Deadwood.turn).getName() + " added a rehearsal marker");
 		  JOptionPane.showMessageDialog(null, "End of your turn!");
 		  endTurn();
 	  } 
@@ -83,13 +125,14 @@ public class BoardLayersListener extends JFrame {
 	  }
   }
  
-  //Dialogue box for acting out a part
+  // Dialogue box for acting out a part
   public void actingDialogue(int x) {
 	  if (x == 1) {
 		  JOptionPane.showMessageDialog(null, "You need to roll a " + (Deadwood.players.get(Deadwood.turn).getScene().getCard().getBudget()-Deadwood.players.get(Deadwood.turn).getRehearsalMarkers()) + " or higher to advance");
 	  } 
 	  else  if (x == 2) {
 		  JOptionPane.showMessageDialog(null, "Acting successful!");
+		  this.updateGameLog(Deadwood.players.get(Deadwood.turn).getName() + " acted a part");
 		  Deadwood.GUIBoard.currentTurn(Deadwood.players.get(Deadwood.turn));
 	  } 
 	  else  if (x == 3) {
@@ -99,7 +142,11 @@ public class BoardLayersListener extends JFrame {
 				bPane.remove(cardLabels.get(i-2));
 			  }
 		  }
-		  playerLabels.get(Deadwood.turn).setBounds(Deadwood.players.get(Deadwood.turn).getLocation().getX()+(40 * Deadwood.turn), Deadwood.players.get(Deadwood.turn).getLocation().getY()+120, 40, 40);
+		  for (int i = 0; i < Deadwood.players.size(); i++) {
+			  if (Deadwood.players.get(Deadwood.turn).getScene().equals(Deadwood.players.get(i).getScene())) {
+				  playerLabels.get(i).setBounds(Deadwood.players.get(i).getLocation().getX()+(40 * i), Deadwood.players.get(i).getLocation().getY()+120, 40, 40);
+			  }
+		  }
 		  Deadwood.GUIBoard.currentTurn(Deadwood.players.get(Deadwood.turn));
 	  } 
 	  else  if (x == 4) {
@@ -112,11 +159,15 @@ public class BoardLayersListener extends JFrame {
         	  }
 	  else {
 		  JOptionPane.showMessageDialog(null, "Acting failed, try again next time!");
+		  this.updateGameLog(Deadwood.players.get(Deadwood.turn).getName() + " failed a part");
 		  Deadwood.GUIBoard.currentTurn(Deadwood.players.get(Deadwood.turn));
 	  } 
   }
+  
+  // Ends the current turn
   public void endTurn(){
   Deadwood.players.get(Deadwood.turn).setOver(true);
+  		  updateGameLog(Deadwood.players.get(Deadwood.turn).getName() + " has finished their turn");
 		  Deadwood.turn++;
           Deadwood.turn %= Deadwood.players.size();
           Deadwood.players.get(Deadwood.turn).takeTurn(Deadwood.board, Deadwood.players);
@@ -156,6 +207,7 @@ public class BoardLayersListener extends JFrame {
 		 Deadwood.initializePlayer(name);
 		 count++;
 	 }
+	 
 	// Add a dice to represent a player.
       String[] dice = {"b1","c1","g1","o1","p1","r1","v1","y1"};
       for (int k = 0; k < numberOfPlayers; k++) {
@@ -166,7 +218,6 @@ public class BoardLayersListener extends JFrame {
    	   int offsetY = 0;
    	   if (k > 3) {
    		offsetX = (k-4) * 50;
-   		//offsetX = startX;
    		offsetY = 60;
    	   }
 
@@ -179,13 +230,16 @@ public class BoardLayersListener extends JFrame {
 
       }
   }
+  
+  // Updates the player icon to show level
   public void updatePlayer(Player player) {
       String[] dice = {"b", "c", "g", "o", "p", "r", "v", "y"};
       String dicePathName = "../dice/" + dice[Deadwood.turn] + player.getRank() + ".png";
       ImageIcon pIcon = new ImageIcon(dicePathName);
       playerLabels.get(Deadwood.turn).setIcon(pIcon);
   }
-  //Display the current turn information
+  
+  // Display the current turn information
   public void currentTurn(Player player) {
 	  String playerName = player.getName();
 	  String playerMoney = Integer.toString(player.getMoney());
@@ -225,17 +279,7 @@ public class BoardLayersListener extends JFrame {
           cardLabels.add(cardLabel);
       }
 
-      // Add the shot markers
-      for (int i = 2; i < Deadwood.rooms.size(); i++) {
-   	   JLabel shotLabel = new JLabel();
-   	   String dicePathName = "../shot.png";
-   	   ImageIcon pIcon = new ImageIcon(dicePathName);
-   	   shotLabel.setIcon(pIcon);
-   	   shotLabel.setBounds(((Scene) Deadwood.rooms.get(i)).getShots().get(0).getX(), ((Scene) Deadwood.rooms.get(i)).getShots().get(0).getY(),
-   			   ((Scene) Deadwood.rooms.get(i)).getShots().get(0).getW(),((Scene) Deadwood.rooms.get(i)).getShots().get(0).getH());
-   	   bPane.add(shotLabel,new Integer(3));
-          playerLabels.add(shotLabel);
-      }
+      
   }
   
   
@@ -379,7 +423,6 @@ public class BoardLayersListener extends JFrame {
         				 adjLocations.get(0));
         	
         		 Deadwood.players.get(Deadwood.turn).move(moveLocation);
-        		 //Deadwood.players.get(Deadwood.turn).setCanMove(false);
         		 playerLabels.get(Deadwood.turn).setBounds(Deadwood.players.get(Deadwood.turn).getLocation().getX()+(40 * Deadwood.turn), Deadwood.players.get(Deadwood.turn).getLocation().getY()+120, 40, 40);
         		 Deadwood.GUIBoard.currentTurn(Deadwood.players.get(Deadwood.turn));
         		 Deadwood.GUIBoard.updateGameLog(Deadwood.players.get(Deadwood.turn).getName() + " has moved to " + moveLocation);

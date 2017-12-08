@@ -49,10 +49,10 @@ public class Deadwood{
 	   GUIBoard.startDay();
 
      //print greeting and instructions
-     printWelcome();
+	   startGame();
      }
 
-   public static void printWelcome(){
+   public static void startGame(){
 
      //Construct Board
      board = new Board(rooms, players);

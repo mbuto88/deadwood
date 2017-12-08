@@ -21,6 +21,7 @@ private ArrayList<Part> extraParts;
       this.setH(h);
       this.setW(w);
       this.takes = calcTakes();
+      completedTakes = 0;
    }
   
 
@@ -56,13 +57,13 @@ private ArrayList<Part> extraParts;
    public void getPart(){
    }
 
-public boolean evaluateWork(){
+   public boolean evaluateWork(){
       return false;
    }
    
    public void completeTake(){
       completedTakes++;
-      System.out.println(completedTakes + " takes have now been completed out of " + takes);
+      Deadwood.GUIBoard.addMarkers(completedTakes-1);
    }
    
    public boolean isOver(){
@@ -72,7 +73,6 @@ public boolean evaluateWork(){
       completedTakes = 0;
    }
    
-   //FIX THIS LATER
    private int calcTakes(){
       switch (name.toLowerCase()){
          case "train station":
