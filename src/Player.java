@@ -167,6 +167,7 @@ public class Player{
       }
       over = false;
       canMove = true;
+      canTakeRole = true;
       Deadwood.GUIBoard.currentTurn(this);
 //      while (!over) {
 //         if (currentPart == null) {
