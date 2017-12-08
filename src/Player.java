@@ -14,7 +14,7 @@ public class Player{
     private boolean mayUpgrade;
     private boolean over;
     private boolean canMove;
-    private boolean canTakeRole = true;
+    private boolean canTakeRole;
     private boolean canAct;
 
 
@@ -27,6 +27,7 @@ public class Player{
       rehearsalMarkers = 0;
       currentScene = null;
       currentPart = null;
+      canTakeRole = true;
     }
 
     Player(String name, Room location){
@@ -38,6 +39,7 @@ public class Player{
         currentScene = null;
         currentPart = null;
         this.location = location;
+        canTakeRole = true;
     }
 
     //Getters
@@ -346,7 +348,7 @@ public class Player{
     	  Deadwood.GUIBoard.actingDialogue(2);
          currentScene.completeTake();
          if (currentScene.isOver()){
-        	 Deadwood.GUIBoard.actingDialogue(3);
+        	Deadwood.GUIBoard.actingDialogue(3);
             boolean isWrapBonus = false;
             for (Player p : players){
                if (p.getScene() == this.currentScene){
@@ -380,15 +382,14 @@ public class Player{
             Scene thisScene = currentScene;
             for (Player p : players) {
                if (p.getScene() == thisScene){
-                  p.setScene(null);
                   p.setPart(null);
                }
             }
             int[] result = thisScene.getCard().payout(onCard, successful);
             fame += result[0];
             money += result[1];
+            rehearsalMarkers = 0;
          }
-         currentPart = null;
       }
       else {
     	  Deadwood.GUIBoard.actingDialogue(10);
@@ -476,7 +477,6 @@ public class Player{
                   currentPart = p;
                   Deadwood.GUIBoard.roleDialogue(1);
                   canTakeRole = false;
-                  onCard = true;
                }
                else {
             	   Deadwood.GUIBoard.roleDialogue(2);

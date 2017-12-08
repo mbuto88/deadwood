@@ -6,7 +6,6 @@ public class Scene extends Room {
    private Card card;
 
 
-
 private ArrayList<Part> extraParts;
    private ArrayList<Shot> shots;
    int takes;

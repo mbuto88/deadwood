@@ -94,10 +94,16 @@ public class BoardLayersListener extends JFrame {
 	  } 
 	  else  if (x == 3) {
 		  JOptionPane.showMessageDialog(null, "Scene completed!");
+		  for (int i = 2; i < Deadwood.rooms.size(); i++) {
+			  if (Deadwood.players.get(Deadwood.turn).getScene().equals(Deadwood.rooms.get(i))) {
+				bPane.remove(cardLabels.get(i-2));
+			  }
+		  }
+		  playerLabels.get(Deadwood.turn).setBounds(Deadwood.players.get(Deadwood.turn).getLocation().getX()+(40 * Deadwood.turn), Deadwood.players.get(Deadwood.turn).getLocation().getY()+120, 40, 40);
 		  Deadwood.GUIBoard.currentTurn(Deadwood.players.get(Deadwood.turn));
 	  } 
 	  else  if (x == 4) {
-		  JOptionPane.showMessageDialog(null, "Time for the wrap bonus!");
+		  JOptionPane.showMessageDialog(null, "Time for the wrap bonus! Your money and fame will be updated");
 		  Deadwood.GUIBoard.currentTurn(Deadwood.players.get(Deadwood.turn));
 	  } 
 	  else  if (x == 5) {
@@ -106,7 +112,7 @@ public class BoardLayersListener extends JFrame {
         	  }
 	  else {
 		  JOptionPane.showMessageDialog(null, "Acting failed, try again next time!");
-
+		  Deadwood.GUIBoard.currentTurn(Deadwood.players.get(Deadwood.turn));
 	  } 
   }
   public void endTurn(){
@@ -168,7 +174,7 @@ public class BoardLayersListener extends JFrame {
    	   ImageIcon pIcon = new ImageIcon(dicePathName);
    	   playerLabel.setIcon(pIcon);
    	   playerLabel.setBounds(Deadwood.rooms.get(0).getX() + offsetX, Deadwood.rooms.get(0).getY() + offsetY, 40, 40);
-   	   bPane.add(playerLabel,new Integer(3));
+   	   bPane.add(playerLabel,new Integer(2));
        playerLabels.add(playerLabel);
 
       }
@@ -389,7 +395,7 @@ public class BoardLayersListener extends JFrame {
          // Take role command that can give the player a role if eligible 
          
          else if (e.getSource()== bChooseRole){
-        	 if (Deadwood.players.get(Deadwood.turn).canTakeRole() &&! Deadwood.players.get(Deadwood.turn).getLocation().equals(Deadwood.rooms.get(0)) &&! Deadwood.players.get(Deadwood.turn).getLocation().equals(Deadwood.rooms.get(1))) {        
+        	 if (!Deadwood.players.get(Deadwood.turn).getScene().isOver() && Deadwood.players.get(Deadwood.turn).canTakeRole() &&! Deadwood.players.get(Deadwood.turn).getLocation().equals(Deadwood.rooms.get(0)) &&! Deadwood.players.get(Deadwood.turn).getLocation().equals(Deadwood.rooms.get(1))) {        
         		 ArrayList<Part> extraParts = ((Scene)Deadwood.players.get(Deadwood.turn).getLocation()).getExtraParts();
         		 ArrayList<Part> mainParts = ((Scene)Deadwood.players.get(Deadwood.turn).getLocation()).getCard().getParts();
         		 ArrayList<String> availableParts = new ArrayList<String>();
@@ -401,7 +407,7 @@ public class BoardLayersListener extends JFrame {
         		 }
         		 String partSelection = (String)JOptionPane.showInputDialog(
         				 null,
-        				 "Please select where to move: ",
+        				 "Please select a role: ",
         				 null, JOptionPane.PLAIN_MESSAGE,
         				 null,
         				 availableParts.toArray(),
@@ -419,6 +425,9 @@ public class BoardLayersListener extends JFrame {
         	 } 
         	 else if (Deadwood.players.get(Deadwood.turn).getPart() != null) {
         		 JOptionPane.showMessageDialog(null, "You are working a part!");
+        	 }
+        	 else if (Deadwood.players.get(Deadwood.turn).getScene().isOver()){
+        		 JOptionPane.showMessageDialog(null, "Scene is already wrapped!");
         	 }
         	 else {
         		 JOptionPane.showMessageDialog(null, "You already took a role this turn!");
@@ -482,7 +491,6 @@ public class BoardLayersListener extends JFrame {
                updatePlayer(Deadwood.players.get(Deadwood.turn));
                updateGameLog(Deadwood.players.get(Deadwood.turn).getName() + "has upgraded to level " + Deadwood.players.get(Deadwood.turn).getRank());
              }
-             System.out.println("upgrade this bitch\n");
         }
       }
       
