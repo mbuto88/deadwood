@@ -388,6 +388,7 @@ public class Player{
             fame += result[0];
             money += result[1];
          }
+         currentPart = null;
       }
       else {
     	  Deadwood.GUIBoard.actingDialogue(10);
@@ -405,6 +406,7 @@ public class Player{
       if (currentPart != null && rehearsalMarkers < currentScene.getCard().getBudget())
       {
          rehearsalMarkers++;
+         canAct = false;
          Deadwood.GUIBoard.rehearseDialogue(1);
       }
       else if (currentPart == null){

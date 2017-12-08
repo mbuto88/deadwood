@@ -72,6 +72,8 @@ public class BoardLayersListener extends JFrame {
 	  if (x == 1) {
 		  JOptionPane.showMessageDialog(null, "You now have " + Deadwood.players.get(Deadwood.turn).getRehearsalMarkers() + " Reahearsal Markers!");
 		  Deadwood.GUIBoard.currentTurn(Deadwood.players.get(Deadwood.turn));
+		  JOptionPane.showMessageDialog(null, "End of your turn!");
+		  endTurn();
 	  } 
 	  else  if (x == 2) {
 		  JOptionPane.showMessageDialog(null, "You don't have a part yet!");
@@ -84,7 +86,7 @@ public class BoardLayersListener extends JFrame {
   //Dialogue box for acting out a part
   public void actingDialogue(int x) {
 	  if (x == 1) {
-		  JOptionPane.showMessageDialog(null, "You need to roll a " + Deadwood.players.get(Deadwood.turn).getScene().getCard().getBudget() + " or higher to advance");
+		  JOptionPane.showMessageDialog(null, "You need to roll a " + (Deadwood.players.get(Deadwood.turn).getScene().getCard().getBudget()-Deadwood.players.get(Deadwood.turn).getRehearsalMarkers()) + " or higher to advance");
 	  } 
 	  else  if (x == 2) {
 		  JOptionPane.showMessageDialog(null, "Acting successful!");
@@ -104,8 +106,7 @@ public class BoardLayersListener extends JFrame {
         	  }
 	  else {
 		  JOptionPane.showMessageDialog(null, "Acting failed, try again next time!");
-		  JOptionPane.showMessageDialog(null, "End of your turn!");
-		  endTurn();
+
 	  } 
   }
   public void endTurn(){

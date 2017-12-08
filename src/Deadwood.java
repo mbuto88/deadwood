@@ -53,8 +53,6 @@ public class Deadwood{
      }
 
    public static void printWelcome(){
-     //Print commands ---REMOVE---
-			printCommands();
 
      //Construct Board
      board = new Board(rooms, players);
@@ -88,22 +86,6 @@ public class Deadwood{
      }
    }
 
-	 public static void printCommands(){
-		 //List commands
-		 String[] instructionsLeftSide = new String[]{"upgrade cr level --- ", "rehearse --- ", "act --- ", "end --- "};
-		 String[] instructionsRightSide = new String[]{"Upgrade the current player to the indicated level by paying with fame credits",
-				"The current player rehearses",
-				"The current player performs in its current role.",
-				"End the current players turn"};
-
-		 //prints the instructions to the console
-		 int i = 0;
-		 while(i < 4){
-			 System.out.print(instructionsLeftSide[i]);
-			 System.out.print(instructionsRightSide[i] + "\n");
-			 i++;
-			 }
-	   }
 
    public static void initializePlayer(String name){
        players.add(new Player(name, rooms.get(0)));
