@@ -14,7 +14,7 @@ public class Player{
     private boolean mayUpgrade;
     private boolean over;
     private boolean canMove;
-    private boolean canTakeRole = true;
+    private boolean canTakeRole;
     private boolean canAct;
 
 
@@ -27,6 +27,7 @@ public class Player{
       rehearsalMarkers = 0;
       currentScene = null;
       currentPart = null;
+      canTakeRole = true;
     }
 
     Player(String name, Room location){
@@ -38,6 +39,7 @@ public class Player{
         currentScene = null;
         currentPart = null;
         this.location = location;
+        canTakeRole = true;
     }
 
     //Getters
@@ -343,10 +345,10 @@ public class Player{
       int roll = b.rollDice();
       boolean successful = (currentScene.getCard().getBudget() <= rehearsalMarkers + roll);
       if (successful){
-    	  Deadwood.GUIBoard.actingDialogue(2);
+    	 Deadwood.GUIBoard.actingDialogue(2);
          currentScene.completeTake();
          if (currentScene.isOver()){
-        	 Deadwood.GUIBoard.actingDialogue(3);
+        	Deadwood.GUIBoard.actingDialogue(3);
             boolean isWrapBonus = false;
             for (Player p : players){
                if (p.getScene() == this.currentScene){
@@ -380,13 +382,13 @@ public class Player{
             Scene thisScene = currentScene;
             for (Player p : players) {
                if (p.getScene() == thisScene){
-                  p.setScene(null);
                   p.setPart(null);
                }
             }
             int[] result = thisScene.getCard().payout(onCard, successful);
             fame += result[0];
             money += result[1];
+            rehearsalMarkers = 0;
          }
       }
       else {
@@ -405,6 +407,7 @@ public class Player{
       if (currentPart != null && rehearsalMarkers < currentScene.getCard().getBudget())
       {
          rehearsalMarkers++;
+         canAct = false;
          Deadwood.GUIBoard.rehearseDialogue(1);
       }
       else if (currentPart == null){
@@ -448,17 +451,17 @@ public class Player{
             if (s.toLowerCase().equals(p.getPartName().toLowerCase())) {
                if (rank >= p.getLevel()){
                   currentPart = p;
-                  Deadwood.GUIBoard.roleDialogue(1);
+                  Deadwood.GUIBoard.roleDialogue(2);
                   canTakeRole = false;
                   onCard = true;
                }
                else {
-            	   Deadwood.GUIBoard.roleDialogue(2);
+            	   Deadwood.GUIBoard.roleDialogue(3);
                }
             }
          }
          else if (isTaken == true && s.toLowerCase().equals(p.getPartName().toLowerCase())) {
-        	 Deadwood.GUIBoard.roleDialogue(3);               
+        	 Deadwood.GUIBoard.roleDialogue(4);               
          }
       }
       for(Part p: ((Scene)location).getExtraParts()){
@@ -474,14 +477,13 @@ public class Player{
                   currentPart = p;
                   Deadwood.GUIBoard.roleDialogue(1);
                   canTakeRole = false;
-                  onCard = true;
                }
                else {
-            	   Deadwood.GUIBoard.roleDialogue(2);
+            	   Deadwood.GUIBoard.roleDialogue(3);
                }
             }
          } else if (isTaken == true && s.toLowerCase().equals(p.getPartName().toLowerCase())) {
-        	 Deadwood.GUIBoard.roleDialogue(3);               
+        	 Deadwood.GUIBoard.roleDialogue(4);               
          }
       }
     }

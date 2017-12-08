@@ -102,7 +102,7 @@ public class Board{
 		Random roll = new Random();
 	  result = roll.nextInt(6) + 1;
 
-		System.out.println("Roll was: "+ result);
+		
 		return result;
 	}
 
