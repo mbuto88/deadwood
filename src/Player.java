@@ -152,12 +152,12 @@ public class Player{
     }
     public void addMoney(int toAdd){
       money += toAdd;
-      System.out.println(name + " recieved " + toAdd + " dollars, now a total of " + money);
+      //System.out.println(name + " recieved " + toAdd + " dollars, now a total of " + money);
     }
 
     public void addFame(int toAdd) {
       fame += toAdd;
-      System.out.println(name + " recieved " + toAdd + " fame, now a total of " + fame);
+      //System.out.println(name + " recieved " + toAdd + " fame, now a total of " + fame);
     }
 
     //Other Methods
@@ -348,7 +348,7 @@ public class Player{
     	 Deadwood.GUIBoard.actingDialogue(2);
          currentScene.completeTake();
          if (currentScene.isOver()){
-        	Deadwood.GUIBoard.actingDialogue(3);
+        	   Deadwood.GUIBoard.actingDialogue(3);
             boolean isWrapBonus = false;
             for (Player p : players){
                if (p.getScene() == this.currentScene){
@@ -420,7 +420,7 @@ public class Player{
 
     public void move(String s){
       for(Room r : location.getNearby()) {
-         if (s.toLowerCase().equals(r.getName().toLowerCase())){
+         if (s.toLowerCase().equals(r.getName().toLowerCase())  || (s.toLowerCase() + "s").equals(r.getName().toLowerCase())){
             location = r;
             if(r.getName().toLowerCase().equals("office")){
               mayUpgrade = true;
