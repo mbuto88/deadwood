@@ -60,8 +60,8 @@ public class Deadwood{
 
      //Start the first turn
      players.get(turn).takeTurn(board, players);
-     
-     while(!board.isGameOver()){    	 
+     GUIBoard.startDay();
+     /*while(!board.isGameOver()){    	 
     	//Check if the day is over
        boolean isDayOver = true;
 
@@ -84,6 +84,7 @@ public class Deadwood{
     		  board.nextDay(players);
        }
      }
+     */
    }
 
 

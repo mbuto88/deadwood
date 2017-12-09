@@ -12,6 +12,7 @@
 
 import java.awt.*;
 import javax.swing.*;
+import java.util.*;
 //import javax.swing.ImageIcon;
 
 import java.awt.event.*;
@@ -51,7 +52,8 @@ public class BoardLayersListener extends JFrame {
   public void updateGameLog(String newEvent) {
 	  logTextArea.setText(logTextArea.getText() + "\n" + newEvent);
   }
-  
+  int currentDay = 0;
+  int maxDays = 4;
   // Adds take markers when a shot is completed
   public void addMarkers(int x) {
 	  if (x == 0) {
@@ -98,7 +100,8 @@ public class BoardLayersListener extends JFrame {
 		  JOptionPane.showMessageDialog(null, "Congrats, you got the part!");
 		  playerLabels.get(Deadwood.turn).setBounds((Deadwood.players.get(Deadwood.turn).getPart().getX() + Deadwood.players.get(Deadwood.turn).getScene().getX()), (Deadwood.players.get(Deadwood.turn).getPart().getY() + Deadwood.players.get(Deadwood.turn).getScene().getY()), 
 					 Deadwood.players.get(Deadwood.turn).getPart().getW(), Deadwood.players.get(Deadwood.turn).getPart().getH());
-		  this.updateGameLog(Deadwood.players.get(Deadwood.turn).getName() + " got a part");
+		  this.updateGameLog(Deadwood.players.get(Deadwood.turn).getName() + " took the part " + Deadwood.players.get(Deadwood.turn).getPart().getPartName());
+        
 	  } 
 	  else  if (x == 3) {
 		  JOptionPane.showMessageDialog(null, "Rank not high enough!");
@@ -171,7 +174,17 @@ public class BoardLayersListener extends JFrame {
 		  Deadwood.turn++;
           Deadwood.turn %= Deadwood.players.size();
           Deadwood.players.get(Deadwood.turn).takeTurn(Deadwood.board, Deadwood.players);
-
+   int scenesLeft = 0;
+   for (Room r : Deadwood.rooms) {
+      if (r instanceof Scene) { 
+         if (!((Scene)r).isOver()){
+            scenesLeft++;
+         }
+      }
+   }
+   if (scenesLeft == 1){
+      startDay();
+   }
   }
   
   // Add players to the board frame
@@ -194,6 +207,7 @@ public class BoardLayersListener extends JFrame {
 			 }
 		 }
 	 }
+    
 	 int count = 0;
 	 while (count != numberOfPlayers) {
 		 String name = "";
@@ -206,6 +220,24 @@ public class BoardLayersListener extends JFrame {
 		 }
 		 Deadwood.initializePlayer(name);
 		 count++;
+       if (numberOfPlayers <= 3){
+         maxDays = 3;
+      }
+      else if (numberOfPlayers == 5){
+         for (Player p : Deadwood.players){
+            p.addFame(1);
+         }  
+      }
+      else if (numberOfPlayers == 6){
+         for (Player p : Deadwood.players){
+            p.addFame(2);
+         }
+      }
+      else if (numberOfPlayers >= 7){
+         for (Player p : Deadwood.players){
+            p.levelUp(true, 2);
+         } 
+      }
 	 }
 	 
 	// Add a dice to represent a player.
@@ -264,7 +296,36 @@ public class BoardLayersListener extends JFrame {
 	  }
   
   // Add cards and shot markers to board
+  
   public void startDay () {
+  currentDay++;
+  if (currentDay >= maxDays) {
+   int highScore = 0;
+   Player currentLeader = new Player();
+   for (Player p : Deadwood.players){
+      if (Board.calcScore(p) >= highScore){
+         highScore = Board.calcScore(p);
+         currentLeader = p;
+      }
+   }
+   JOptionPane.showMessageDialog(null, "The game is over, and with " + highScore + ", " + currentLeader.getName() + " is our Winner!");
+   JOptionPane.showMessageDialog(null, "Congratulations to everyone, and thank you for playing!");
+   System.exit(0);
+  }
+  if (currentDay != 1){
+   for (int i = 0; i < bPane.getComponentsInLayer(1).length; i++){
+      if (bPane.getComponentsInLayer(1)[i] instanceof JLabel){
+         bPane.remove(bPane.getIndexOf(bPane.getComponentsInLayer(1)[i]));
+      }
+   }
+   cardLabels.clear();
+   }
+    		  for(int k = 2; k < Deadwood.rooms.size(); k++) {
+    			  Random randomGenerator = new Random();
+    			  int randomInt = randomGenerator.nextInt(Deadwood.cards.size());
+    			  ((Scene)Deadwood.rooms.get(k)).setCard(Deadwood.cards.get(randomInt));
+              ((Scene)Deadwood.rooms.get(k)).reset();
+    		  }
 	// Add scene cards to the rooms
       for (int i = 2; i < Deadwood.rooms.size(); i++) {
    	   JLabel cardLabel = new JLabel();
@@ -457,7 +518,7 @@ public class BoardLayersListener extends JFrame {
         				 availableParts.get(0));
         		 if (partSelection != null) {
         			 Deadwood.players.get(Deadwood.turn).takeRole(partSelection.substring(0, partSelection.length() - 4), Deadwood.players);
-            		 Deadwood.GUIBoard.currentTurn(Deadwood.players.get(Deadwood.turn));
+            		 endTurn();
         		 }
         	 } 
         	 else if (Deadwood.players.get(Deadwood.turn).getLocation().equals(Deadwood.rooms.get(0))){
@@ -481,6 +542,7 @@ public class BoardLayersListener extends JFrame {
              
          }
          else if (e.getSource()== bUpgrade){
+            if (Deadwood.players.get(Deadwood.turn).getLocation() instanceof CastingOffice) {
             ArrayList<String> options = new ArrayList<String>();
             options.add("Dollars");
             options.add("Fame");
@@ -497,7 +559,7 @@ public class BoardLayersListener extends JFrame {
                for (Upgrade u : upgrades)
                {
                   if (u.getCurrency().equals("dollar") && u.getAmt() <= Deadwood.players.get(Deadwood.turn).getMoney()){
-                     options.add("Level " + u.getLevel() + " - Cost: " + u.getAmt());
+                     options.add("Level: " + u.getLevel() + " - Cost: " + u.getAmt());
                   }
                }
              }
@@ -521,7 +583,7 @@ public class BoardLayersListener extends JFrame {
         				      options.toArray(),
         				      options.get(0));
                         
-               int level = Integer.parseInt(upgradeSelection.substring(8,9));
+               int level = Integer.parseInt(upgradeSelection.substring(7,8));
                
                if (currencySelection.equals("Dollars")){
                   ((CastingOffice)Deadwood.rooms.get(1)).raiseRank(Deadwood.players.get(Deadwood.turn), "dollar", level);
@@ -532,9 +594,14 @@ public class BoardLayersListener extends JFrame {
                }
 
                updatePlayer(Deadwood.players.get(Deadwood.turn));
-               updateGameLog(Deadwood.players.get(Deadwood.turn).getName() + "has upgraded to level " + Deadwood.players.get(Deadwood.turn).getRank());
+               updateGameLog(Deadwood.players.get(Deadwood.turn).getName() + " has upgraded to level " + Deadwood.players.get(Deadwood.turn).getRank());
              }
+             }
+             else {
+         JOptionPane.showMessageDialog(null, "You aren't in the Casting Office!");
         }
+        }
+        
       }
       
       public void mousePressed(MouseEvent e) {
